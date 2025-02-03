@@ -1,3 +1,4 @@
+Exports/
 # Godot 4+ specific ignores
 .godot/
 
@@ -16,5 +17,4 @@ mono_crash.*.json
 
 
 *.zip
-Exports/*
 web-build/*

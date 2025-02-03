@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=12 format=2]
+[gd_resource type="Theme" load_steps=14 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/bg_webp.webp" type="Texture" id=2]
 
 [sub_resource type="DynamicFont" id=6]
 size = 24
@@ -69,6 +70,10 @@ bg_color = Color( 0.647059, 0.427451, 0.282353, 1 )
 [sub_resource type="DynamicFont" id=5]
 font_data = ExtResource( 1 )
 
+[sub_resource type="StyleBoxTexture" id=11]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 1080, 1920 )
+
 [resource]
 Button/fonts/font = SubResource( 6 )
 Button/styles/hover = SubResource( 8 )
@@ -86,3 +91,5 @@ TableContainer/base_type = "PanelContainer"
 TableContainer/styles/panel = SubResource( 2 )
 TextFont/base_type = "Label"
 TextFont/fonts/font = SubResource( 5 )
+background/base_type = "PanelContainer"
+background/styles/panel = SubResource( 11 )

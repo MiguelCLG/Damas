@@ -26,6 +26,15 @@ public partial class Checker : Control
     texture.TextureNormal = GD.Load<Texture>("res://Assets/checker-selected.png");
   }
 
+  public void ChangeTexture(Texture newTexture)
+  {
+    texture.TextureNormal = newTexture;
+  }
+
+  public void ChangeTexture(string texturePath)
+  {
+    texture.TextureNormal = GD.Load<Texture>(texturePath);
+  }
   public void UnselectChecker()
   {
     SetCheckerColor(Color);

@@ -40,6 +40,37 @@ public partial class Board : Control
     }
   }
 
+  public bool HasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
+  {
+    int direction = (checker.Color == BoardColors.Black) ? 1 : -1;
+
+    Vector2[] diagonals = { new Vector2(-1, direction), new Vector2(1, direction) };
+    Array<Vector2> captureMoves = new Array<Vector2>();
+
+    foreach (var diagonal in diagonals)
+    {
+      Vector2 checkPosition = checker.BoardPosition + diagonal;
+
+      if (IsWithinBounds(checkPosition))
+      {
+        if (IsEnemyAt(checkPosition, checker.Color, checkersInPlay))
+        {
+          // Check the space behind the enemy
+          Vector2 behindEnemyPosition = checker.BoardPosition + diagonal * 2;
+          if (IsWithinBounds(behindEnemyPosition))
+          {
+            if (IsSpaceEmpty(behindEnemyPosition, checkersInPlay))
+            {
+              captureMoves.Add(behindEnemyPosition);
+            }
+          }
+        }
+      }
+    }
+
+    return captureMoves.Count > 0;
+  }
+
   // Since we want to prioritize capture moves, we first check for them
   // then we if there aren't any, we check for regular moves
   // this way we can highlight and diferentiate a capture from a regular move
