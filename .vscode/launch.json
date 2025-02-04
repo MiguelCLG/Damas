@@ -13,7 +13,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "D:\\PC FOLDERS/Desktop/Godot_v3.6-stable_mono_win64/Godot_v3.6-stable_mono_win64.exe",
+      "program": "${env:GODOT_3_BIN}",
       "args": [],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
@@ -24,7 +24,7 @@
       "request": "launch",
       "preLaunchTask": "build",
       "mode": "executable",
-      "executable": "D:\\PC FOLDERS/Desktop/Godot_v3.6-stable_mono_win64/Godot_v3.6-stable_mono_win64.exe",
+      "executable": "${env:GODOT_3_BIN}",
       "executableArguments": [
         "--path",
         "${workspaceFolder}",
@@ -47,7 +47,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "D:/PC FOLDERS/Desktop/Godot_v4.3-stable_mono_win64/Godot_v4.3-stable_mono_win64.exe",
+      "program": "${env:GODOT_3_BIN}",
       "args": [
         "--editor",
         "--path",
@@ -63,16 +63,41 @@
       "request": "launch",
       "mode": "executable",
       "preLaunchTask": "build",
-      "executable": "D:\\PC FOLDERS/Desktop/Godot_v4.3-stable_mono_win64/Godot_v4.3-stable_mono_win64.exe",
+      "executable": "${env:GODOT_3_BIN}",
+      // See which arguments are available here:
+      // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
       "executableArguments": [
         "--path",
-        "${workspaceFolder}"
+        "${workspaceRoot}"
       ]
     },
     {
       "name": "Attach",
-      "type": "coreclr",
-      "request": "attach"
+      "type": "godot-mono",
+      "request": "attach",
+      "address": "localhost",
+      "port": 23685
+    },
+    {
+      "name": "Play in Editor",
+      "type": "godot-mono",
+      "mode": "playInEditor",
+      "request": "launch"
+    },
+    {
+      "name": "Launch (Select Scene)",
+      "type": "godot-mono",
+      "request": "launch",
+      "mode": "executable",
+      "preLaunchTask": "build",
+      "executable": "${env:GODOT_3_BIN}",
+      // See which arguments are available here:
+      // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
+      "executableArguments": [
+        "--path",
+        "${workspaceRoot}",
+        "${command:SelectLaunchScene}"
+      ]
     }
   ]
 }

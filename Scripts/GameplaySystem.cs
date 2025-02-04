@@ -88,7 +88,6 @@ public partial class GameplaySystem : Node2D
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
     foreach (var checker in checkersWithCaptureMoves)
     {
-      GD.Print(checker.Name);
       checker.ChangeTexture("res://Assets/available-capture-checker.webp");
     }
   }
@@ -128,9 +127,6 @@ public partial class GameplaySystem : Node2D
       float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
       Vector2 tilePosition = startPosition + new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
       Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
-
-      GD.Print("Tile Position: " + tilePosition);
-      GD.Print("Checker Position: " + checkerPosition);
 
       checker.RectPosition = checkerPosition;
     }
@@ -193,12 +189,10 @@ public partial class GameplaySystem : Node2D
         float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
         float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
         Vector2 tilePosition = startPosition + new Vector2(i * tileSizeX, j * tileSizeX);
-        Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX);
+        Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
 
         checker.RectPosition = checkerPosition;
         checker.BoardPosition = new Vector2(i, j);
-        GD.Print("Tile Position: " + tilePosition);
-        GD.Print("Checker Position: " + checkerPosition);
         checker.Color = checkerType == 1 ? BoardColors.Black : BoardColors.White;
 
         if (checkerType == 1)

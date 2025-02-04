@@ -1,6 +1,6 @@
 using Godot;
 using Godot.Collections;
-
+using static Utils;
 public partial class Checker : Control
 {
   [Export] public BoardColors Color { get; set; }
@@ -14,6 +14,8 @@ public partial class Checker : Control
   public override void _Ready()
   {
     texture = GetNode<TextureButton>("%Texture");
+    RectMinSize = new Vector2(CheckerSize, CheckerSize);
+    texture.RectMinSize = new Vector2(CheckerSize, CheckerSize);
   }
 
   public void SetCheckerColor(BoardColors color)
