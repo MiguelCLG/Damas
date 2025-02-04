@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Godot;
 using Godot.Collections;
 using static Utils;
@@ -13,6 +12,7 @@ public partial class GameplaySystem : Node2D
   private int TurnCount = 1;
   private Array<Checker> BlackCheckers = new Array<Checker>();
   private Array<Checker> WhiteCheckers = new Array<Checker>();
+  private Array<Checker> AllCheckers = new Array<Checker>();
   private Board board;
   private Control checkersContainer;
   private GameOverMenu gameOverMenu;
@@ -22,6 +22,7 @@ public partial class GameplaySystem : Node2D
   private Vector2 startPosition;
   private double timer = 15;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
+  private bool LastMoveWasCapture = false;
 
   public override void _Ready()
   {
@@ -82,6 +83,7 @@ public partial class GameplaySystem : Node2D
 
   private void OnTurnStart()
   {
+    LastMoveWasCapture = false;
     checkersWithCaptureMoves = new Array<Checker>();
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
     foreach (var checker in checkersWithCaptureMoves)
@@ -94,24 +96,24 @@ public partial class GameplaySystem : Node2D
   private Array<Checker> FindCheckersWithCaptureMoves()
   {
     var checkers = new Array<Checker>();
-    var allCheckers = new Array<Checker>();
+    AllCheckers = new Array<Checker>();
     var currentTurnCheckers = new Array<Checker>();
 
     foreach (Checker c in BlackCheckers)
     {
       if (c.Color == CurrentTurn)
         currentTurnCheckers.Add(c);
-      allCheckers.Add(c);
+      AllCheckers.Add(c);
     }
     foreach (Checker c in WhiteCheckers)
     {
       if (c.Color == CurrentTurn)
         currentTurnCheckers.Add(c);
-      allCheckers.Add(c);
+      AllCheckers.Add(c);
     }
     foreach (var checker in currentTurnCheckers)
     {
-      if (board.HasCaptureMove(checker, allCheckers))
+      if (board.HasCaptureMove(checker, AllCheckers))
       {
         checkers.Add(checker);
       }
@@ -127,6 +129,8 @@ public partial class GameplaySystem : Node2D
       Vector2 tilePosition = startPosition + new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
       Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
 
+      GD.Print("Tile Position: " + tilePosition);
+      GD.Print("Checker Position: " + checkerPosition);
 
       checker.RectPosition = checkerPosition;
     }
@@ -135,7 +139,18 @@ public partial class GameplaySystem : Node2D
   private void GenerateCheckers()
   {
     // Defined the board scheme for an easier way to spawn the checkers (1 = black checker, 2 = white checker, 0 = skip)
-    int[,] boardScheme = new int[BoardSize, BoardSize]
+    int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
+    {
+        { 0, 1, 0, 0, 0, 2, 0, 2 },
+        { 1, 0, 2, 0, 0, 0, 2, 0 },
+        { 0, 1, 0, 0, 0, 2, 0, 2 },
+        { 1, 0, 1, 0, 2, 0, 2, 0 },
+        { 0, 1, 0, 0, 0, 0, 0, 2 },
+        { 1, 0, 1, 0, 0, 0, 2, 0 },
+        { 0, 1, 0, 0, 0, 2, 0, 0 },
+        { 1, 0, 1, 0, 0, 0, 2, 0 }
+    };
+    /* int[,] boardScheme = new int[BoardSize, BoardSize]
     {
         { 0, 1, 0, 0, 0, 2, 0, 2 },
         { 1, 0, 1, 0, 0, 0, 2, 0 },
@@ -145,7 +160,7 @@ public partial class GameplaySystem : Node2D
         { 1, 0, 1, 0, 0, 0, 2, 0 },
         { 0, 1, 0, 0, 0, 2, 0, 2 },
         { 1, 0, 1, 0, 0, 0, 2, 0 }
-    };
+    }; */
 
     /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with two pieces to be killed.
     {
@@ -178,16 +193,19 @@ public partial class GameplaySystem : Node2D
         float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
         float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
         Vector2 tilePosition = startPosition + new Vector2(i * tileSizeX, j * tileSizeX);
-        Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
+        Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX);
 
         checker.RectPosition = checkerPosition;
         checker.BoardPosition = new Vector2(i, j);
+        GD.Print("Tile Position: " + tilePosition);
+        GD.Print("Checker Position: " + checkerPosition);
         checker.Color = checkerType == 1 ? BoardColors.Black : BoardColors.White;
 
         if (checkerType == 1)
           BlackCheckers.Add(checker);
         else
           WhiteCheckers.Add(checker);
+        AllCheckers.Add(checker);
 
       }
     }
@@ -296,6 +314,7 @@ public partial class GameplaySystem : Node2D
           if (IsCaptureMove(SelectedChecker.BoardPosition, tile.TilePosition))
           {
             OnCheckerKilled(CheckerToCapture);
+            LastMoveWasCapture = true;
           }
           SelectedChecker.Move(newCheckerPosition, tile.TilePosition);
 
@@ -326,10 +345,8 @@ public partial class GameplaySystem : Node2D
     return false; // No checker found
 
   }
-
   private void NextTurn()
   {
-    CurrentTurn = CurrentTurn == BoardColors.Black ? BoardColors.White : BoardColors.Black;
     if (SelectedChecker != null)
     {
       board.CleanUpFreeTiles(SelectedChecker);
@@ -338,8 +355,14 @@ public partial class GameplaySystem : Node2D
       {
         checker.UnselectChecker();
       }
-      SelectedChecker = null;
     }
+    if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker, AllCheckers))
+    {
+      OnTurnStart();
+      return;
+    }
+    CurrentTurn = CurrentTurn == BoardColors.Black ? BoardColors.White : BoardColors.Black;
+    SelectedChecker = null;
 
     timer = 15;
     TurnCount++;

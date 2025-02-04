@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Assets/black-tile.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Tile.cs" type="Script" id=2]
+[ext_resource path="res://Assets/white-checker.png" type="Texture" id=3]
+[ext_resource path="res://Assets/black-checker.png" type="Texture" id=4]
 
 [node name="Tile" type="Control"]
 margin_right = 64.0
@@ -10,6 +11,8 @@ rect_min_size = Vector2( 64, 64 )
 mouse_filter = 2
 input_pass_on_modal_close_click = false
 script = ExtResource( 2 )
+WhiteTileTexture = ExtResource( 3 )
+BlackTileTexture = ExtResource( 4 )
 
 [node name="Texture" type="TextureButton" parent="."]
 unique_name_in_owner = true
@@ -19,7 +22,8 @@ focus_mode = 0
 shortcut_in_tooltip = false
 action_mode = 0
 enabled_focus_mode = 0
-texture_normal = ExtResource( 1 )
+texture_normal = ExtResource( 3 )
+expand = true
 stretch_mode = 5
 
 [connection signal="pressed" from="Texture" to="." method="OnTileClicked"]

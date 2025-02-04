@@ -4,6 +4,9 @@ public partial class Tile : Control
 {
   [Export] public Vector2 TilePosition { get; set; }
   [Export] private BoardColors TileColor { get; set; }
+  [Export] private Texture WhiteTileTexture { get; set; }
+  [Export] private Texture BlackTileTexture { get; set; }
+
   TextureButton texture;
 
   public override void _Ready()
@@ -14,7 +17,7 @@ public partial class Tile : Control
   public void SetTileColor(BoardColors color)
   {
     TileColor = color;
-    texture.TextureNormal = color == BoardColors.White ? GD.Load<Texture>("res://Assets/white-tile.png") : GD.Load<Texture>("res://Assets/black-tile.png");
+    texture.TextureNormal = color == BoardColors.White ? WhiteTileTexture : BlackTileTexture;
   }
 
   public void Select(bool isCapture)
