@@ -6,12 +6,13 @@ public partial class Board : Control
 {
   [Export] private PackedScene tileScene;
   private Array<Tile> BoardTiles { get; set; }
-
+  private Control BoardContainer { get; set; }
   public bool IsCaptureMove = false;
 
   public override void _Ready()
   {
     BoardTiles = new Array<Tile>();
+    BoardContainer = GetNode<Control>("%BoardContainer");
   }
 
   // Function called from the GameplaySystem when all events have been registered and subscribed (Preventing a race condition)
@@ -179,7 +180,7 @@ public partial class Board : Control
 
         tile.TilePosition = new Vector2(i, j);
         BoardTiles.Add(tile);
-        AddChild(tile);
+        BoardContainer.AddChild(tile);
         tile.SetTileColor(i % 2 == j % 2 ? BoardColors.White : BoardColors.Black);
       }
     }
@@ -229,7 +230,7 @@ public partial class Board : Control
     // Free the tiles and remove them from the scene (No orphan nodes!)
     foreach (Tile tile in BoardTiles)
     {
-      RemoveChild(tile);
+      BoardContainer.RemoveChild(tile);
       tile.QueueFree();
     }
     BoardTiles.Clear();

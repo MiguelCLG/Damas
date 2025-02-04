@@ -39,8 +39,8 @@ public partial class GameplaySystem : Node2D
     // added this signal to make sure we can resize our pieces if the window is resized
     GetTree().Root.Connect("size_changed", this, nameof(OnViewportChanged));
 
-    GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
-    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}";
+    /* GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
+    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}"; */
 
     // added these for resizing and positioning purposes
     screenSize = GetViewportRect().Size;
@@ -63,7 +63,7 @@ public partial class GameplaySystem : Node2D
     int seconds = (int)(timer % 60);  // Modulus 60 to get remaining seconds
 
     string formattedTime = $"{minutes:D2}:{seconds:D2}"; // :D2 makes sure we have 2 digits
-    GetNode<Label>("%Timer").Text = formattedTime;
+    /*  GetNode<Label>("%Timer").Text = formattedTime; */
     if (timer <= 0)
     {
       NextTurn();
@@ -360,8 +360,8 @@ public partial class GameplaySystem : Node2D
 
     timer = 15;
     TurnCount++;
-    GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
-    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}";
+    /* GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
+    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}"; */
     OnTurnStart();
   }
 

@@ -1,6 +1,9 @@
-[gd_resource type="Theme" load_steps=14 format=2]
+[gd_resource type="Theme" load_steps=17 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=4]
 
 [sub_resource type="DynamicFont" id=6]
 size = 24
@@ -60,20 +63,27 @@ font_data = ExtResource( 1 )
 size = 32
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.470588, 0.301961, 0.188235, 1 )
+[sub_resource type="DynamicFont" id=14]
+size = 28
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxTexture" id=15]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 1080, 1920 )
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.647059, 0.427451, 0.282353, 1 )
+bg_color = Color( 0.137255, 0.0431373, 0.301961, 1 )
 
 [sub_resource type="DynamicFont" id=5]
 font_data = ExtResource( 1 )
 
-[sub_resource type="GradientTexture" id=12]
-
 [sub_resource type="StyleBoxTexture" id=11]
-texture = SubResource( 12 )
-region_rect = Rect2( 0, 0, 2048, 1 )
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 1080, 1920 )
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [resource]
 Button/fonts/font = SubResource( 6 )
@@ -86,8 +96,12 @@ GameOverContainer/base_type = "PanelContainer"
 GameOverContainer/styles/panel = SubResource( 10 )
 HeaderFont/base_type = "Label"
 HeaderFont/fonts/font = SubResource( 3 )
+HemiLabel/base_type = "Label"
+HemiLabel/fonts/font = ExtResource( 2 )
 Label/fonts/font = SubResource( 4 )
-PanelContainer/styles/panel = SubResource( 1 )
+NexaLabel/base_type = "Label"
+NexaLabel/fonts/font = SubResource( 14 )
+PanelContainer/styles/panel = SubResource( 15 )
 TableContainer/base_type = "PanelContainer"
 TableContainer/styles/panel = SubResource( 2 )
 TextFont/base_type = "Label"
