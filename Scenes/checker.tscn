@@ -1,21 +1,25 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/Checker.cs" type="Script" id=1]
-[ext_resource path="res://Assets/black-tile.png" type="Texture" id=2]
+[ext_resource path="res://Assets/in_game_assets/checker2.webp" type="Texture" id=3]
+[ext_resource path="res://Assets/in_game_assets/checker1.webp" type="Texture" id=4]
 
 [node name="Checker" type="Control"]
-margin_right = 64.0
-margin_bottom = 64.0
+margin_right = 32.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 64, 64 )
 mouse_filter = 2
 script = ExtResource( 1 )
+WhiteCheckerTexture = ExtResource( 3 )
+BlackCheckerTexture = ExtResource( 4 )
 
 [node name="Texture" type="TextureButton" parent="."]
 unique_name_in_owner = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_default_cursor_shape = 3
-texture_normal = ExtResource( 2 )
+texture_normal = ExtResource( 3 )
+expand = true
 stretch_mode = 5
 
 [connection signal="pressed" from="Texture" to="." method="OnCheckerClicked"]
