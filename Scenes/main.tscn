@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/board.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Assets/in_game_assets/clock.webp" type="Texture" id=10]
 [ext_resource path="res://Scenes/menu_button.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scenes/trophy_button.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=13]
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
@@ -37,10 +38,16 @@ checkerScene = ExtResource( 4 )
 follow_viewport_enable = true
 
 [node name="BG" type="PanelContainer" parent="CanvasLayer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 theme = ExtResource( 1 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 13 )
 
 [node name="Sections" type="VBoxContainer" parent="CanvasLayer"]
 anchor_right = 1.0
@@ -50,45 +57,44 @@ theme = ExtResource( 1 )
 
 [node name="LeftContainer" type="PanelContainer" parent="CanvasLayer/Sections"]
 margin_right = 600.0
-margin_bottom = 99.0
+margin_bottom = 127.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 4 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Sections/LeftContainer"]
 margin_right = 600.0
-margin_bottom = 99.0
+margin_bottom = 127.0
 
 [node name="PlayerOneUI" parent="CanvasLayer/Sections/LeftContainer/HBoxContainer" instance=ExtResource( 6 )]
-margin_top = 35.0
+margin_top = 63.0
 margin_right = 528.0
-margin_bottom = 99.0
+margin_bottom = 127.0
 size_flags_horizontal = 3
 size_flags_vertical = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Sections/LeftContainer/HBoxContainer"]
 margin_left = 532.0
 margin_right = 600.0
-margin_bottom = 99.0
+margin_bottom = 127.0
+alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Sections/LeftContainer/HBoxContainer/VBoxContainer"]
+margin_top = 59.0
 margin_right = 68.0
-margin_bottom = 32.0
-
-[node name="TrophyButton" parent="CanvasLayer/Sections/LeftContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 12 )]
-margin_right = 32.0
-margin_bottom = 32.0
-alignment = 1
+margin_bottom = 91.0
+alignment = 2
 
 [node name="MenuButton" parent="CanvasLayer/Sections/LeftContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 11 )]
 margin_left = 36.0
 margin_right = 68.0
-alignment = 1
+alignment = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Sections/LeftContainer/HBoxContainer/VBoxContainer"]
-margin_top = 36.0
+margin_top = 95.0
 margin_right = 68.0
-margin_bottom = 68.0
+margin_bottom = 127.0
+alignment = 2
 
 [node name="TrophyButton" parent="CanvasLayer/Sections/LeftContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 12 )]
 margin_right = 32.0
@@ -101,25 +107,25 @@ margin_right = 68.0
 alignment = 1
 
 [node name="CenterContainer" type="PanelContainer" parent="CanvasLayer/Sections"]
-margin_top = 103.0
+margin_top = 131.0
 margin_right = 600.0
-margin_bottom = 697.0
+margin_bottom = 893.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 6.0
 custom_styles/panel = SubResource( 5 )
 
 [node name="RightContainer" type="PanelContainer" parent="CanvasLayer/Sections"]
-margin_top = 701.0
+margin_top = 897.0
 margin_right = 600.0
-margin_bottom = 800.0
+margin_bottom = 1024.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 6 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Sections/RightContainer"]
 margin_right = 600.0
-margin_bottom = 99.0
+margin_bottom = 127.0
 
 [node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/Sections/RightContainer/VBoxContainer"]
 margin_right = 600.0
