@@ -7,6 +7,8 @@ public partial class MainMenu : Control
 
   public override void _Ready()
   {
+    Utils.ViewportBaseX = GetViewportRect().Size.x;
+    Utils.ViewportBaseY = GetViewportRect().Size.y;
     sceneLoaders = GetNode<SceneLoaders>("/root/SceneLoaders");
   }
 

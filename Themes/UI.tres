@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=30 format=2]
+[gd_resource type="Theme" load_steps=29 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
@@ -7,8 +7,7 @@
 [ext_resource path="res://Assets/ui_assets/Painel.webp" type="Texture" id=5]
 [ext_resource path="res://Assets/ui_assets/grennbtn.webp" type="Texture" id=6]
 [ext_resource path="res://Assets/ui_assets/purple.webp" type="Texture" id=7]
-[ext_resource path="res://Assets/ui_assets/ffitycoin.webp" type="Texture" id=8]
-[ext_resource path="res://Themes/button_texture.tres" type="StyleBox" id=9]
+[ext_resource path="res://Assets/ui_assets/chips-50.png" type="Texture" id=8]
 [ext_resource path="res://Assets/ui_assets/settings.webp" type="Texture" id=10]
 
 [sub_resource type="DynamicFont" id=6]
@@ -23,20 +22,14 @@ margin_right = 10.0
 margin_top = 10.0
 margin_bottom = 14.0
 
-[sub_resource type="StyleBoxTexture" id=23]
+[sub_resource type="StyleBoxTexture" id=26]
 texture = ExtResource( 8 )
-region_rect = Rect2( 290, 80, 490, 450 )
+region_rect = Rect2( 0, 0, 128, 128 )
 modulate_color = Color( 1, 1, 1, 0.784314 )
 
-[sub_resource type="StyleBoxTexture" id=22]
+[sub_resource type="StyleBoxTexture" id=27]
 texture = ExtResource( 8 )
-region_rect = Rect2( 290, 80, 490, 450 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 12.0
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
+region_rect = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="StyleBoxEmpty" id=9]
 
@@ -131,10 +124,10 @@ Button/fonts/font = SubResource( 6 )
 ButtonsContainer/base_type = "PanelContainer"
 ButtonsContainer/styles/panel = SubResource( 17 )
 ChipsButton/base_type = "Button"
-ChipsButton/styles/focus = SubResource( 23 )
-ChipsButton/styles/hover = SubResource( 22 )
-ChipsButton/styles/normal = ExtResource( 9 )
-ChipsButton/styles/pressed = SubResource( 23 )
+ChipsButton/styles/focus = SubResource( 26 )
+ChipsButton/styles/hover = SubResource( 27 )
+ChipsButton/styles/normal = SubResource( 26 )
+ChipsButton/styles/pressed = SubResource( 26 )
 FlatContainer/base_type = "PanelContainer"
 FlatContainer/styles/panel = SubResource( 9 )
 GameOverContainer/base_type = "PanelContainer"
