@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=26 format=2]
+[gd_resource type="Theme" load_steps=30 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://Assets/ui_assets/grennbtn.webp" type="Texture" id=6]
 [ext_resource path="res://Assets/ui_assets/purple.webp" type="Texture" id=7]
 [ext_resource path="res://Assets/ui_assets/ffitycoin.webp" type="Texture" id=8]
+[ext_resource path="res://Themes/button_texture.tres" type="StyleBox" id=9]
+[ext_resource path="res://Assets/ui_assets/settings.webp" type="Texture" id=10]
 
 [sub_resource type="DynamicFont" id=6]
 size = 24
@@ -102,6 +104,15 @@ margin_top = 20.0
 margin_bottom = 20.0
 modulate_color = Color( 1, 1, 1, 0.784314 )
 
+[sub_resource type="StyleBoxTexture" id=24]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 131, 121 )
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="StyleBoxTexture" id=25]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 131, 121 )
+
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.137255, 0.0431373, 0.301961, 1 )
 
@@ -122,7 +133,7 @@ ButtonsContainer/styles/panel = SubResource( 17 )
 ChipsButton/base_type = "Button"
 ChipsButton/styles/focus = SubResource( 23 )
 ChipsButton/styles/hover = SubResource( 22 )
-ChipsButton/styles/normal = SubResource( 23 )
+ChipsButton/styles/normal = ExtResource( 9 )
 ChipsButton/styles/pressed = SubResource( 23 )
 FlatContainer/base_type = "PanelContainer"
 FlatContainer/styles/panel = SubResource( 9 )
@@ -144,6 +155,11 @@ SalasButton/base_type = "Button"
 SalasButton/styles/hover = SubResource( 21 )
 SalasButton/styles/normal = SubResource( 20 )
 SalasButton/styles/pressed = SubResource( 20 )
+SettingsButton/base_type = "Button"
+SettingsButton/styles/focus = SubResource( 24 )
+SettingsButton/styles/hover = SubResource( 25 )
+SettingsButton/styles/normal = SubResource( 24 )
+SettingsButton/styles/pressed = SubResource( 24 )
 TableContainer/base_type = "PanelContainer"
 TableContainer/styles/panel = SubResource( 2 )
 TextFont/base_type = "Label"
