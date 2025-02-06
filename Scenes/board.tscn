@@ -4,15 +4,13 @@
 [ext_resource path="res://Scenes/tile.tscn" type="PackedScene" id=2]
 
 [node name="Board" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 1 )
 tileScene = ExtResource( 2 )
 
 [node name="BoardContainer" type="Control" parent="."]
 unique_name_in_owner = true
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 586.0
+margin_bottom = 786.0
 size_flags_horizontal = 5
 size_flags_vertical = 5

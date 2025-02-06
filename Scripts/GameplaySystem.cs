@@ -46,12 +46,12 @@ public partial class GameplaySystem : Node2D
     screenSize = GetViewportRect().Size;
     totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
     startPosition = (screenSize - totalBoardSize) / 2;
-
-    GenerateCheckers();
     board = GetNode<Board>("%Board");
     checkersContainer = GetNode<Control>("%CheckersContainer");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
+
+    GenerateCheckers();
     board.InitializeBoard();
     OnTurnStart();
   }
@@ -125,7 +125,7 @@ public partial class GameplaySystem : Node2D
     {
       float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
       float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-      Vector2 tilePosition = startPosition + new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
+      Vector2 tilePosition = new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
       Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
 
       checker.RectPosition = checkerPosition;
@@ -188,7 +188,7 @@ public partial class GameplaySystem : Node2D
         // Using only the X axis for the resize / positioning so that we can resize the window keeping the width constant
         float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
         float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-        Vector2 tilePosition = startPosition + new Vector2(i * tileSizeX, j * tileSizeX);
+        Vector2 tilePosition = new Vector2(i * tileSizeX, j * tileSizeX);
         Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
 
         checker.RectPosition = checkerPosition;
@@ -303,7 +303,7 @@ public partial class GameplaySystem : Node2D
       {
         if (SelectedChecker.MovementSpaces.Contains(tile.TilePosition))
         {
-          Vector2 tilePosition = startPosition + new Vector2(tile.TilePosition.x * TileSize, tile.TilePosition.y * TileSize);
+          Vector2 tilePosition = new Vector2(tile.TilePosition.x * TileSize, tile.TilePosition.y * TileSize);
           Vector2 newCheckerPosition = tilePosition + new Vector2(TileSize - CheckerSize, TileSize - CheckerSize) / 2;
           if (IsCaptureMove(SelectedChecker.BoardPosition, tile.TilePosition))
           {

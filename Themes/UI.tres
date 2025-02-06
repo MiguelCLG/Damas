@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=29 format=2]
+[gd_resource type="Theme" load_steps=32 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
@@ -7,8 +7,17 @@
 [ext_resource path="res://Assets/ui_assets/Painel.webp" type="Texture" id=5]
 [ext_resource path="res://Assets/ui_assets/grennbtn.webp" type="Texture" id=6]
 [ext_resource path="res://Assets/ui_assets/purple.webp" type="Texture" id=7]
-[ext_resource path="res://Assets/ui_assets/chips-50.png" type="Texture" id=8]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=8]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with no Glow/50.webp" type="Texture" id=9]
 [ext_resource path="res://Assets/ui_assets/settings.webp" type="Texture" id=10]
+[ext_resource path="res://Assets/In Game Assets/Border of Board (Without Board).webp" type="Texture" id=11]
+
+[sub_resource type="StyleBoxTexture" id=28]
+texture = ExtResource( 11 )
+region_rect = Rect2( 31.108, -17.066, 1070.61, 1206.34 )
+margin_top = 51.9285
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [sub_resource type="DynamicFont" id=6]
 size = 24
@@ -23,13 +32,12 @@ margin_top = 10.0
 margin_bottom = 14.0
 
 [sub_resource type="StyleBoxTexture" id=26]
-texture = ExtResource( 8 )
-region_rect = Rect2( 0, 0, 128, 128 )
-modulate_color = Color( 1, 1, 1, 0.784314 )
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 541, 390 )
 
 [sub_resource type="StyleBoxTexture" id=27]
 texture = ExtResource( 8 )
-region_rect = Rect2( 0, 0, 128, 128 )
+region_rect = Rect2( 0, 0, 541, 390 )
 
 [sub_resource type="StyleBoxEmpty" id=9]
 
@@ -119,6 +127,8 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [resource]
+BoardContainer/base_type = "PanelContainer"
+BoardContainer/styles/panel = SubResource( 28 )
 Button/colors/font_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
 Button/fonts/font = SubResource( 6 )
 ButtonsContainer/base_type = "PanelContainer"

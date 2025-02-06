@@ -31,13 +31,14 @@ public partial class Board : Control
       Vector2 totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
       Vector2 screenSize = GetViewportRect().Size;
 
-      Vector2 startPosition = (screenSize - totalBoardSize) / 2;
+      Vector2 startPosition = RectPosition;//(screenSize - totalBoardSize) / 2;
 
       float sizeX = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
       float sizeY = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
       tile.RectMinSize = new Vector2(sizeX, sizeY);
+      tile.RectSize = new Vector2(sizeX, sizeY);
 
-      tile.RectPosition = startPosition + new Vector2(tile.TilePosition.x * tile.RectMinSize.x, tile.TilePosition.y * tile.RectMinSize.y);
+      tile.RectPosition = new Vector2(tile.TilePosition.x * tile.RectMinSize.x, tile.TilePosition.y * tile.RectMinSize.y);
     }
   }
 
@@ -163,7 +164,7 @@ public partial class Board : Control
 
     Vector2 screenSize = GetViewportRect().Size;
 
-    Vector2 startPosition = (screenSize - totalBoardSize) / 2;
+    Vector2 startPosition = RectPosition;// (screenSize - totalBoardSize) / 2;
 
     for (int i = 0; i < BoardSize; i++)
     {
@@ -175,9 +176,12 @@ public partial class Board : Control
         var tileSizeX = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
         var tileSizeY = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
 
+        // Set the tile's size, this can be changed if the viewport is changed.
+        tile.RectMinSize = new Vector2(tileSizeX, tileSizeY);
+        tile.RectSize = new Vector2(tileSizeX, tileSizeY);
         // Position the tiles in the grid with a size offset, starting from the calculated position
-        tile.RectPosition = startPosition + new Vector2(i * tileSizeX, j * tileSizeY);
 
+        tile.RectPosition = new Vector2(i * tileSizeX, j * tileSizeY);
         tile.TilePosition = new Vector2(i, j);
         BoardTiles.Add(tile);
         BoardContainer.AddChild(tile);

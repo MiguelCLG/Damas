@@ -4,8 +4,7 @@
 [ext_resource path="res://Assets/in_game_assets/timerentagle.webp" type="Texture" id=2]
 [ext_resource path="res://Assets/in_game_assets/clock.webp" type="Texture" id=3]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=4]
-
-[sub_resource type="GradientTexture2D" id=1]
+[ext_resource path="res://Assets/In Game Assets/piece_placeholder.webp" type="Texture" id=5]
 
 [sub_resource type="StyleBoxTexture" id=2]
 texture = ExtResource( 2 )
@@ -27,7 +26,7 @@ margin_bottom = 64.0
 margin_right = 64.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
-texture = SubResource( 1 )
+texture = ExtResource( 5 )
 stretch_mode = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
