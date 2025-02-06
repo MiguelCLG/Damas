@@ -28,10 +28,7 @@ public partial class Board : Control
   {
     foreach (Tile tile in BoardTiles)
     {
-      Vector2 totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
       Vector2 screenSize = GetViewportRect().Size;
-
-      Vector2 startPosition = RectPosition;//(screenSize - totalBoardSize) / 2;
 
       float sizeX = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
       float sizeY = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
@@ -160,12 +157,7 @@ public partial class Board : Control
   // This function will create new tiles and place their respective positions, taking into account the viewport size
   private void FillBoardTiles()
   {
-    Vector2 totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
-
     Vector2 screenSize = GetViewportRect().Size;
-
-    Vector2 startPosition = RectPosition;// (screenSize - totalBoardSize) / 2;
-
     for (int i = 0; i < BoardSize; i++)
     {
       for (int j = 0; j < BoardSize; j++)

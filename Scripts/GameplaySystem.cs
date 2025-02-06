@@ -6,21 +6,25 @@ using static Utils;
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
-  Checker SelectedChecker = null;
-  Checker CheckerToCapture = null;
-  BoardColors CurrentTurn = BoardColors.Black;
-  private int TurnCount = 1;
+  [Export] private StyleBoxFlat portraitBgStyle;
+  [Export] private StyleBoxFlat portraitBgSelectedStyle;
+
+  private Checker SelectedChecker = null;
+  private Checker CheckerToCapture = null;
+  private BoardColors CurrentTurn = BoardColors.Black;
   private Array<Checker> BlackCheckers = new Array<Checker>();
   private Array<Checker> WhiteCheckers = new Array<Checker>();
   private Array<Checker> AllCheckers = new Array<Checker>();
   private Board board;
   private Control checkersContainer;
   private GameOverMenu gameOverMenu;
+  private ProgressBar BlackPlayerTimer;
+  private ProgressBar WhitePlayerTimer;
+  private PanelContainer BlackPlayerPortraitBackground;
+  private PanelContainer WhitePlayerPortraitBackground;
 
   private Vector2 screenSize;
   private Vector2 totalBoardSize;
-  private Vector2 startPosition;
-  private double timer = 15;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
 
@@ -45,7 +49,11 @@ public partial class GameplaySystem : Node2D
     // added these for resizing and positioning purposes
     screenSize = GetViewportRect().Size;
     totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
-    startPosition = (screenSize - totalBoardSize) / 2;
+
+    BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
+    WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
+    BlackPlayerPortraitBackground = GetNode<PanelContainer>("%BlackPlayerPortraitBackground");
+    WhitePlayerPortraitBackground = GetNode<PanelContainer>("%WhitePlayerPortraitBackground");
     board = GetNode<Board>("%Board");
     checkersContainer = GetNode<Control>("%CheckersContainer");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
@@ -58,16 +66,23 @@ public partial class GameplaySystem : Node2D
 
   public override void _Process(float delta)
   {
-    timer -= delta;
-    int minutes = (int)(timer / 60);  // Divide by 60 to get minutes
-    int seconds = (int)(timer % 60);  // Modulus 60 to get remaining seconds
-
-    string formattedTime = $"{minutes:D2}:{seconds:D2}"; // :D2 makes sure we have 2 digits
-    /*  GetNode<Label>("%Timer").Text = formattedTime; */
-    if (timer <= 0)
+    if (CurrentTurn == BoardColors.Black)
     {
-      NextTurn();
+      BlackPlayerTimer.Value -= delta;
+      if (BlackPlayerTimer.Value <= 0)
+      {
+        NextTurn();
+      }
     }
+    else
+    {
+      WhitePlayerTimer.Value -= delta;
+      if (WhitePlayerTimer.Value <= 0)
+      {
+        NextTurn();
+      }
+    }
+
   }
 
   // Function to handle viewport changes, when the signal SizeChanged is emitted, this is what is executed
@@ -75,7 +90,6 @@ public partial class GameplaySystem : Node2D
   {
     screenSize = GetViewportRect().Size;
     totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
-    startPosition = (screenSize - totalBoardSize) / 2;
     board.OnViewPortChanged();
     PositionCheckers();
 
@@ -83,6 +97,18 @@ public partial class GameplaySystem : Node2D
 
   private void OnTurnStart()
   {
+    if (CurrentTurn == BoardColors.Black)
+    {
+      WhitePlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgStyle);
+      BlackPlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgSelectedStyle);
+    }
+    else
+    {
+      BlackPlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgStyle);
+      WhitePlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgSelectedStyle);
+    }
+    GetNode<Label>("%BlackPieceCount").Text = $"{BlackCheckers.Count}";
+    GetNode<Label>("%WhitePieceCount").Text = $"{WhiteCheckers.Count}";
     LastMoveWasCapture = false;
     checkersWithCaptureMoves = new Array<Checker>();
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
@@ -358,10 +384,8 @@ public partial class GameplaySystem : Node2D
     CurrentTurn = CurrentTurn == BoardColors.Black ? BoardColors.White : BoardColors.Black;
     SelectedChecker = null;
 
-    timer = 15;
-    TurnCount++;
-    /* GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
-    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}"; */
+    WhitePlayerTimer.Value = 15;
+    BlackPlayerTimer.Value = 15;
     OnTurnStart();
   }
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/board.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/GameplaySystem.cs" type="Script" id=3]
 [ext_resource path="res://Scenes/checker.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/game-over-menu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Themes/background_panel_selected.tres" type="StyleBox" id=6]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Assets/in_game_assets/retangle.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/in_game_assets/timerentagle.webp" type="Texture" id=9]
@@ -16,6 +17,7 @@
 [ext_resource path="res://Assets/In Game Assets/piece_placeholder.webp" type="Texture" id=15]
 [ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=16]
 [ext_resource path="res://Assets/In Game Assets/white_piece_placeholder.webp" type="Texture" id=17]
+[ext_resource path="res://Themes/background_panel.tres" type="StyleBox" id=18]
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
@@ -53,6 +55,8 @@ region_rect = Rect2( 0, 0, 250, 49 )
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 checkerScene = ExtResource( 4 )
+portraitBgStyle = ExtResource( 18 )
+portraitBgSelectedStyle = ExtResource( 6 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
@@ -106,7 +110,13 @@ size_flags_vertical = 8
 margin_right = 230.0
 margin_bottom = 57.0
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer"]
+[node name="BlackPlayerPortraitBackground" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 64.0
+margin_bottom = 57.0
+custom_styles/panel = ExtResource( 6 )
+
+[node name="BlackPlayerPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/BlackPlayerPortraitBackground"]
 margin_right = 64.0
 margin_bottom = 57.0
 size_flags_horizontal = 3
@@ -145,7 +155,7 @@ size_flags_horizontal = 3
 custom_styles/fg = SubResource( 2 )
 custom_styles/bg = SubResource( 3 )
 max_value = 15.0
-value = 12.0
+value = 15.0
 percent_visible = false
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
@@ -422,8 +432,7 @@ size_flags_horizontal = 3
 custom_styles/fg = SubResource( 9 )
 custom_styles/bg = SubResource( 10 )
 max_value = 15.0
-step = 1.0
-value = 12.0
+value = 15.0
 percent_visible = false
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
@@ -439,9 +448,15 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 6
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer"]
+[node name="WhitePlayerPortraitBackground" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer"]
+unique_name_in_owner = true
 margin_left = 125.0
 margin_right = 189.0
+margin_bottom = 56.0
+custom_styles/panel = ExtResource( 6 )
+
+[node name="WhitePlayerPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/WhitePlayerPortraitBackground"]
+margin_right = 64.0
 margin_bottom = 56.0
 size_flags_horizontal = 3
 texture = ExtResource( 17 )
