@@ -1,7 +1,54 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.cs" type="Script" id=1]
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=2]
+[ext_resource path="res://Assets/ui_assets/balance.webp" type="Texture" id=3]
+[ext_resource path="res://Assets/ui_assets/transparent-128x128.png" type="Texture" id=4]
+[ext_resource path="res://Assets/FirstScreens Assets/Batalha Damas Logo.webp" type="Texture" id=5]
+[ext_resource path="res://Assets/FirstScreens Assets/Background2.webp" type="Texture" id=6]
+[ext_resource path="res://Assets/ui_assets/right.webp" type="Texture" id=7]
+[ext_resource path="res://Assets/ui_assets/left.webp" type="Texture" id=8]
+[ext_resource path="res://Assets/ui_assets/users-icon.png" type="Texture" id=9]
+[ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxTexture" id=6]
+texture = ExtResource( 8 )
+region_rect = Rect2( 140, 130, 260, 250 )
+margin_left = 10.0
+margin_right = 10.0
+margin_top = 10.0
+margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id=2]
+texture = ExtResource( 8 )
+region_rect = Rect2( 140, 130, 260, 250 )
+margin_left = 10.0
+margin_right = 10.0
+margin_top = 10.0
+margin_bottom = 12.0
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="StyleBoxTexture" id=3]
+texture = ExtResource( 7 )
+region_rect = Rect2( 670, 140, 260, 230 )
+margin_left = 10.0
+margin_right = 10.0
+margin_top = 10.0
+margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id=5]
+texture = ExtResource( 7 )
+region_rect = Rect2( 670, 140, 260, 230 )
+margin_left = 10.0
+margin_right = 10.0
+margin_top = 10.0
+margin_bottom = 12.0
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="DynamicFont" id=4]
+font_data = ExtResource( 10 )
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -9,40 +56,215 @@ anchor_bottom = 1.0
 theme = ExtResource( 2 )
 script = ExtResource( 1 )
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+texture = ExtResource( 6 )
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 32.0
+margin_top = 32.0
+margin_right = -32.0
+margin_bottom = -32.0
 
-[node name="Control" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 54.0
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+margin_right = 960.0
+margin_bottom = 536.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+margin_right = 960.0
+margin_bottom = 536.0
+
+[node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+margin_right = 960.0
+margin_bottom = 72.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.1
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Control"]
-margin_top = 8.0
-margin_right = 1024.0
-margin_bottom = 46.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
+margin_right = 478.0
+margin_bottom = 72.0
 size_flags_horizontal = 3
-text = "DAMAS"
-align = 1
 
-[node name="Control2" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_left = 480.0
-margin_top = 313.0
-margin_right = 544.0
-margin_bottom = 344.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
+margin_right = 478.0
+margin_bottom = 40.0
+theme_type_variation = "HemiLabel"
+text = "GuiGate"
+valign = 3
 
-[node name="StartButton" type="Button" parent="PanelContainer/VBoxContainer/Control2"]
-margin_right = 64.0
-margin_bottom = 31.0
-text = "Jogar"
+[node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
+margin_top = 44.0
+margin_right = 478.0
+margin_bottom = 44.0
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Control2/StartButton" to="." method="OnStartGame"]
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer/Control"]
+margin_left = 1.0
+margin_top = -29.0
+margin_right = 268.0
+margin_bottom = 87.0
+texture_normal = ExtResource( 3 )
+expand = true
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer/Control/TextureButton"]
+margin_left = 68.0
+margin_top = 45.0
+margin_right = 209.0
+margin_bottom = 83.0
+theme_type_variation = "NexaLabel"
+text = "R$993,82"
+valign = 3
+
+[node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
+margin_left = 482.0
+margin_right = 960.0
+margin_bottom = 72.0
+size_flags_horizontal = 11
+
+[node name="TextureButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -62.0
+margin_bottom = 59.0
+mouse_default_cursor_shape = 2
+theme_type_variation = "SettingsButton"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
+margin_top = 76.0
+margin_right = 960.0
+margin_bottom = 250.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.38
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+
+[node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+margin_left = 354.0
+margin_top = 254.0
+margin_right = 605.0
+margin_bottom = 536.0
+size_flags_horizontal = 4
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = "ButtonsContainer"
+
+[node name="Control2" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 241.0
+margin_bottom = 268.0
+size_flags_horizontal = 7
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
+margin_right = 231.0
+margin_bottom = 92.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="LeftArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
+margin_top = 19.0
+margin_right = 47.0
+margin_bottom = 73.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/normal = SubResource( 2 )
+enabled_focus_mode = 0
+align = 2
+
+[node name="Chips" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
+margin_left = 51.0
+margin_right = 179.0
+margin_bottom = 92.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+size_flags_stretch_ratio = 4.0
+theme_type_variation = "ChipsButton"
+enabled_focus_mode = 0
+icon = ExtResource( 4 )
+icon_align = 1
+
+[node name="RightArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
+margin_left = 183.0
+margin_top = 19.0
+margin_right = 231.0
+margin_bottom = 73.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/normal = SubResource( 5 )
+enabled_focus_mode = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
+margin_top = 92.0
+margin_right = 231.0
+margin_bottom = 114.0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer2"]
+margin_right = 45.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 6
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer2"]
+margin_left = 49.0
+margin_right = 231.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 4.0
+custom_fonts/normal_font = SubResource( 4 )
+text = "25 jogadores na fila"
+fit_content_height = true
+
+[node name="StartButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
+margin_top = 114.0
+margin_right = 231.0
+margin_bottom = 186.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 5
+size_flags_vertical = 10
+theme_type_variation = "JogarButton"
+enabled_focus_mode = 0
+text = "JOGAR"
+
+[node name="SalasButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
+margin_left = 3.0
+margin_top = 186.0
+margin_right = 228.0
+margin_bottom = 258.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_type_variation = "SalasButton"
+enabled_focus_mode = 0
+text = "SALAS"
+
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/StartButton" to="." method="OnStartGame"]

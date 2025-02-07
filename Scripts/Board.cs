@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Godot.Collections;
 using static Utils;
@@ -6,12 +7,13 @@ public partial class Board : Control
 {
   [Export] private PackedScene tileScene;
   private Array<Tile> BoardTiles { get; set; }
-
+  private Control BoardContainer { get; set; }
   public bool IsCaptureMove = false;
 
   public override void _Ready()
   {
     BoardTiles = new Array<Tile>();
+    BoardContainer = GetNode<Control>("%BoardContainer");
   }
 
   // Function called from the GameplaySystem when all events have been registered and subscribed (Preventing a race condition)
@@ -27,20 +29,31 @@ public partial class Board : Control
   {
     foreach (Tile tile in BoardTiles)
     {
-      Vector2 totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
       Vector2 screenSize = GetViewportRect().Size;
-
-      Vector2 startPosition = (screenSize - totalBoardSize) / 2;
 
       float sizeX = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
       float sizeY = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
       tile.RectMinSize = new Vector2(sizeX, sizeY);
+      tile.RectSize = new Vector2(sizeX, sizeY);
 
-      tile.RectPosition = startPosition + new Vector2(tile.TilePosition.x * tile.RectMinSize.x, tile.TilePosition.y * tile.RectMinSize.y);
+      tile.RectPosition = new Vector2(tile.TilePosition.x * tile.RectMinSize.x, tile.TilePosition.y * tile.RectMinSize.y);
     }
   }
 
   public bool HasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
+  {
+    if (checker.isKing)
+    {
+      return KingHasCaptureMove(checker, checkersInPlay);
+    }
+    else
+    {
+      return CheckerHasCaptureMove(checker, checkersInPlay);
+    }
+
+  }
+
+  private bool CheckerHasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
   {
     int direction = (checker.Color == BoardColors.Black) ? 1 : -1;
 
@@ -71,10 +84,57 @@ public partial class Board : Control
     return captureMoves.Count > 0;
   }
 
+  private bool KingHasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
+  {
+    Vector2[] diagonals = { new Vector2(-1, 1), new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1) };
+    var captureMoves = new Array<Vector2>();
+    foreach (var diagonal in diagonals)
+    {
+      var steps = 1;
+      while (true)
+      {
+        Vector2 checkPosition = checker.BoardPosition + diagonal * steps;
+
+        if (!IsWithinBounds(checkPosition))
+        {
+          break;
+        }
+        if (IsEnemyAt(checkPosition, checker.Color, checkersInPlay))
+        {
+          // Check the space behind the enemy
+          Vector2 behindEnemyPosition = checker.BoardPosition + diagonal * steps + diagonal;
+          if (IsWithinBounds(behindEnemyPosition))
+          {
+            if (IsSpaceEmpty(behindEnemyPosition, checkersInPlay))
+            {
+              captureMoves.Add(behindEnemyPosition);
+            }
+          }
+        }
+        steps++;
+      }
+    }
+
+    return captureMoves.Count > 0;
+  }
+
+
   // Since we want to prioritize capture moves, we first check for them
   // then we if there aren't any, we check for regular moves
   // this way we can highlight and diferentiate a capture from a regular move
   public void OnCheckerClicked(Checker checker, Array<Checker> checkersInPlay)
+  {
+    if (checker.isKing)
+    {
+      KingMovement(checker, checkersInPlay);
+    }
+    else
+    {
+      CheckerMovement(checker, checkersInPlay);
+    }
+  }
+
+  private void CheckerMovement(Checker checker, Array<Checker> checkersInPlay)
   {
     int direction = (checker.Color == BoardColors.Black) ? 1 : -1;
 
@@ -140,6 +200,85 @@ public partial class Board : Control
     checker.MovementSpaces = IsCaptureMove ? captureMoves : regularMoves;
   }
 
+  private void KingMovement(Checker checker, Array<Checker> checkersInPlay)
+  {
+    // Kings can move in all diagonal directions: up-left, up-right, down-left, down-right
+    Vector2[] diagonals = { new Vector2(-1, 1), new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1) };
+    Array<Vector2> captureMoves = new Array<Vector2>();
+    Array<Vector2> regularMoves = new Array<Vector2>();
+
+    // This time we have 4 directions so this loop will run 4 times
+    foreach (var diagonal in diagonals)
+    {
+      Vector2 currentPosition = checker.BoardPosition;
+
+      while (true) // we want to loop through all the available spaces until we are out of bounds, so that we can select the space we want to go
+      {
+        currentPosition += diagonal;
+
+        if (!IsWithinBounds(currentPosition))
+        {
+          break; // Stop if out of bounds
+        }
+
+        if (IsEnemyAt(currentPosition, checker.Color, checkersInPlay))
+        {
+          Vector2 behindEnemyPosition = currentPosition + diagonal;
+
+          if (IsWithinBounds(behindEnemyPosition) && IsSpaceEmpty(behindEnemyPosition, checkersInPlay)) // Check if the space behind the enemy is free for a capture
+          {
+            captureMoves.Add(behindEnemyPosition);
+            break; // Following the rules, the king must capture the enemy and stop right after
+          }
+          else
+          {
+            break;
+          }
+        }
+        else if (IsSpaceEmpty(currentPosition, checkersInPlay))
+        {
+          regularMoves.Add(currentPosition); // Add a regular move
+        }
+        else
+        {
+          break;
+        }
+      }
+    }
+
+    // Prioritize capture moves over regular moves
+    if (captureMoves.Count > 0)
+    {
+      foreach (var captureMove in captureMoves)
+      {
+        foreach (Tile tile in BoardTiles)
+        {
+          if (tile.TilePosition == captureMove)
+          {
+            tile.Select(true); // Highlight tile for capture
+          }
+        }
+      }
+    }
+    else // If no capture moves are available, highlight regular moves
+    {
+      foreach (var regularMove in regularMoves)
+      {
+        foreach (Tile tile in BoardTiles)
+        {
+          if (tile.TilePosition == regularMove)
+          {
+            tile.Select(false); // Highlight tile for regular move
+          }
+        }
+      }
+    }
+
+    IsCaptureMove = captureMoves.Count > 0;
+    checker.MovementSpaces = IsCaptureMove ? captureMoves : regularMoves;
+  }
+
+
   // This function will unselect all the tiles that were highlighted
   public void CleanUpFreeTiles(Checker checker)
   {
@@ -158,12 +297,7 @@ public partial class Board : Control
   // This function will create new tiles and place their respective positions, taking into account the viewport size
   private void FillBoardTiles()
   {
-    Vector2 totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
-
     Vector2 screenSize = GetViewportRect().Size;
-
-    Vector2 startPosition = (screenSize - totalBoardSize) / 2;
-
     for (int i = 0; i < BoardSize; i++)
     {
       for (int j = 0; j < BoardSize; j++)
@@ -174,12 +308,15 @@ public partial class Board : Control
         var tileSizeX = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
         var tileSizeY = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
 
+        // Set the tile's size, this can be changed if the viewport is changed.
+        tile.RectMinSize = new Vector2(tileSizeX, tileSizeY);
+        tile.RectSize = new Vector2(tileSizeX, tileSizeY);
         // Position the tiles in the grid with a size offset, starting from the calculated position
-        tile.RectPosition = startPosition + new Vector2(i * tileSizeX, j * tileSizeY);
 
+        tile.RectPosition = new Vector2(i * tileSizeX, j * tileSizeY);
         tile.TilePosition = new Vector2(i, j);
         BoardTiles.Add(tile);
-        AddChild(tile);
+        BoardContainer.AddChild(tile);
         tile.SetTileColor(i % 2 == j % 2 ? BoardColors.White : BoardColors.Black);
       }
     }
@@ -229,7 +366,7 @@ public partial class Board : Control
     // Free the tiles and remove them from the scene (No orphan nodes!)
     foreach (Tile tile in BoardTiles)
     {
-      RemoveChild(tile);
+      BoardContainer.RemoveChild(tile);
       tile.QueueFree();
     }
     BoardTiles.Clear();

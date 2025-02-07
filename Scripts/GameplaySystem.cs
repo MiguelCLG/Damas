@@ -6,21 +6,23 @@ using static Utils;
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
-  Checker SelectedChecker = null;
-  Checker CheckerToCapture = null;
-  BoardColors CurrentTurn = BoardColors.Black;
-  private int TurnCount = 1;
+  [Export] private StyleBoxFlat portraitBgStyle;
+  [Export] private StyleBoxFlat portraitBgSelectedStyle;
+
+  private Checker SelectedChecker = null;
+  private Checker CheckerToCapture = null;
+  private BoardColors CurrentTurn = BoardColors.Black;
   private Array<Checker> BlackCheckers = new Array<Checker>();
   private Array<Checker> WhiteCheckers = new Array<Checker>();
   private Array<Checker> AllCheckers = new Array<Checker>();
   private Board board;
   private Control checkersContainer;
   private GameOverMenu gameOverMenu;
+  private ProgressBar BlackPlayerTimer;
+  private ProgressBar WhitePlayerTimer;
+  private PanelContainer BlackPlayerPortraitBackground;
+  private PanelContainer WhitePlayerPortraitBackground;
 
-  private Vector2 screenSize;
-  private Vector2 totalBoardSize;
-  private Vector2 startPosition;
-  private double timer = 15;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
 
@@ -39,43 +41,44 @@ public partial class GameplaySystem : Node2D
     // added this signal to make sure we can resize our pieces if the window is resized
     GetTree().Root.Connect("size_changed", this, nameof(OnViewportChanged));
 
-    GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
-    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}";
-
-    // added these for resizing and positioning purposes
-    screenSize = GetViewportRect().Size;
-    totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
-    startPosition = (screenSize - totalBoardSize) / 2;
-
-    GenerateCheckers();
+    BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
+    WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
+    BlackPlayerPortraitBackground = GetNode<PanelContainer>("%BlackPlayerPortraitBackground");
+    WhitePlayerPortraitBackground = GetNode<PanelContainer>("%WhitePlayerPortraitBackground");
     board = GetNode<Board>("%Board");
     checkersContainer = GetNode<Control>("%CheckersContainer");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
+
+    GenerateCheckers();
     board.InitializeBoard();
     OnTurnStart();
   }
 
   public override void _Process(float delta)
   {
-    timer -= delta;
-    int minutes = (int)(timer / 60);  // Divide by 60 to get minutes
-    int seconds = (int)(timer % 60);  // Modulus 60 to get remaining seconds
-
-    string formattedTime = $"{minutes:D2}:{seconds:D2}"; // :D2 makes sure we have 2 digits
-    GetNode<Label>("%Timer").Text = formattedTime;
-    if (timer <= 0)
+    if (CurrentTurn == BoardColors.Black)
     {
-      NextTurn();
+      BlackPlayerTimer.Value -= delta;
+      if (BlackPlayerTimer.Value <= 0)
+      {
+        NextTurn();
+      }
     }
+    else
+    {
+      WhitePlayerTimer.Value -= delta;
+      if (WhitePlayerTimer.Value <= 0)
+      {
+        NextTurn();
+      }
+    }
+
   }
 
   // Function to handle viewport changes, when the signal SizeChanged is emitted, this is what is executed
   private void OnViewportChanged()
   {
-    screenSize = GetViewportRect().Size;
-    totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
-    startPosition = (screenSize - totalBoardSize) / 2;
     board.OnViewPortChanged();
     PositionCheckers();
 
@@ -83,12 +86,24 @@ public partial class GameplaySystem : Node2D
 
   private void OnTurnStart()
   {
+    if (CurrentTurn == BoardColors.Black)
+    {
+      WhitePlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgStyle);
+      BlackPlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgSelectedStyle);
+    }
+    else
+    {
+      BlackPlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgStyle);
+      WhitePlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgSelectedStyle);
+    }
+    GetNode<Label>("%BlackPieceCount").Text = $"{BlackCheckers.Count}";
+    GetNode<Label>("%WhitePieceCount").Text = $"{WhiteCheckers.Count}";
     LastMoveWasCapture = false;
     checkersWithCaptureMoves = new Array<Checker>();
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
     foreach (var checker in checkersWithCaptureMoves)
     {
-      checker.ChangeTexture("res://Assets/available-capture-checker.webp");
+      checker.SelectCapture();
     }
   }
 
@@ -125,7 +140,7 @@ public partial class GameplaySystem : Node2D
     {
       float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
       float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-      Vector2 tilePosition = startPosition + new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
+      Vector2 tilePosition = new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
       Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
 
       checker.RectPosition = checkerPosition;
@@ -135,7 +150,31 @@ public partial class GameplaySystem : Node2D
   private void GenerateCheckers()
   {
     // Defined the board scheme for an easier way to spawn the checkers (1 = black checker, 2 = white checker, 0 = skip)
-    int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
+
+    int[,] boardScheme = new int[BoardSize, BoardSize]
+        {
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 },
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 },
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 },
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 }
+        };
+
+    /*  int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
+     {
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 1, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 2, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 }
+     }; */
+    /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
     {
         { 0, 1, 0, 0, 0, 2, 0, 2 },
         { 1, 0, 2, 0, 0, 0, 2, 0 },
@@ -145,19 +184,7 @@ public partial class GameplaySystem : Node2D
         { 1, 0, 1, 0, 0, 0, 2, 0 },
         { 0, 1, 0, 0, 0, 2, 0, 0 },
         { 1, 0, 1, 0, 0, 0, 2, 0 }
-    };
-    /* int[,] boardScheme = new int[BoardSize, BoardSize]
-    {
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 }
     }; */
-
     /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with two pieces to be killed.
     {
         { 0, 1, 0, 0, 0, 2, 0, 2 },
@@ -188,7 +215,7 @@ public partial class GameplaySystem : Node2D
         // Using only the X axis for the resize / positioning so that we can resize the window keeping the width constant
         float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
         float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-        Vector2 tilePosition = startPosition + new Vector2(i * tileSizeX, j * tileSizeX);
+        Vector2 tilePosition = new Vector2(i * tileSizeX, j * tileSizeX);
         Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
 
         checker.RectPosition = checkerPosition;
@@ -303,7 +330,7 @@ public partial class GameplaySystem : Node2D
       {
         if (SelectedChecker.MovementSpaces.Contains(tile.TilePosition))
         {
-          Vector2 tilePosition = startPosition + new Vector2(tile.TilePosition.x * TileSize, tile.TilePosition.y * TileSize);
+          Vector2 tilePosition = new Vector2(tile.TilePosition.x * TileSize, tile.TilePosition.y * TileSize);
           Vector2 newCheckerPosition = tilePosition + new Vector2(TileSize - CheckerSize, TileSize - CheckerSize) / 2;
           if (IsCaptureMove(SelectedChecker.BoardPosition, tile.TilePosition))
           {
@@ -311,6 +338,15 @@ public partial class GameplaySystem : Node2D
             LastMoveWasCapture = true;
           }
           SelectedChecker.Move(newCheckerPosition, tile.TilePosition);
+
+          if (CurrentTurn == BoardColors.Black)
+          {
+            if (tile.TilePosition.y == BoardSize - 1)
+              SelectedChecker.SetKing();
+          }
+          else if (CurrentTurn == BoardColors.White)
+            if (tile.TilePosition.y == 0)
+              SelectedChecker.SetKing();
 
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker.UnselectChecker();
@@ -321,10 +357,9 @@ public partial class GameplaySystem : Node2D
 
   private bool IsCaptureMove(Vector2 currentPosition, Vector2 targetPosition)
   {
-    if (Math.Abs(currentPosition.x - targetPosition.x) != 2 || Math.Abs(currentPosition.y - targetPosition.y) != 2) // making sure it is a diagonal move
-      return false;
 
-    Vector2 midPosition = new Vector2(Mathf.Floor((currentPosition.x + targetPosition.x) / 2), Mathf.Floor((currentPosition.y + targetPosition.y) / 2));
+    var direction = new Vector2(Mathf.Sign(targetPosition.x - currentPosition.x), Mathf.Sign(targetPosition.y - currentPosition.y));
+    Vector2 midPosition = targetPosition - direction;
 
     var checkers = CurrentTurn == BoardColors.Black ? WhiteCheckers : BlackCheckers;
     foreach (Checker checker in checkers)
@@ -358,10 +393,8 @@ public partial class GameplaySystem : Node2D
     CurrentTurn = CurrentTurn == BoardColors.Black ? BoardColors.White : BoardColors.Black;
     SelectedChecker = null;
 
-    timer = 15;
-    TurnCount++;
-    GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
-    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}";
+    WhitePlayerTimer.Value = 15;
+    BlackPlayerTimer.Value = 15;
     OnTurnStart();
   }
 
@@ -374,18 +407,20 @@ public partial class GameplaySystem : Node2D
       BlackCheckers.Remove(checker);
     else
       WhiteCheckers.Remove(checker);
+    AllCheckers.Remove(checker);
     checker.QueueFree();
+
     if (BlackCheckers.Count == 0)
     {
       GD.Print("White wins!");
-      gameOverMenu.SetWinnerName(BoardColors.White.ToString());
+      gameOverMenu.SetWinnerName(BoardColors.White);
       gameOverMenu.Show();
       GetTree().Paused = true;
     }
     else if (WhiteCheckers.Count == 0)
     {
       GD.Print("Black wins!");
-      gameOverMenu.SetWinnerName(BoardColors.Black.ToString());
+      gameOverMenu.SetWinnerName(BoardColors.Black);
       gameOverMenu.Show();
       GetTree().Paused = true;
     }

@@ -1,93 +1,168 @@
-[gd_resource type="Theme" load_steps=14 format=2]
+[gd_resource type="Theme" load_steps=32 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=4]
+[ext_resource path="res://Assets/ui_assets/Painel.webp" type="Texture" id=5]
+[ext_resource path="res://Assets/ui_assets/grennbtn.webp" type="Texture" id=6]
+[ext_resource path="res://Assets/ui_assets/purple.webp" type="Texture" id=7]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=8]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with no Glow/50.webp" type="Texture" id=9]
+[ext_resource path="res://Assets/ui_assets/settings.webp" type="Texture" id=10]
+[ext_resource path="res://Assets/In Game Assets/Border of Board (Without Board).webp" type="Texture" id=11]
+
+[sub_resource type="StyleBoxTexture" id=28]
+texture = ExtResource( 11 )
+region_rect = Rect2( 31.108, -17.066, 1070.61, 1206.34 )
+margin_top = 51.9285
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [sub_resource type="DynamicFont" id=6]
 size = 24
-font_data = ExtResource( 1 )
+font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=8]
-bg_color = Color( 0, 0, 0, 0.501961 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 20.0
-expand_margin_right = 20.0
-expand_margin_top = 20.0
-expand_margin_bottom = 20.0
+[sub_resource type="StyleBoxTexture" id=17]
+texture = ExtResource( 5 )
+region_rect = Rect2( 130, -30, 810, 1140 )
+margin_left = 10.0
+margin_right = 10.0
+margin_top = 10.0
+margin_bottom = 14.0
 
-[sub_resource type="StyleBoxFlat" id=7]
-bg_color = Color( 0, 0, 0, 0.270588 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 20.0
-expand_margin_right = 20.0
-expand_margin_top = 20.0
-expand_margin_bottom = 20.0
+[sub_resource type="StyleBoxTexture" id=26]
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 541, 390 )
+
+[sub_resource type="StyleBoxTexture" id=27]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 541, 390 )
 
 [sub_resource type="StyleBoxEmpty" id=9]
 
-[sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0.470588, 0.301961, 0.188235, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0, 0, 0, 1 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[sub_resource type="StyleBoxFlat" id=29]
+bg_color = Color( 0.137255, 0.0431373, 0.301961, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="DynamicFont" id=3]
 size = 32
 font_data = ExtResource( 1 )
 
+[sub_resource type="StyleBoxTexture" id=18]
+texture = ExtResource( 6 )
+region_rect = Rect2( 160, 100, 760, 230 )
+margin_left = 70.0
+margin_right = 70.0
+margin_top = 20.0
+margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id=19]
+texture = ExtResource( 6 )
+region_rect = Rect2( 160, 100, 760, 230 )
+margin_left = 70.0
+margin_right = 70.0
+margin_top = 20.0
+margin_bottom = 20.0
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
 [sub_resource type="DynamicFont" id=4]
 size = 32
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.470588, 0.301961, 0.188235, 1 )
+[sub_resource type="DynamicFont" id=14]
+size = 28
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxTexture" id=15]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 1080, 1920 )
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id=21]
+texture = ExtResource( 7 )
+region_rect = Rect2( 160, 100, 760, 230 )
+margin_left = 70.0
+margin_right = 70.0
+margin_top = 20.0
+margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id=20]
+texture = ExtResource( 7 )
+region_rect = Rect2( 160, 100, 760, 230 )
+margin_left = 70.0
+margin_right = 70.0
+margin_top = 20.0
+margin_bottom = 20.0
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="StyleBoxTexture" id=24]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 131, 121 )
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="StyleBoxTexture" id=25]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 131, 121 )
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.647059, 0.427451, 0.282353, 1 )
+bg_color = Color( 0.137255, 0.0431373, 0.301961, 1 )
 
 [sub_resource type="DynamicFont" id=5]
 font_data = ExtResource( 1 )
 
-[sub_resource type="GradientTexture" id=12]
-
 [sub_resource type="StyleBoxTexture" id=11]
-texture = SubResource( 12 )
-region_rect = Rect2( 0, 0, 2048, 1 )
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 1080, 1920 )
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [resource]
+BoardContainer/base_type = "PanelContainer"
+BoardContainer/styles/panel = SubResource( 28 )
+Button/colors/font_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
 Button/fonts/font = SubResource( 6 )
-Button/styles/hover = SubResource( 8 )
-Button/styles/normal = SubResource( 7 )
-Button/styles/pressed = SubResource( 7 )
+ButtonsContainer/base_type = "PanelContainer"
+ButtonsContainer/styles/panel = SubResource( 17 )
+ChipsButton/base_type = "Button"
+ChipsButton/styles/focus = SubResource( 26 )
+ChipsButton/styles/hover = SubResource( 27 )
+ChipsButton/styles/normal = SubResource( 26 )
+ChipsButton/styles/pressed = SubResource( 26 )
 FlatContainer/base_type = "PanelContainer"
 FlatContainer/styles/panel = SubResource( 9 )
 GameOverContainer/base_type = "PanelContainer"
-GameOverContainer/styles/panel = SubResource( 10 )
+GameOverContainer/styles/panel = SubResource( 29 )
 HeaderFont/base_type = "Label"
 HeaderFont/fonts/font = SubResource( 3 )
+HemiLabel/base_type = "Label"
+HemiLabel/fonts/font = ExtResource( 2 )
+JogarButton/base_type = "Button"
+JogarButton/styles/hover = SubResource( 18 )
+JogarButton/styles/normal = SubResource( 19 )
+JogarButton/styles/pressed = SubResource( 19 )
 Label/fonts/font = SubResource( 4 )
-PanelContainer/styles/panel = SubResource( 1 )
+NexaLabel/base_type = "Label"
+NexaLabel/fonts/font = SubResource( 14 )
+PanelContainer/styles/panel = SubResource( 15 )
+SalasButton/base_type = "Button"
+SalasButton/styles/hover = SubResource( 21 )
+SalasButton/styles/normal = SubResource( 20 )
+SalasButton/styles/pressed = SubResource( 20 )
+SettingsButton/base_type = "Button"
+SettingsButton/styles/focus = SubResource( 24 )
+SettingsButton/styles/hover = SubResource( 25 )
+SettingsButton/styles/normal = SubResource( 24 )
+SettingsButton/styles/pressed = SubResource( 24 )
 TableContainer/base_type = "PanelContainer"
 TableContainer/styles/panel = SubResource( 2 )
 TextFont/base_type = "Label"
