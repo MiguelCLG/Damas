@@ -1,9 +1,84 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/Checker.cs" type="Script" id=1]
 [ext_resource path="res://Assets/In Game Assets/chessblack.webp" type="Texture" id=2]
 [ext_resource path="res://Assets/in_game_assets/checker2.webp" type="Texture" id=3]
 [ext_resource path="res://Assets/In Game Assets/chesswhite.webp" type="Texture" id=4]
+[ext_resource path="res://Assets/In Game Assets/crowd1.webp" type="Texture" id=5]
+[ext_resource path="res://Assets/In Game Assets/crowd2.webp" type="Texture" id=6]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 0.984314, 0, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 1, 0, 0, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selected:custom_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 0.984314, 0, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Required:custom_styles/panel:bg_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "required_glow"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Required:custom_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0, 0.392157 ), Color( 1, 0, 0, 1 ), Color( 1, 0, 0, 0.392157 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "selected_glow"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Selected:custom_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.984314, 0, 0.392157 ), Color( 1, 0.984314, 0, 1 ), Color( 1, 0.984314, 0, 0.392157 ) ]
+}
 
 [node name="Checker" type="Control"]
 margin_right = 32.0
@@ -12,7 +87,35 @@ rect_min_size = Vector2( 64, 64 )
 mouse_filter = 2
 script = ExtResource( 1 )
 WhiteCheckerTexture = ExtResource( 4 )
+WhiteKingTexture = ExtResource( 6 )
 BlackCheckerTexture = ExtResource( 2 )
+BlackKingTexture = ExtResource( 5 )
+
+[node name="Selected" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -24.0
+margin_top = -24.0
+margin_right = 24.0
+margin_bottom = 24.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Required" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -24.0
+margin_top = -24.0
+margin_right = 24.0
+margin_bottom = 24.0
+custom_styles/panel = SubResource( 4 )
 
 [node name="Texture" type="TextureButton" parent="."]
 unique_name_in_owner = true
@@ -22,5 +125,11 @@ mouse_default_cursor_shape = 3
 texture_normal = ExtResource( 3 )
 expand = true
 stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+anims/RESET = SubResource( 2 )
+anims/required_glow = SubResource( 5 )
+anims/selected_glow = SubResource( 3 )
 
 [connection signal="pressed" from="Texture" to="." method="OnCheckerClicked"]

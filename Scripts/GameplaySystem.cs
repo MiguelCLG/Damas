@@ -23,8 +23,6 @@ public partial class GameplaySystem : Node2D
   private PanelContainer BlackPlayerPortraitBackground;
   private PanelContainer WhitePlayerPortraitBackground;
 
-  private Vector2 screenSize;
-  private Vector2 totalBoardSize;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
 
@@ -42,13 +40,6 @@ public partial class GameplaySystem : Node2D
 
     // added this signal to make sure we can resize our pieces if the window is resized
     GetTree().Root.Connect("size_changed", this, nameof(OnViewportChanged));
-
-    /* GetNode<Label>("%TurnCount").Text = $"{TurnCount}";
-    GetNode<Label>("%CurrentTurn").Text = $"{CurrentTurn}"; */
-
-    // added these for resizing and positioning purposes
-    screenSize = GetViewportRect().Size;
-    totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
 
     BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
     WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
@@ -88,8 +79,6 @@ public partial class GameplaySystem : Node2D
   // Function to handle viewport changes, when the signal SizeChanged is emitted, this is what is executed
   private void OnViewportChanged()
   {
-    screenSize = GetViewportRect().Size;
-    totalBoardSize = new Vector2(BoardSize * TileSize, BoardSize * TileSize);
     board.OnViewPortChanged();
     PositionCheckers();
 
@@ -114,7 +103,7 @@ public partial class GameplaySystem : Node2D
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
     foreach (var checker in checkersWithCaptureMoves)
     {
-      checker.ChangeTexture("res://Assets/available-capture-checker.webp");
+      checker.SelectCapture();
     }
   }
 
@@ -161,7 +150,31 @@ public partial class GameplaySystem : Node2D
   private void GenerateCheckers()
   {
     // Defined the board scheme for an easier way to spawn the checkers (1 = black checker, 2 = white checker, 0 = skip)
-    int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
+
+    int[,] boardScheme = new int[BoardSize, BoardSize]
+        {
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 },
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 },
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 },
+            { 0, 1, 0, 0, 0, 2, 0, 2 },
+            { 1, 0, 1, 0, 0, 0, 2, 0 }
+        };
+
+    /*  int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
+     {
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 1, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 2, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 },
+         { 0, 0, 0, 0, 0, 0, 0, 0 }
+     }; */
+    /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
     {
         { 0, 1, 0, 0, 0, 2, 0, 2 },
         { 1, 0, 2, 0, 0, 0, 2, 0 },
@@ -171,19 +184,7 @@ public partial class GameplaySystem : Node2D
         { 1, 0, 1, 0, 0, 0, 2, 0 },
         { 0, 1, 0, 0, 0, 2, 0, 0 },
         { 1, 0, 1, 0, 0, 0, 2, 0 }
-    };
-    /* int[,] boardScheme = new int[BoardSize, BoardSize]
-    {
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 }
     }; */
-
     /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with two pieces to be killed.
     {
         { 0, 1, 0, 0, 0, 2, 0, 2 },
@@ -338,6 +339,15 @@ public partial class GameplaySystem : Node2D
           }
           SelectedChecker.Move(newCheckerPosition, tile.TilePosition);
 
+          if (CurrentTurn == BoardColors.Black)
+          {
+            if (tile.TilePosition.y == BoardSize - 1)
+              SelectedChecker.SetKing();
+          }
+          else if (CurrentTurn == BoardColors.White)
+            if (tile.TilePosition.y == 0)
+              SelectedChecker.SetKing();
+
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker.UnselectChecker();
           NextTurn();
@@ -347,10 +357,9 @@ public partial class GameplaySystem : Node2D
 
   private bool IsCaptureMove(Vector2 currentPosition, Vector2 targetPosition)
   {
-    if (Math.Abs(currentPosition.x - targetPosition.x) != 2 || Math.Abs(currentPosition.y - targetPosition.y) != 2) // making sure it is a diagonal move
-      return false;
 
-    Vector2 midPosition = new Vector2(Mathf.Floor((currentPosition.x + targetPosition.x) / 2), Mathf.Floor((currentPosition.y + targetPosition.y) / 2));
+    var direction = new Vector2(Mathf.Sign(targetPosition.x - currentPosition.x), Mathf.Sign(targetPosition.y - currentPosition.y));
+    Vector2 midPosition = targetPosition - direction;
 
     var checkers = CurrentTurn == BoardColors.Black ? WhiteCheckers : BlackCheckers;
     foreach (Checker checker in checkers)
@@ -398,18 +407,20 @@ public partial class GameplaySystem : Node2D
       BlackCheckers.Remove(checker);
     else
       WhiteCheckers.Remove(checker);
+    AllCheckers.Remove(checker);
     checker.QueueFree();
+
     if (BlackCheckers.Count == 0)
     {
       GD.Print("White wins!");
-      gameOverMenu.SetWinnerName(BoardColors.White.ToString());
+      gameOverMenu.SetWinnerName(BoardColors.White);
       gameOverMenu.Show();
       GetTree().Paused = true;
     }
     else if (WhiteCheckers.Count == 0)
     {
       GD.Print("Black wins!");
-      gameOverMenu.SetWinnerName(BoardColors.Black.ToString());
+      gameOverMenu.SetWinnerName(BoardColors.Black);
       gameOverMenu.Show();
       GetTree().Paused = true;
     }
