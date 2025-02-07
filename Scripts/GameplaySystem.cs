@@ -20,8 +20,8 @@ public partial class GameplaySystem : Node2D
   private GameOverMenu gameOverMenu;
   private ProgressBar BlackPlayerTimer;
   private ProgressBar WhitePlayerTimer;
-  private PanelContainer BlackPlayerPortraitBackground;
-  private PanelContainer WhitePlayerPortraitBackground;
+  private Panel BlackPlayerPortraitBackground;
+  private Panel WhitePlayerPortraitBackground;
 
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
@@ -43,8 +43,10 @@ public partial class GameplaySystem : Node2D
 
     BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
     WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
-    BlackPlayerPortraitBackground = GetNode<PanelContainer>("%BlackPlayerPortraitBackground");
-    WhitePlayerPortraitBackground = GetNode<PanelContainer>("%WhitePlayerPortraitBackground");
+    BlackPlayerPortraitBackground = GetNode<Panel>("%BlackPlayerPortraitBackground");
+    WhitePlayerPortraitBackground = GetNode<Panel>("%WhitePlayerPortraitBackground");
+    WhitePlayerPortraitBackground.Visible = false;
+    BlackPlayerPortraitBackground.Visible = true;
     board = GetNode<Board>("%Board");
     checkersContainer = GetNode<Control>("%CheckersContainer");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
@@ -88,13 +90,13 @@ public partial class GameplaySystem : Node2D
   {
     if (CurrentTurn == BoardColors.Black)
     {
-      WhitePlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgStyle);
-      BlackPlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgSelectedStyle);
+      WhitePlayerPortraitBackground.Visible = false;
+      BlackPlayerPortraitBackground.Visible = true;
     }
     else
     {
-      BlackPlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgStyle);
-      WhitePlayerPortraitBackground.AddStyleboxOverride("panel", portraitBgSelectedStyle);
+      BlackPlayerPortraitBackground.Visible = false;
+      WhitePlayerPortraitBackground.Visible = true;
     }
     GetNode<Label>("%BlackPieceCount").Text = $"{BlackCheckers.Count}";
     GetNode<Label>("%WhitePieceCount").Text = $"{WhiteCheckers.Count}";
