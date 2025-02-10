@@ -95,7 +95,7 @@ public partial class Board : Control
       {
         Vector2 checkPosition = checker.BoardPosition + diagonal * steps;
 
-        if (!IsWithinBounds(checkPosition))
+        if (!IsWithinBounds(checkPosition) || IsAllyAt(checkPosition, checker.Color, checkersInPlay))
         {
           break;
         }
@@ -116,6 +116,22 @@ public partial class Board : Control
     }
 
     return captureMoves.Count > 0;
+  }
+
+  private bool IsAllyAt(Vector2 checkPosition, BoardColors color, Array<Checker> checkersInPlay)
+  {
+    foreach (var checker in checkersInPlay)
+    {
+      if (checker.BoardPosition == checkPosition && checker.Color == color)
+      {
+        return true;
+      }
+      else if (checker.BoardPosition == checkPosition && checker.Color != color)
+      {
+        return false;
+      }
+    }
+    return false;
   }
 
 
