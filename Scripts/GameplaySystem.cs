@@ -382,10 +382,6 @@ public partial class GameplaySystem : Node2D
     {
       board.CleanUpFreeTiles(SelectedChecker);
       SelectedChecker.UnselectChecker();
-      foreach (var checker in checkersWithCaptureMoves)
-      {
-        checker.UnselectChecker();
-      }
     }
     if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker, AllCheckers))
     {
@@ -395,6 +391,11 @@ public partial class GameplaySystem : Node2D
     CurrentTurn = CurrentTurn == BoardColors.Black ? BoardColors.White : BoardColors.Black;
     SelectedChecker = null;
 
+    // clean up capture status of checkers
+    foreach (var checker in checkersWithCaptureMoves)
+    {
+      checker.UnselectChecker();
+    }
     WhitePlayerTimer.Value = 15;
     BlackPlayerTimer.Value = 15;
     OnTurnStart();
