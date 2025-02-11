@@ -1,11 +1,10 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/board.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/GameplaySystem.cs" type="Script" id=3]
 [ext_resource path="res://Scenes/checker.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/game-over-menu.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Themes/background_panel_selected.tres" type="StyleBox" id=6]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Assets/in_game_assets/retangle.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/in_game_assets/timerentagle.webp" type="Texture" id=9]
@@ -17,7 +16,6 @@
 [ext_resource path="res://Assets/In Game Assets/piece_placeholder.webp" type="Texture" id=15]
 [ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=16]
 [ext_resource path="res://Assets/In Game Assets/white_piece_placeholder.webp" type="Texture" id=17]
-[ext_resource path="res://Themes/background_panel.tres" type="StyleBox" id=18]
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
@@ -66,8 +64,6 @@ region_rect = Rect2( 0, 0, 250, 49 )
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 checkerScene = ExtResource( 4 )
-portraitBgStyle = ExtResource( 18 )
-portraitBgSelectedStyle = ExtResource( 6 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
