@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using Godot.Collections;
 using static Utils;
@@ -6,8 +5,6 @@ using static Utils;
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
-  [Export] private StyleBoxFlat portraitBgStyle;
-  [Export] private StyleBoxFlat portraitBgSelectedStyle;
 
   private Checker SelectedChecker = null;
   private Checker CheckerToCapture = null;

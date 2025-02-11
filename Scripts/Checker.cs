@@ -13,8 +13,7 @@ public partial class Checker : Control
   private Panel selectedPanel;
   private Panel requiredPanel;
   private AnimationPlayer animationPlayer;
-  public bool isKing
-  { get; set; } = false;
+  public bool isKing { get; set; } = false;
   private TextureButton texture;
 
   public override void _Ready()
