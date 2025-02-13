@@ -11,20 +11,30 @@ public enum Commands
   update_waiting_queue,
   move_piece,
 }
-public class PlayerInfo
+
+public interface IValue
+{
+}
+public class PlayerInfo : IValue
 {
   public string player_name;
   public float money;
 }
+
+public class WaitingQueueSize : IValue
+{
+  public int waiting_queue_size;
+}
+
 public class DataReceived
 {
 
   public Commands command;
-  public PlayerInfo value;
+  public IValue value;
 
-  public DataReceived(Commands commandReceived, PlayerInfo playerInfo = null)
+  public DataReceived(Commands commandReceived, IValue _value = null)
   {
     command = commandReceived;
-    value = playerInfo;
+    value = _value;
   }
 }

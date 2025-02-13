@@ -6,6 +6,7 @@ public partial class MainMenu : Control
   private SceneLoaders sceneLoaders; // autoload to handle transitions and switching scenes
   private Label PlayerName;
   private Label PlayerMoney;
+  private RichTextLabel WaitingQueueLabel;
 
   public override void _Ready()
   {
@@ -14,6 +15,7 @@ public partial class MainMenu : Control
     sceneLoaders = GetNode<SceneLoaders>("/root/SceneLoaders");
     PlayerName = GetNode<Label>("%PlayerName");
     PlayerMoney = GetNode<Label>("%PlayerMoney");
+    WaitingQueueLabel = GetNode<RichTextLabel>("%WaitingQueueLabel");
   }
 
   public void SetPlayerName(string newPlayerName)
@@ -23,6 +25,11 @@ public partial class MainMenu : Control
   public void SetPlayerMoney(string newPlayerMoney)
   {
     PlayerMoney.Text = newPlayerMoney;
+  }
+
+  public void SetWaitingQueue(string numberOfPlayers)
+  {
+    WaitingQueueLabel.Text = $"{numberOfPlayers} jogadores na fila.";
   }
   public void OnStartGame()
   {
