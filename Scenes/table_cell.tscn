@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/fonts/NexaH_dynamic_font.tres" type="DynamicFont" id=1]
+
+[node name="TableCell" type="PanelContainer"]
+margin_top = 37.0
+margin_right = 82.0
+margin_bottom = 70.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = "TableCellContainer"
+
+[node name="CellLabel" type="Label" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 80.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+valign = 1

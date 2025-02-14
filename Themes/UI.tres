@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=35 format=2]
+[gd_resource type="Theme" load_steps=37 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
@@ -117,8 +117,40 @@ modulate_color = Color( 1, 1, 1, 0.784314 )
 texture = ExtResource( 10 )
 region_rect = Rect2( 0, 0, 131, 121 )
 
+[sub_resource type="StyleBoxFlat" id=31]
+bg_color = Color( 0.454902, 0.247059, 0.752941, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 3.0
+expand_margin_right = 3.0
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.137255, 0.0431373, 0.301961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=32]
+bg_color = Color( 0.388235, 0.12549, 0.866667, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 3.0
+expand_margin_right = 3.0
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
 
 [sub_resource type="DynamicFont" id=5]
 font_data = ExtResource( 1 )
@@ -171,8 +203,12 @@ SettingsButton/styles/focus = SubResource( 24 )
 SettingsButton/styles/hover = SubResource( 25 )
 SettingsButton/styles/normal = SubResource( 24 )
 SettingsButton/styles/pressed = SubResource( 24 )
+TableCellContainer/base_type = "PanelContainer"
+TableCellContainer/styles/panel = SubResource( 31 )
 TableContainer/base_type = "PanelContainer"
 TableContainer/styles/panel = SubResource( 2 )
+TableHeaderContainer/base_type = "PanelContainer"
+TableHeaderContainer/styles/panel = SubResource( 32 )
 TextFont/base_type = "Label"
 TextFont/fonts/font = SubResource( 5 )
 background/base_type = "PanelContainer"

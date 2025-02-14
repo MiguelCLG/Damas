@@ -1,0 +1,674 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
+[ext_resource path="res://Assets/fonts/NexaH_dynamic_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/table_cell.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/cancel_normal.webp" type="Texture" id=4]
+[ext_resource path="res://Assets/cancel_hover.webp" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 0, 0, 0.392157 )
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.2, 0.2, 0.2, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.407843, 0.407843, 0.407843, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[node name="RoomList" type="Panel"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 1 )
+custom_styles/panel = SubResource( 7 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="FlatContainer" type="PanelContainer" parent="HBoxContainer"]
+margin_right = 203.0
+margin_bottom = 600.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+theme_type_variation = "FlatContainer"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 207.0
+margin_right = 816.0
+margin_bottom = 600.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="FlatContainer2" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
+margin_right = 609.0
+margin_bottom = 84.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+theme_type_variation = "FlatContainer"
+
+[node name="RoomContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 609.0
+margin_bottom = 511.0
+mouse_filter = 2
+size_flags_horizontal = 7
+size_flags_vertical = 7
+size_flags_stretch_ratio = 5.0
+theme = ExtResource( 1 )
+theme_type_variation = "GameOverContainer"
+
+[node name="CloseButtonPanel" type="Panel" parent="HBoxContainer/VBoxContainer/RoomContainer"]
+margin_left = 574.0
+margin_top = 3.0
+margin_right = 606.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 32, 32 )
+mouse_filter = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 12 )
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="CloseButton" type="TextureButton" parent="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 24.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 16, 16 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+enabled_focus_mode = 0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 4 )
+texture_hover = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/RoomContainer"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 606.0
+margin_bottom = 420.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 32
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 32
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 32.0
+margin_right = 587.0
+margin_bottom = 385.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer"]
+margin_right = 559.0
+margin_bottom = 551.0
+size_flags_horizontal = 3
+
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+margin_right = 559.0
+margin_bottom = 551.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 5
+
+[node name="HeaderID" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_right = 82.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = "TableHeaderContainer"
+
+[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderID"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 80.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 2 )
+text = "ID Sala"
+align = 1
+valign = 1
+
+[node name="HeaderNJogadores" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 86.0
+margin_right = 305.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = "TableHeaderContainer"
+
+[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderNJogadores"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 217.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Numero Jogadores "
+align = 1
+valign = 1
+
+[node name="HeaderBid" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 309.0
+margin_right = 378.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = "TableHeaderContainer"
+
+[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderBid"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 67.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 2 )
+text = "Bid"
+align = 1
+valign = 1
+
+[node name="HeaderCurrency" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 382.0
+margin_right = 486.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+theme_type_variation = "TableHeaderContainer"
+
+[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderCurrency"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 102.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 2 )
+text = "Currency"
+align = 1
+valign = 1
+
+[node name="Button" type="Control" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_right = 559.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="TableCell" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+
+[node name="TableCell2" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_right = 305.0
+
+[node name="TableCell3" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_right = 378.0
+
+[node name="TableCell4" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_right = 486.0
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 37.0
+margin_right = 559.0
+margin_bottom = 69.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell5" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 74.0
+margin_bottom = 107.0
+
+[node name="TableCell6" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 74.0
+margin_right = 305.0
+margin_bottom = 107.0
+
+[node name="TableCell7" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 74.0
+margin_right = 378.0
+margin_bottom = 107.0
+
+[node name="TableCell8" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 74.0
+margin_right = 486.0
+margin_bottom = 107.0
+
+[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 74.0
+margin_right = 559.0
+margin_bottom = 106.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell9" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 111.0
+margin_bottom = 144.0
+
+[node name="TableCell10" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 111.0
+margin_right = 305.0
+margin_bottom = 144.0
+
+[node name="TableCell11" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 111.0
+margin_right = 378.0
+margin_bottom = 144.0
+
+[node name="TableCell12" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 111.0
+margin_right = 486.0
+margin_bottom = 144.0
+
+[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 111.0
+margin_right = 559.0
+margin_bottom = 143.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell13" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 148.0
+margin_bottom = 181.0
+
+[node name="TableCell14" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 148.0
+margin_right = 305.0
+margin_bottom = 181.0
+
+[node name="TableCell15" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 148.0
+margin_right = 378.0
+margin_bottom = 181.0
+
+[node name="TableCell16" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 148.0
+margin_right = 486.0
+margin_bottom = 181.0
+
+[node name="Button5" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 148.0
+margin_right = 559.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell17" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 185.0
+margin_bottom = 218.0
+
+[node name="TableCell18" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 185.0
+margin_right = 305.0
+margin_bottom = 218.0
+
+[node name="TableCell19" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 185.0
+margin_right = 378.0
+margin_bottom = 218.0
+
+[node name="TableCell20" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 185.0
+margin_right = 486.0
+margin_bottom = 218.0
+
+[node name="Button6" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 185.0
+margin_right = 559.0
+margin_bottom = 217.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell21" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 222.0
+margin_bottom = 255.0
+
+[node name="TableCell22" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 222.0
+margin_right = 305.0
+margin_bottom = 255.0
+
+[node name="TableCell23" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 222.0
+margin_right = 378.0
+margin_bottom = 255.0
+
+[node name="TableCell24" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 222.0
+margin_right = 486.0
+margin_bottom = 255.0
+
+[node name="Button7" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 222.0
+margin_right = 559.0
+margin_bottom = 254.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell25" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 259.0
+margin_bottom = 292.0
+
+[node name="TableCell26" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 259.0
+margin_right = 305.0
+margin_bottom = 292.0
+
+[node name="TableCell27" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 259.0
+margin_right = 378.0
+margin_bottom = 292.0
+
+[node name="TableCell28" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 259.0
+margin_right = 486.0
+margin_bottom = 292.0
+
+[node name="Button8" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 259.0
+margin_right = 559.0
+margin_bottom = 291.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell29" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 296.0
+margin_bottom = 329.0
+
+[node name="TableCell30" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 296.0
+margin_right = 305.0
+margin_bottom = 329.0
+
+[node name="TableCell31" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 296.0
+margin_right = 378.0
+margin_bottom = 329.0
+
+[node name="TableCell32" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 296.0
+margin_right = 486.0
+margin_bottom = 329.0
+
+[node name="Button9" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 296.0
+margin_right = 559.0
+margin_bottom = 328.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell33" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 333.0
+margin_bottom = 366.0
+
+[node name="TableCell34" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 333.0
+margin_right = 305.0
+margin_bottom = 366.0
+
+[node name="TableCell35" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 333.0
+margin_right = 378.0
+margin_bottom = 366.0
+
+[node name="TableCell36" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 333.0
+margin_right = 486.0
+margin_bottom = 366.0
+
+[node name="Button10" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 333.0
+margin_right = 559.0
+margin_bottom = 365.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell37" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 370.0
+margin_bottom = 403.0
+
+[node name="TableCell38" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 370.0
+margin_right = 305.0
+margin_bottom = 403.0
+
+[node name="TableCell39" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 370.0
+margin_right = 378.0
+margin_bottom = 403.0
+
+[node name="TableCell40" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 370.0
+margin_right = 486.0
+margin_bottom = 403.0
+
+[node name="Button11" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 370.0
+margin_right = 559.0
+margin_bottom = 402.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell41" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 407.0
+margin_bottom = 440.0
+
+[node name="TableCell42" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 407.0
+margin_right = 305.0
+margin_bottom = 440.0
+
+[node name="TableCell43" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 407.0
+margin_right = 378.0
+margin_bottom = 440.0
+
+[node name="TableCell44" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 407.0
+margin_right = 486.0
+margin_bottom = 440.0
+
+[node name="Button12" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 407.0
+margin_right = 559.0
+margin_bottom = 439.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell45" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 444.0
+margin_bottom = 477.0
+
+[node name="TableCell46" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 444.0
+margin_right = 305.0
+margin_bottom = 477.0
+
+[node name="TableCell47" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 444.0
+margin_right = 378.0
+margin_bottom = 477.0
+
+[node name="TableCell48" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 444.0
+margin_right = 486.0
+margin_bottom = 477.0
+
+[node name="Button13" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 444.0
+margin_right = 559.0
+margin_bottom = 476.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell49" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 481.0
+margin_bottom = 514.0
+
+[node name="TableCell50" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 481.0
+margin_right = 305.0
+margin_bottom = 514.0
+
+[node name="TableCell51" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 481.0
+margin_right = 378.0
+margin_bottom = 514.0
+
+[node name="TableCell52" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 481.0
+margin_right = 486.0
+margin_bottom = 514.0
+
+[node name="Button14" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 481.0
+margin_right = 559.0
+margin_bottom = 513.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="TableCell53" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_top = 518.0
+margin_bottom = 551.0
+
+[node name="TableCell54" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 86.0
+margin_top = 518.0
+margin_right = 305.0
+margin_bottom = 551.0
+
+[node name="TableCell55" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 309.0
+margin_top = 518.0
+margin_right = 378.0
+margin_bottom = 551.0
+
+[node name="TableCell56" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
+margin_left = 382.0
+margin_top = 518.0
+margin_right = 486.0
+margin_bottom = 551.0
+
+[node name="Button15" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 490.0
+margin_top = 518.0
+margin_right = 559.0
+margin_bottom = 550.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/normal = SubResource( 13 )
+text = "Join"
+
+[node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
+margin_top = 515.0
+margin_right = 609.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+theme_type_variation = "FlatContainer"
+
+[node name="FlatContainer_2" type="PanelContainer" parent="HBoxContainer"]
+margin_left = 820.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+theme_type_variation = "FlatContainer"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel/MarginContainer/CloseButton" to="." method="OnClose"]
