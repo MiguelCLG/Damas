@@ -5,13 +5,12 @@ public partial class MultiplayerPeerConnection : Node
 {
   WebSocketClient client;
   MainMenu mainMenu;
-  RoomPopup roomPopup;
 
   public override void _Ready()
   {
     mainMenu = GetNode<MainMenu>("/root/MainMenu");
-    roomPopup = mainMenu.GetNode<RoomPopup>("%RoomPopup");
     EventRegistry.RegisterEvent("JoinQueue");
+    EventRegistry.RegisterEvent("RoomList");
     EventRegistry.RegisterEvent("OnDisconnectFromLobby");
     EventRegistry.RegisterEvent("OnDataReceived");
 
@@ -21,6 +20,7 @@ public partial class MultiplayerPeerConnection : Node
     client.Connect("connection_error", this, "OnConnectionClosed");
     client.Connect("data_received", this, "OnData");
     EventSubscriber.SubscribeToEvent("JoinQueue", OnJoinQueue);
+    EventSubscriber.SubscribeToEvent("RoomList", OnRoomList);
     EventSubscriber.SubscribeToEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
 
     var err = client.ConnectToUrl("ws://localhost:8080/ws");
@@ -35,9 +35,9 @@ public partial class MultiplayerPeerConnection : Node
     client.Poll();
   }
 
-  public void OnConnectionClosed()
+  public void OnConnectionClosed(bool was_clean_close = false)
   {
-    GD.Print("Connection Closed.");
+    GD.Print("Connection Closed.", was_clean_close);
   }
 
   public void OnConnect(string protocol)
@@ -65,21 +65,18 @@ public partial class MultiplayerPeerConnection : Node
         default: break;
         case Commands.connected:
           Connected(dict);
-
           break;
-        case Commands.join_queue:
+        case Commands.create_room:
           EventRegistry.GetEventPublisher("OnDataReceived").RaiseEvent(dict);
+          break;
+        case Commands.room_created:
+          RoomCreated(dict);
           break;
         case Commands.leave_queue:
           break;
         case Commands.send_message:
           break;
         case Commands.custom_command:
-          break;
-        case Commands.paired:
-          break;
-        case Commands.update_waiting_queue:
-          UpdateWaitingQueue(dict);
           break;
         case Commands.move_piece:
           break;
@@ -91,15 +88,33 @@ public partial class MultiplayerPeerConnection : Node
       GD.Print(array[0]); // Access data using index
     }
 
-    void UpdateWaitingQueue(Dictionary dict)
+  }
+
+  private void RoomCreated(Dictionary dict)
+  {
+    if (dict.Contains("value") && dict is Dictionary data)
     {
-      if (dict.Contains("value") && dict["value"] is Dictionary queueSizeInfo)
+      RoomInfo roomInformation = new RoomInfo();
+      Dictionary jsonValue = (Dictionary)data["value"];
+
+      if (jsonValue != null)
       {
-        var valueToSend = queueSizeInfo["waiting_queue_size"];
-        mainMenu.SetWaitingQueue(valueToSend.ToString());
+        roomInformation.id = jsonValue["id"].ToString();
+        roomInformation.name = jsonValue["name"].ToString();
+        roomInformation.currency = jsonValue["currency"].ToString();
+        roomInformation.SelectedBid = (float)jsonValue["SelectedBid"];
       }
+      EventRegistry.GetEventPublisher("OnDataReceived").RaiseEvent(roomInformation);
     }
-    ;
+  }
+
+  void UpdateWaitingQueue(Dictionary dict)
+  {
+    if (dict.Contains("value") && dict["value"] is Dictionary queueSizeInfo)
+    {
+      var valueToSend = queueSizeInfo["waiting_queue_size"];
+      mainMenu.SetWaitingQueue(valueToSend.ToString());
+    }
   }
 
   private void Connected(Dictionary dict)
@@ -124,6 +139,10 @@ public partial class MultiplayerPeerConnection : Node
 
   public void OnDisconnectFromLobby(object sender, object args)
   {
+    if (!client.GetPeer(1).IsConnectedToHost())
+    {
+      return;
+    }
     Dictionary dict = new Dictionary();
     dict["command"] = Commands.leave_queue.ToString();
     string jsonString = JSON.Print(dict);
@@ -131,22 +150,30 @@ public partial class MultiplayerPeerConnection : Node
 
     client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Binary);
     client.GetPeer(1).PutPacket(encodedMessage);
+  }
+
+
+  public void OnRoomList(object sender, object args)
+  {
+    mainMenu.HideRoom();
+    mainMenu.ShowRoomList();
 
   }
+
   public void OnJoinQueue(object sender, object args)
   {
-
+    mainMenu.HideRoomList();
     client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Text);
 
     Dictionary dict = new Dictionary();
-    dict["command"] = Commands.join_queue.ToString();
-    dict["value"] = 2;
+    dict["command"] = Commands.create_room.ToString();
+    dict["value"] = 2f;
     string jsonString = JSON.Print(dict);
     GD.Print($"Sending: {jsonString}");
     byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
 
     client.GetPeer(1).PutPacket(encodedMessage);
-    roomPopup.Visible = true;
+    mainMenu.ShowRoom();
   }
 
   public override void _ExitTree()
@@ -154,7 +181,9 @@ public partial class MultiplayerPeerConnection : Node
     client.DisconnectFromHost(200, "Exited the game, ending connection.");
     EventSubscriber.UnsubscribeFromEvent("JoinQueue", OnJoinQueue);
     EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
-    EventRegistry.UnregisterEvent("OnDataReceived");
+    EventSubscriber.UnsubscribeFromEvent("RoomList", OnRoomList);
+
+    EventRegistry.UnregisterEvent("RoomList");
     EventRegistry.UnregisterEvent("OnDisconnectFromLobby");
     EventRegistry.UnregisterEvent("OnDataReceived");
   }

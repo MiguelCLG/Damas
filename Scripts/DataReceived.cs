@@ -3,12 +3,11 @@ using Godot.Collections;
 public enum Commands
 {
   connected,
-  join_queue,
+  create_room,
+  room_created,
   leave_queue,
   send_message,
   custom_command,
-  paired,
-  update_waiting_queue,
   move_piece,
 }
 
@@ -24,6 +23,14 @@ public class PlayerInfo : IValue
 public class WaitingQueueSize : IValue
 {
   public int waiting_queue_size;
+}
+
+public class RoomInfo : IValue
+{
+  public string id;
+  public string name;
+  public string currency;
+  public float SelectedBid;
 }
 
 public class DataReceived

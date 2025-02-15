@@ -6,6 +6,8 @@ public class RoomPopup : Panel
 {
     [Export] private StyleBoxTexture NotReadyButtonBackground;
     [Export] private StyleBoxTexture ReadyButtonBackground;
+    [Export] private Texture WhiteCheckersTexture;
+    [Export] private Texture BlackCheckersTexture;
     private Label PlayerName;
     private Label OponentName;
     private TextureRect PlayerTexture;
@@ -23,6 +25,7 @@ public class RoomPopup : Panel
         PlayerName = GetNode<Label>("%PlayerNameLabel");
         OponentName = GetNode<Label>("%OponentNameLabel");
         BidTextureRect = GetNode<TextureRect>("%BidTexture");
+        BidValue = GetNode<Label>("%BidValue");
         PlayerTexture = GetNode<TextureRect>("%PlayerTexture");
         OpponentTexture = GetNode<TextureRect>("%OpponentTexture");
         ReadyButton = GetNode<Button>("%PlayerReadyButton");
@@ -73,8 +76,13 @@ public class RoomPopup : Panel
 
     public void OnDataReceived(object sender, object args)
     {
-        if (args is Dictionary dict)
-            GD.Print(dict);
+        if (args is RoomInfo roomInfo)
+        {
+            GD.Print(roomInfo);
+            SetPlayerName(roomInfo.name);
+            SetBidValue(roomInfo.SelectedBid.ToString());
+            SetPlayerTexture(WhiteCheckersTexture);
+        }
         WaitingForDataContainer.Visible = false;
         RoomContainer.Visible = true;
     }

@@ -1,15 +1,17 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scripts/RoomPopup.cs" type="Script" id=2]
 [ext_resource path="res://Themes/NotReadyButtonStylebox.tres" type="StyleBox" id=3]
 [ext_resource path="res://Themes/ReadyButtonStylebox.tres" type="StyleBox" id=4]
 [ext_resource path="res://Assets/transparent-128x128.png" type="Texture" id=5]
+[ext_resource path="res://Assets/In Game Assets/crowd1.webp" type="Texture" id=6]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=7]
 [ext_resource path="res://Assets/cancel_hover.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=10]
 [ext_resource path="res://Assets/cancel_normal.webp" type="Texture" id=11]
+[ext_resource path="res://Assets/In Game Assets/crowd2.webp" type="Texture" id=12]
 
 [sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0, 0, 0.392157 )
@@ -70,6 +72,8 @@ custom_styles/panel = SubResource( 7 )
 script = ExtResource( 2 )
 NotReadyButtonBackground = ExtResource( 3 )
 ReadyButtonBackground = ExtResource( 4 )
+WhiteCheckersTexture = ExtResource( 12 )
+BlackCheckersTexture = ExtResource( 6 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
@@ -165,15 +169,11 @@ margin_right = 590.0
 margin_bottom = 385.0
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer"]
-margin_right = 558.0
-margin_bottom = 40.0
-
-[node name="WaitingLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="WaitingLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer"]
 margin_right = 558.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
-size_flags_vertical = 7
+size_flags_vertical = 5
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 8 )
 text = "Esperando por todos os jogadores"

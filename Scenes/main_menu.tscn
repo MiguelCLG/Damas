@@ -275,6 +275,8 @@ text = "SALAS"
 visible = false
 
 [node name="RoomList" parent="." instance=ExtResource( 12 )]
+unique_name_in_owner = true
 visible = false
 
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/StartButton" to="." method="OnStartGame"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/SalasButton" to="." method="OnSalasClick"]
