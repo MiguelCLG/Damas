@@ -1,3 +1,4 @@
+using Godot;
 using Godot.Collections;
 
 public enum Commands
@@ -9,6 +10,8 @@ public enum Commands
   send_message,
   custom_command,
   move_piece,
+  room_info,
+  game_info,
 }
 
 public interface IValue
@@ -25,12 +28,24 @@ public class WaitingQueueSize : IValue
   public int waiting_queue_size;
 }
 
-public class RoomInfo : IValue
+public class LobbyInfo : IValue
 {
   public string id;
   public string name;
   public string currency;
-  public float SelectedBid;
+  public float selected_bid;
+}
+public class RoomInfo : IValue
+{
+  public float agregate_value;
+  public int count;
+}
+
+public class RoomInfoList : IValue
+{
+  public int players_waiting;
+
+  public Array<RoomInfo> room_aggregate;
 }
 
 public class DataReceived

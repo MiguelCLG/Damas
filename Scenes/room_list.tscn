@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Assets/fonts/NexaH_dynamic_font.tres" type="DynamicFont" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/cancel_hover.webp" type="Texture" id=5]
 [ext_resource path="res://Scripts/RoomList.cs" type="Script" id=6]
 [ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=7]
+[ext_resource path="res://Scenes/join_button.tscn" type="PackedScene" id=8]
 
 [sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0, 0, 0.392157 )
@@ -35,6 +36,8 @@ mouse_filter = 2
 theme = ExtResource( 1 )
 custom_styles/panel = SubResource( 7 )
 script = ExtResource( 6 )
+cellScene = ExtResource( 3 )
+joinButtonScene = ExtResource( 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
@@ -149,57 +152,19 @@ size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer"]
 margin_right = 743.0
-margin_bottom = 109.0
+margin_bottom = 33.0
 size_flags_horizontal = 3
 
 [node name="GridContainer" type="GridContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
 margin_right = 743.0
-margin_bottom = 109.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-columns = 5
-
-[node name="HeaderID" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
-margin_right = 118.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_type_variation = "TableHeaderContainer"
-
-[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderID"]
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 116.0
-margin_bottom = 31.0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-custom_fonts/font = ExtResource( 2 )
-text = "ID Sala"
-align = 1
-valign = 1
-
-[node name="HeaderNJogadores" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
-margin_left = 122.0
-margin_right = 341.0
-margin_bottom = 33.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_type_variation = "TableHeaderContainer"
-
-[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderNJogadores"]
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 217.0
-margin_bottom = 31.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "Numero Jogadores "
-align = 1
-valign = 1
+columns = 3
 
 [node name="HeaderBid" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
-margin_left = 345.0
-margin_right = 463.0
+margin_right = 245.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -208,64 +173,37 @@ theme_type_variation = "TableHeaderContainer"
 [node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderBid"]
 margin_left = 2.0
 margin_top = 2.0
-margin_right = 116.0
+margin_right = 243.0
 margin_bottom = 31.0
 custom_fonts/font = ExtResource( 2 )
 text = "Bid"
 align = 1
 valign = 1
 
-[node name="HeaderCurrency" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
-margin_left = 467.0
-margin_right = 585.0
+[node name="HeaderNJogadores" type="PanelContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+margin_left = 249.0
+margin_right = 494.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = "TableHeaderContainer"
 
-[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderCurrency"]
+[node name="HeaderLabel" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer/HeaderNJogadores"]
 margin_left = 2.0
 margin_top = 2.0
-margin_right = 116.0
+margin_right = 243.0
 margin_bottom = 31.0
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
-text = "Currency"
+text = "Numero Jogadores "
 align = 1
 valign = 1
 
 [node name="Button" type="Control" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
-margin_left = 589.0
+margin_left = 498.0
 margin_right = 743.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
-
-[node name="TableCell" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
-margin_right = 118.0
-margin_bottom = 109.0
-
-[node name="TableCell2" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
-margin_left = 122.0
-margin_right = 341.0
-margin_bottom = 109.0
-
-[node name="TableCell3" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
-margin_left = 345.0
-margin_right = 463.0
-margin_bottom = 109.0
-
-[node name="TableCell4" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource( 3 )]
-margin_left = 467.0
-margin_right = 585.0
-margin_bottom = 109.0
-
-[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
-margin_left = 589.0
-margin_top = 37.0
-margin_right = 743.0
-margin_bottom = 109.0
-size_flags_horizontal = 3
-size_flags_vertical = 0
-theme_type_variation = "JogarButton"
-text = "Join"
 
 [node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 515.0

@@ -76,11 +76,10 @@ public class RoomPopup : Panel
 
     public void OnDataReceived(object sender, object args)
     {
-        if (args is RoomInfo roomInfo)
+        if (args is LobbyInfo lobbyInfo)
         {
-            GD.Print(roomInfo);
-            SetPlayerName(roomInfo.name);
-            SetBidValue(roomInfo.SelectedBid.ToString());
+            SetPlayerName(lobbyInfo.name);
+            SetBidValue(lobbyInfo.selected_bid.ToString());
             SetPlayerTexture(WhiteCheckersTexture);
         }
         WaitingForDataContainer.Visible = false;
