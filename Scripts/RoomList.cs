@@ -12,6 +12,7 @@ public class RoomList : Panel
 
     private void OnDataReceived(object sender, object args)
     {
+        GD.Print("[ROOM LIST] - Data Received!");
         if (args is RoomInfoList roomInfoList)
         {
             foreach (RoomInfo room in roomInfoList.room_aggregate)
