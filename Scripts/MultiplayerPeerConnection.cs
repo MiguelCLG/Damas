@@ -53,9 +53,10 @@ public partial class MultiplayerPeerConnection : Node
   {
 
     string jsonString = client.GetPeer(1).GetPacket().GetStringFromUTF8();
-    var cleanJson = Regex.Unescape(jsonString);
-    JSONParseResult parsedObject = JSON.Parse(cleanJson.Remove(0, 1).Remove(cleanJson.Length - 1, 1));
-    GD.Print($"Data Received: {cleanJson}");
+    //var cleanJson = Regex.Unescape(jsonString);
+    JSONParseResult parsedObject = JSON.Parse(jsonString);
+    GD.Print($"Data Received: {jsonString}");
+    GD.Print($"Parsed Object Received: {parsedObject}");
 
     // what we receive is a dictionary in this format:
     // {
@@ -71,11 +72,9 @@ public partial class MultiplayerPeerConnection : Node
       try
       {
         string commandStr = (string)dict["command"];
+        GD.Print($"Parsed Object Received: {commandStr}");
         Commands command = (Commands)System.Enum.Parse(typeof(Commands), commandStr);
-
-
         // Create the DataReceived object
-
         switch (command)
         {
           default: break;
@@ -105,7 +104,7 @@ public partial class MultiplayerPeerConnection : Node
       }
       catch (System.Exception e)
       {
-        GD.PrintErr(e.Message);
+        GD.PrintErr("[Server Command Parser] - "+e.Message);
       }
     }
     else if (parsedObject.Result is Array)
