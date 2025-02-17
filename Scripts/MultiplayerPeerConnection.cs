@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Godot;
 using Godot.Collections;
-using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 public partial class MultiplayerPeerConnection : Node
 {
   WebSocketClient client;
@@ -12,22 +12,21 @@ public partial class MultiplayerPeerConnection : Node
   public override void _Ready()
   {
     mainMenu = GetNode<MainMenu>("/root/MainMenu");
-    EventRegistry.RegisterEvent("JoinQueue");
-    EventRegistry.RegisterEvent("RoomList");
+    EventRegistry.RegisterEvent("OnJoinRoom");
     EventRegistry.RegisterEvent("OnRoomCheck");
     EventRegistry.RegisterEvent("OnDisconnectFromLobby");
     EventRegistry.RegisterEvent("OnDataReceived");
+    EventRegistry.RegisterEvent("OnPairedReceived");
 
     client = new WebSocketClient();
     client.Connect("connection_established", this, "OnConnect");
     client.Connect("connection_closed", this, "OnConnectionClosed");
     client.Connect("connection_error", this, "OnConnectionClosed");
     client.Connect("data_received", this, "OnData");
-    EventSubscriber.SubscribeToEvent("JoinQueue", OnJoinQueue);
-    EventSubscriber.SubscribeToEvent("RoomList", OnRoomList);
+    EventSubscriber.SubscribeToEvent("OnJoinRoom", OnJoinRoom);
     EventSubscriber.SubscribeToEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
 
-    var err = client.ConnectToUrl("ws://localhost:8080/ws");
+    var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
     if (err != Error.Ok)
     {
       GD.Print("Unable To Connect: " + err);
@@ -52,117 +51,62 @@ public partial class MultiplayerPeerConnection : Node
   {
     string jsonString = client.GetPeer(1).GetPacket().GetStringFromUTF8();
 
-    //var cleanJson = Regex.Unescape(jsonString);
-    JSONParseResult parsedObject = JSON.Parse(jsonString);
+    var parsedObject = JsonConvert.DeserializeObject<DataReceived<JToken>>(jsonString);
+
     GD.Print($"Data Received: {jsonString}");
     GD.Print($"Parsed Object Received: {parsedObject}");
 
-    // what we receive is a dictionary in this format:
-    // {
-    //   "command": "connected",
-    //   "value": {
-    //            }
-    //  }
-
-    if (parsedObject.Result is Dictionary)
+    try
     {
-      Dictionary dict = (Dictionary)parsedObject.Result;
-
-      try
+      switch (parsedObject.command)
       {
-        string commandStr = (string)dict["command"];
-        GD.Print($"Parsed Object Received: {commandStr}");
-        Commands command = (Commands)System.Enum.Parse(typeof(Commands), commandStr);
-        // Create the DataReceived object
-        switch (command)
-        {
-          default: break;
-          case Commands.connected:
-            Connected(dict);
-            break;
-          case Commands.create_room:
-            EventRegistry.GetEventPublisher("OnDataReceived").RaiseEvent(dict);
-            break;
-          case Commands.room_created:
-            RoomCreated(dict);
-            break;
-          case Commands.leave_queue:
-            break;
-          case Commands.send_message:
-            break;
-          case Commands.custom_command:
-            break;
-          case Commands.move_piece:
-            break;
-          case Commands.room_info:
-            // GetRoomList((string)dict["value"]);
-            break;
-          case Commands.game_info:
-            GetRoomList(dict["value"] as Dictionary);
-            break;
-        }
-      }
-      catch (System.Exception e)
-      {
-        GD.PrintErr("[Server Command Parser] - " + e.Message);
+        default: break;
+        case Commands.connected:
+          ConnectedCommandReceived(parsedObject.value.ToObject<PlayerInfo>());
+          break;
+        case Commands.create_room:
+          EventRegistry.GetEventPublisher("OnDataReceived").RaiseEvent(parsedObject.value.ToObject<LobbyInfo>());
+          break;
+        case Commands.room_created:
+          RoomCreatedCommandReceived(parsedObject.value.ToObject<LobbyInfo>());
+          break;
+        case Commands.leave_room:
+          break;
+        case Commands.paired:
+          PairCommandReceived(parsedObject.value.ToObject<PairedValue>());
+          break;
+        case Commands.ready_room:
+          break;
+        case Commands.join_room:
+          break;
+        case Commands.game_info:
+          break;
+        case Commands.queue_confirmation:
+          // vem um boolean que diz se conseguiu entrar na fila
+          break;
       }
     }
-    else if (parsedObject.Result is Array)
+    catch (System.Exception e)
     {
-      Array array = (Array)parsedObject.Result;
-      GD.Print("hello", array[0]); // Access data using index
+      GD.PrintErr("[Server Command Parser] - " + e.Message);
     }
 
   }
 
-  private void RoomCreated(Dictionary dict)
+  private void PairCommandReceived(PairedValue dict)
   {
-    if (dict.Contains("value") && dict["value"] is Dictionary data)
-    {
-      LobbyInfo lobbyInformation = new LobbyInfo();
-
-      if (data != null)
-      {
-        lobbyInformation.id = data["id"].ToString();
-        lobbyInformation.name = data["name"].ToString();
-        lobbyInformation.currency = data["currency"].ToString();
-        lobbyInformation.selected_bid = (float)data["selected_bid"];
-      }
-      EventRegistry.GetEventPublisher("OnDataReceived").RaiseEvent(lobbyInformation);
-    }
-  }
-  private void GetRoomList(Dictionary dict)
-  {
-    RoomInfoList roomInfoList = JsonConvert.DeserializeObject<RoomInfoList>(dict.ToString());
-    EventRegistry.GetEventPublisher("OnRoomCheck").RaiseEvent(roomInfoList);
-
+    EventRegistry.GetEventPublisher("OnPairedReceived").RaiseEvent(dict);
   }
 
-  void UpdateWaitingQueue(Dictionary dict)
+  private void RoomCreatedCommandReceived(LobbyInfo dict)
   {
-    if (dict.Contains("value") && dict["value"] is Dictionary queueSizeInfo)
     {
-      var valueToSend = queueSizeInfo["waiting_queue_size"];
-      mainMenu.SetWaitingQueue(valueToSend.ToString());
+      EventRegistry.GetEventPublisher("OnDataReceived").RaiseEvent(dict);
     }
   }
 
-  private void Connected(Dictionary dict)
+  private void ConnectedCommandReceived(PlayerInfo playerInfo)
   {
-    Dictionary playerInfoDict = null;
-    if (dict.Contains("value") && dict["value"] is Dictionary)
-    {
-      playerInfoDict = (Dictionary)dict["value"];
-    }
-    PlayerInfo playerInfo = null;
-    if (playerInfoDict != null)
-    {
-      playerInfo = new PlayerInfo
-      {
-        player_name = (string)playerInfoDict["player_name"],
-        money = (float)playerInfoDict["money"]
-      };
-    }
     mainMenu.SetPlayerName(playerInfo.player_name);
     mainMenu.SetPlayerMoney(playerInfo.money.ToString());
   }
@@ -174,10 +118,59 @@ public partial class MultiplayerPeerConnection : Node
       return;
     }
     Dictionary dict = new Dictionary();
-    dict["command"] = Commands.leave_queue.ToString();
+    dict["command"] = Commands.leave_room.ToString();
     string jsonString = JSON.Print(dict);
     byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
 
+    client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Binary);
+    client.GetPeer(1).PutPacket(encodedMessage);
+  }
+
+
+  public void OnJoinRoom(object sender, object args)
+  {
+    mainMenu.HideRoomList();
+    client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Text);
+
+    Dictionary dict = new Dictionary();
+    dict["command"] = Commands.queue.ToString();
+    dict["value"] = 1.5f;
+    string jsonString = JSON.Print(dict);
+    GD.Print($"Sending: {jsonString}");
+    byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
+
+    client.GetPeer(1).PutPacket(encodedMessage);
+    mainMenu.ShowRoom();
+  }
+
+  public override void _ExitTree()
+  {
+    client.DisconnectFromHost(200, "Exited the game, ending connection.");
+    EventSubscriber.UnsubscribeFromEvent("OnJoinRoom", OnJoinRoom);
+    EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
+    EventRegistry.UnregisterEvent("OnPairedReceived");
+    EventRegistry.UnregisterEvent("OnRoomCheck");
+    EventRegistry.UnregisterEvent("OnDisconnectFromLobby");
+    EventRegistry.UnregisterEvent("OnDataReceived");
+  }
+}
+
+
+
+
+
+/*
+
+public void OnJoinQueue(object sender, object args)
+  {
+    if (!client.GetPeer(1).IsConnectedToHost())
+    {
+      return;
+    }
+    Dictionary dict = new Dictionary();
+    dict["command"] = Commands.join_room.ToString();
+    string jsonString = JSON.Print(dict);
+    byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
     client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Binary);
     client.GetPeer(1).PutPacket(encodedMessage);
   }
@@ -190,32 +183,10 @@ public partial class MultiplayerPeerConnection : Node
 
   }
 
-  public void OnJoinQueue(object sender, object args)
+  private void GetRoomList(Dictionary dict)
   {
-    mainMenu.HideRoomList();
-    client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Text);
+    RoomInfoList roomInfoList = JsonConvert.DeserializeObject<RoomInfoList>(dict.ToString());
+    EventRegistry.GetEventPublisher("OnRoomCheck").RaiseEvent(roomInfoList);
 
-    Dictionary dict = new Dictionary();
-    dict["command"] = Commands.create_room.ToString();
-    dict["value"] = 2f;
-    string jsonString = JSON.Print(dict);
-    GD.Print($"Sending: {jsonString}");
-    byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
-
-    client.GetPeer(1).PutPacket(encodedMessage);
-    mainMenu.ShowRoom();
   }
-
-  public override void _ExitTree()
-  {
-    client.DisconnectFromHost(200, "Exited the game, ending connection.");
-    EventSubscriber.UnsubscribeFromEvent("JoinQueue", OnJoinQueue);
-    EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
-    EventSubscriber.UnsubscribeFromEvent("RoomList", OnRoomList);
-
-    EventRegistry.UnregisterEvent("RoomList");
-    EventRegistry.UnregisterEvent("OnRoomCheck");
-    EventRegistry.UnregisterEvent("OnDisconnectFromLobby");
-    EventRegistry.UnregisterEvent("OnDataReceived");
-  }
-}
+*/

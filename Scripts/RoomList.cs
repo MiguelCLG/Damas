@@ -7,7 +7,7 @@ public class RoomList : Panel
     [Export] PackedScene joinButtonScene;
     public override void _Ready()
     {
-        EventSubscriber.SubscribeToEvent("OnRoomCheck", OnDataReceived);
+        //EventSubscriber.SubscribeToEvent("OnRoomCheck", OnDataReceived);
     }
 
     private void OnDataReceived(object sender, object args)
@@ -18,7 +18,7 @@ public class RoomList : Panel
             foreach (RoomInfo room in roomInfoList.room_aggregate)
             {
                 GridContainer container = GetNode<GridContainer>("%GridContainer");
-                if (container.GetNode<PanelContainer>($"Room-{room.aggregate_value}") != null)
+                if (container.HasNode($"Room-{room.aggregate_value}"))
                 {
                     container.GetNode<PanelContainer>($"Room-{room.aggregate_value}").GetNode<Label>("%CellLabel").Text = room.aggregate_value.ToString();
                     container.GetNode<PanelContainer>($"Cell-{room.aggregate_value}").GetNode<Label>("%CellLabel").Text = room.count.ToString();
@@ -34,12 +34,11 @@ public class RoomList : Panel
                     container.AddChild(countCell);
                     agregateCell.GetNode<Label>("%CellLabel").Text = room.aggregate_value.ToString();
                     countCell.GetNode<Label>("%CellLabel").Text = room.count.ToString();
-                    AddChild(agregateCell);
                     // Criar o botão
                     var joinButton = joinButtonScene.Instance();
-
                     //TODO: Connectar join button para um evento que manda o room e da join
                     container.AddChild(joinButton);
+                    joinButton.Connect("pressed", this, nameof(OnJoinRoom), new Godot.Collections.Array() { room.aggregate_value });
                 }
 
 
@@ -47,6 +46,11 @@ public class RoomList : Panel
         }
     }
 
+    public void OnJoinRoom(int bidValue)
+    {
+
+        EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(bidValue);
+    }
 
     public void OnClose()
     {

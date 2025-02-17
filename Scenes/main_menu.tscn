@@ -84,13 +84,13 @@ margin_bottom = 536.0
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_right = 960.0
-margin_bottom = 72.0
+margin_bottom = 87.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
 margin_right = 478.0
-margin_bottom = 72.0
+margin_bottom = 87.0
 size_flags_horizontal = 3
 
 [node name="PlayerName" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
@@ -128,7 +128,7 @@ valign = 3
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
 margin_left = 482.0
 margin_right = 960.0
-margin_bottom = 72.0
+margin_bottom = 87.0
 size_flags_horizontal = 11
 
 [node name="TextureButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
@@ -140,9 +140,9 @@ mouse_default_cursor_shape = 2
 theme_type_variation = "SettingsButton"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_top = 76.0
+margin_top = 91.0
 margin_right = 960.0
-margin_bottom = 250.0
+margin_bottom = 300.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.38
 texture = ExtResource( 5 )
@@ -150,20 +150,19 @@ expand = true
 stretch_mode = 6
 
 [node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_left = 357.0
-margin_top = 254.0
-margin_right = 602.0
+margin_left = 374.0
+margin_top = 304.0
+margin_right = 585.0
 margin_bottom = 536.0
 size_flags_horizontal = 4
-size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 theme_type_variation = "ButtonsContainer"
 
 [node name="Control2" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 235.0
-margin_bottom = 268.0
+margin_right = 201.0
+margin_bottom = 218.0
 size_flags_horizontal = 7
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
@@ -171,14 +170,14 @@ custom_constants/separation = 0
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
-margin_right = 225.0
+margin_right = 191.0
 margin_bottom = 92.0
 size_flags_vertical = 3
 alignment = 1
 
 [node name="LeftArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
 margin_top = 19.0
-margin_right = 44.0
+margin_right = 27.0
 margin_bottom = 73.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -192,8 +191,8 @@ enabled_focus_mode = 0
 align = 2
 
 [node name="Chips" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
-margin_left = 48.0
-margin_right = 176.0
+margin_left = 31.0
+margin_right = 159.0
 margin_bottom = 92.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -206,9 +205,9 @@ icon = ExtResource( 4 )
 icon_align = 1
 
 [node name="RightArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
-margin_left = 180.0
+margin_left = 163.0
 margin_top = 19.0
-margin_right = 225.0
+margin_right = 191.0
 margin_bottom = 73.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -222,13 +221,13 @@ enabled_focus_mode = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
 margin_top = 92.0
-margin_right = 225.0
-margin_bottom = 114.0
+margin_right = 191.0
+margin_bottom = 136.0
 alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer2"]
-margin_right = 44.0
-margin_bottom = 22.0
+margin_right = 37.0
+margin_bottom = 44.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 texture = ExtResource( 9 )
@@ -237,9 +236,9 @@ stretch_mode = 6
 
 [node name="WaitingQueueLabel" type="RichTextLabel" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer2"]
 unique_name_in_owner = true
-margin_left = 48.0
-margin_right = 225.0
-margin_bottom = 22.0
+margin_left = 41.0
+margin_right = 191.0
+margin_bottom = 44.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 size_flags_stretch_ratio = 4.0
@@ -248,9 +247,9 @@ text = "Aguardando Dados..."
 fit_content_height = true
 
 [node name="StartButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
-margin_top = 114.0
-margin_right = 225.0
-margin_bottom = 186.0
+margin_top = 136.0
+margin_right = 191.0
+margin_bottom = 208.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 5
@@ -258,18 +257,6 @@ size_flags_vertical = 10
 theme_type_variation = "JogarButton"
 enabled_focus_mode = 0
 text = "JOGAR"
-
-[node name="SalasButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
-margin_top = 186.0
-margin_right = 225.0
-margin_bottom = 258.0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-size_flags_horizontal = 4
-size_flags_vertical = 2
-theme_type_variation = "SalasButton"
-enabled_focus_mode = 0
-text = "SALAS"
 
 [node name="RoomPopup" parent="." instance=ExtResource( 11 )]
 visible = false
@@ -279,4 +266,3 @@ unique_name_in_owner = true
 visible = false
 
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/StartButton" to="." method="OnStartGame"]
-[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/SalasButton" to="." method="OnSalasClick"]

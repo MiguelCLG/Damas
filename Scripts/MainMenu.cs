@@ -54,11 +54,11 @@ public partial class MainMenu : Control
   }
   public void OnSalasClick()
   {
-    EventRegistry.GetEventPublisher("RoomList").RaiseEvent(this);
+    EventRegistry.GetEventPublisher("OnRoomList").RaiseEvent(this);
   }
   public void OnStartGame()
   {
-    EventRegistry.GetEventPublisher("JoinQueue").RaiseEvent(this);
+    EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(this);
     //sceneLoaders.NextScene();
   }
 }

@@ -33,6 +33,7 @@ public class RoomPopup : Panel
         WaitingForDataContainer = GetNode<PanelContainer>("%WaitingForDataContainer");
 
         EventSubscriber.SubscribeToEvent("OnDataReceived", OnDataReceived);
+        EventSubscriber.SubscribeToEvent("OnPairedReceived", OnPairedReceived);
 
         WaitingForDataContainer.Visible = true;
         RoomContainer.Visible = false;
@@ -74,6 +75,10 @@ public class RoomPopup : Panel
         BidValue.Text = value;
     }
 
+    public void OnPairedReceived(object sender, object args)
+    {
+        GD.Print(args);
+    }
     public void OnDataReceived(object sender, object args)
     {
         if (args is LobbyInfo lobbyInfo)
@@ -90,5 +95,11 @@ public class RoomPopup : Panel
     {
         Visible = false;
         EventRegistry.GetEventPublisher("OnDisconnectFromLobby").RaiseEvent(this);
+    }
+
+    public override void _ExitTree()
+    {
+        EventSubscriber.UnsubscribeFromEvent("OnDataReceived", OnDataReceived);
+        EventSubscriber.UnsubscribeFromEvent("OnPairedReceived", OnPairedReceived);
     }
 }
