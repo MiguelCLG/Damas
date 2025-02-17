@@ -17,21 +17,31 @@ public class RoomList : Panel
         {
             foreach (RoomInfo room in roomInfoList.room_aggregate)
             {
-                // Criar as cells
-                var agregateCell = cellScene.Instance();
-                var countCell = cellScene.Instance();
-                GridContainer container = agregateCell.GetNode<GridContainer>("%GridContainer");
-                container.AddChild(agregateCell);
-                container.AddChild(countCell);
-                agregateCell.GetNode<Label>("%CellLabel").Text = room.agregate_value.ToString();
-                countCell.GetNode<Label>("%CellLabel").Text = room.count.ToString();
-                AddChild(agregateCell);
+                GridContainer container = GetNode<GridContainer>("%GridContainer");
+                if (container.GetNode<PanelContainer>($"Room-{room.aggregate_value}") != null)
+                {
+                    container.GetNode<PanelContainer>($"Room-{room.aggregate_value}").GetNode<Label>("%CellLabel").Text = room.aggregate_value.ToString();
+                    container.GetNode<PanelContainer>($"Cell-{room.aggregate_value}").GetNode<Label>("%CellLabel").Text = room.count.ToString();
+                }
+                else
+                {
+                    // Criar as cells
+                    var agregateCell = cellScene.Instance<PanelContainer>();
+                    var countCell = cellScene.Instance<PanelContainer>();
+                    agregateCell.Name = $"Room-{room.aggregate_value}";
+                    countCell.Name = $"Cell-{room.aggregate_value}";
+                    container.AddChild(agregateCell);
+                    container.AddChild(countCell);
+                    agregateCell.GetNode<Label>("%CellLabel").Text = room.aggregate_value.ToString();
+                    countCell.GetNode<Label>("%CellLabel").Text = room.count.ToString();
+                    AddChild(agregateCell);
+                    // Criar o botão
+                    var joinButton = joinButtonScene.Instance();
 
-                // Criar o botão
-                var joinButton = joinButtonScene.Instance();
+                    //TODO: Connectar join button para um evento que manda o room e da join
+                    container.AddChild(joinButton);
+                }
 
-                //TODO: Connectar join button para um evento que manda o room e da join
-                container.AddChild(joinButton);
 
             }
         }

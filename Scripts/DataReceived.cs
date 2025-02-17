@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 
@@ -37,7 +38,7 @@ public class LobbyInfo : IValue
 }
 public class RoomInfo : IValue
 {
-  public float agregate_value;
+  public float aggregate_value;
   public int count;
 }
 
@@ -45,7 +46,7 @@ public class RoomInfoList : IValue
 {
   public int players_waiting;
 
-  public Array<RoomInfo> room_aggregate;
+  public List<RoomInfo> room_aggregate;
 }
 
 public class DataReceived

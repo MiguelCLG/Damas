@@ -1,8 +1,9 @@
 
+using Newtonsoft.Json;
 using System.Text;
-using System.Text.RegularExpressions;
 using Godot;
 using Godot.Collections;
+using System.Collections.Generic;
 public partial class MultiplayerPeerConnection : Node
 {
   WebSocketClient client;
@@ -35,12 +36,12 @@ public partial class MultiplayerPeerConnection : Node
   }
   public override void _Process(float delta)
   {
-	  client.Poll();
+    client.Poll();
   }
 
   public void OnConnectionClosed(bool was_clean_close = false)
   {
-	  GD.Print("Connection Closed.", was_clean_close);
+    GD.Print("Connection Closed.", was_clean_close);
   }
 
   public void OnConnect(string protocol)
@@ -50,6 +51,7 @@ public partial class MultiplayerPeerConnection : Node
   public void OnData()
   {
     string jsonString = client.GetPeer(1).GetPacket().GetStringFromUTF8();
+
     //var cleanJson = Regex.Unescape(jsonString);
     JSONParseResult parsedObject = JSON.Parse(jsonString);
     GD.Print($"Data Received: {jsonString}");
@@ -93,16 +95,16 @@ public partial class MultiplayerPeerConnection : Node
           case Commands.move_piece:
             break;
           case Commands.room_info:
-            GetRoomList(dict);
+            // GetRoomList((string)dict["value"]);
             break;
           case Commands.game_info:
-            //GetRoomList(dict);
+            GetRoomList(dict["value"] as Dictionary);
             break;
         }
       }
       catch (System.Exception e)
       {
-        GD.PrintErr("[Server Command Parser] - "+e.Message);
+        GD.PrintErr("[Server Command Parser] - " + e.Message);
       }
     }
     else if (parsedObject.Result is Array)
@@ -131,25 +133,9 @@ public partial class MultiplayerPeerConnection : Node
   }
   private void GetRoomList(Dictionary dict)
   {
-    if (dict.Contains("value") && dict["value"] is Dictionary data)
-    {
-      RoomInfoList roomInfoList = new RoomInfoList();
-      Array<RoomInfo> roomsInformation = new Array<RoomInfo>();
-      roomInfoList.players_waiting = (int)data["players_waiting"];
-      Array<Dictionary> d = data["room_agregate"] as Array<Dictionary>;
-      foreach (var room in d)
-      {
-        if (room == null)
-          continue;
-        RoomInfo ri = new RoomInfo();
-        ri.agregate_value = (float)room["agregate_value"];
-        ri.count = (int)room["count"];
-        roomsInformation.Add(ri);
-      }
-      roomInfoList.room_aggregate = roomsInformation;
+    RoomInfoList roomInfoList = JsonConvert.DeserializeObject<RoomInfoList>(dict.ToString());
+    EventRegistry.GetEventPublisher("OnRoomCheck").RaiseEvent(roomInfoList);
 
-      EventRegistry.GetEventPublisher("OnRoomCheck").RaiseEvent(roomInfoList);
-    }
   }
 
   void UpdateWaitingQueue(Dictionary dict)
@@ -173,8 +159,8 @@ public partial class MultiplayerPeerConnection : Node
     {
       playerInfo = new PlayerInfo
       {
-      player_name = (string)playerInfoDict["player_name"],
-      money = (float)playerInfoDict["money"]
+        player_name = (string)playerInfoDict["player_name"],
+        money = (float)playerInfoDict["money"]
       };
     }
     mainMenu.SetPlayerName(playerInfo.player_name);
@@ -221,7 +207,7 @@ public partial class MultiplayerPeerConnection : Node
   }
 
   public override void _ExitTree()
-    {
+  {
     client.DisconnectFromHost(200, "Exited the game, ending connection.");
     EventSubscriber.UnsubscribeFromEvent("JoinQueue", OnJoinQueue);
     EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
