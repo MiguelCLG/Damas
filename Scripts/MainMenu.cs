@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Godot.Collections;
 using static GameState;
@@ -25,6 +26,19 @@ public partial class MainMenu : Control
     PlayerMoney = GetNode<Label>("%PlayerMoney");
     WaitingQueueLabel = GetNode<RichTextLabel>("%WaitingQueueLabel");
     BidTexture = GetNode<TextureRect>("%BidTexture");
+
+    EventSubscriber.SubscribeToEvent("OnGameStarting", OnGameStarting);
+  }
+
+  private void OnGameStarting(object sender, object args)
+  {
+    LoadNextScene();
+
+  }
+
+  private void LoadNextScene()
+  {
+    sceneLoaders.NextScene();
   }
 
   public void OnArrowClicked(int direction)
@@ -72,7 +86,6 @@ public partial class MainMenu : Control
   public void OnStartGame()
   {
     EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(betValue);
-    //sceneLoaders.NextScene();
   }
 }
 

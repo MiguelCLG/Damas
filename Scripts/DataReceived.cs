@@ -13,7 +13,8 @@ public enum Commands
   queue,
   queue_confirmation,
   message,
-  opponent_ready
+  opponent_ready,
+  game_starting,
 }
 
 public enum MessageType

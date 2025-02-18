@@ -86,6 +86,9 @@ public partial class MultiplayerPeerConnection : Node
             break;
           case Commands.game_info:
             break;
+          case Commands.game_starting:
+            EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(null);
+            break;
           case Commands.queue_confirmation:
             // vem um boolean que diz se conseguiu entrar na fila
             break;
