@@ -6,14 +6,22 @@ public enum Commands
   create_room,
   room_created,
   paired,
-  ready_room,
+  ready_queue,
   join_room,
   leave_room,
   game_info,
   queue,
   queue_confirmation,
+  message,
+  opponent_ready
 }
 
+public enum MessageType
+{
+  info,
+  warning,
+  error
+}
 
 public class PlayerInfo
 {
@@ -51,6 +59,17 @@ public class PairedValue
   public int color; // 0 - black | 1 - white
   public string opponent;
   public string room_id;
+}
+
+public class OpponentReady
+{
+  public bool is_ready;
+}
+
+public class Message
+{
+  public MessageType message_type;
+  public string message;
 }
 
 public class DataReceived<T>

@@ -1,6 +1,4 @@
 using Godot;
-using Godot.Collections;
-using System;
 
 public class RoomPopup : Panel
 {
@@ -13,6 +11,7 @@ public class RoomPopup : Panel
     private TextureRect PlayerTexture;
     private TextureRect OpponentTexture;
     private Button ReadyButton;
+    private Button OpponentReadyButton;
     private TextureRect BidTextureRect;
     private Label BidValue;
     private PanelContainer RoomContainer;
@@ -29,11 +28,13 @@ public class RoomPopup : Panel
         PlayerTexture = GetNode<TextureRect>("%PlayerTexture");
         OpponentTexture = GetNode<TextureRect>("%OpponentTexture");
         ReadyButton = GetNode<Button>("%PlayerReadyButton");
+        OpponentReadyButton = GetNode<Button>("%OpponentReadyButton");
         RoomContainer = GetNode<PanelContainer>("%RoomContainer");
         WaitingForDataContainer = GetNode<PanelContainer>("%WaitingForDataContainer");
 
         EventSubscriber.SubscribeToEvent("OnDataReceived", OnDataReceived);
         EventSubscriber.SubscribeToEvent("OnPairedReceived", OnPairedReceived);
+        EventSubscriber.SubscribeToEvent("OnOpponentReadyReceived", OnOpponentReadyReceived);
 
         WaitingForDataContainer.Visible = true;
         RoomContainer.Visible = false;
@@ -44,6 +45,9 @@ public class RoomPopup : Panel
         ReadyButton.AddStyleboxOverride("normal", buttonPressed ? ReadyButtonBackground : NotReadyButtonBackground);
         ReadyButton.AddStyleboxOverride("hover", buttonPressed ? ReadyButtonBackground : NotReadyButtonBackground);
         ReadyButton.AddStyleboxOverride("pressed", buttonPressed ? ReadyButtonBackground : NotReadyButtonBackground);
+
+        EventRegistry.GetEventPublisher("OnReadyButtonPressed").RaiseEvent(buttonPressed);
+
     }
     public void SetPlayerName(string name)
     {
@@ -77,7 +81,25 @@ public class RoomPopup : Panel
 
     public void OnPairedReceived(object sender, object args)
     {
-        GD.Print(args);
+        if (args is PairedValue pairedValue)
+        {
+            GameState.currentGameColor = pairedValue.color == 0 ? BoardColors.Black : BoardColors.White;
+            GameState.opponentName = pairedValue.opponent;
+            GameState.room_id = pairedValue.room_id;
+
+            SetPlayerName(GameState.playerName);
+            SetOponentName(GameState.opponentName);
+            SetPlayerTexture(GameState.currentGameColor == BoardColors.White ? WhiteCheckersTexture : BlackCheckersTexture);
+            SetOponentTexture(GameState.currentGameColor == BoardColors.White ? BlackCheckersTexture : WhiteCheckersTexture);
+            SetBidValue(GameState.betValue.ToString());
+        }
+        WaitingForDataContainer.Visible = false;
+        RoomContainer.Visible = true;
+    }
+    public void OnOpponentReadyReceived(object sender, object args)
+    {
+        if (args is OpponentReady opponentReady)
+            OpponentReadyButton.AddStyleboxOverride("disabled", opponentReady.is_ready ? ReadyButtonBackground : NotReadyButtonBackground);
     }
     public void OnDataReceived(object sender, object args)
     {
@@ -93,6 +115,8 @@ public class RoomPopup : Panel
 
     public void OnClose()
     {
+        WaitingForDataContainer.Visible = true;
+        RoomContainer.Visible = false;
         Visible = false;
         EventRegistry.GetEventPublisher("OnDisconnectFromLobby").RaiseEvent(this);
     }
@@ -101,5 +125,6 @@ public class RoomPopup : Panel
     {
         EventSubscriber.UnsubscribeFromEvent("OnDataReceived", OnDataReceived);
         EventSubscriber.UnsubscribeFromEvent("OnPairedReceived", OnPairedReceived);
+        EventSubscriber.UnsubscribeFromEvent("OnOpponentReadyReceived", OnOpponentReadyReceived);
     }
 }

@@ -267,24 +267,22 @@ size_flags_vertical = 3
 
 [node name="Panel2" type="Panel" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer2/Container3"]
 margin_right = 181.0
-margin_bottom = 182.0
+margin_bottom = 136.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
 custom_styles/panel = SubResource( 13 )
 
 [node name="BidTexture" type="TextureRect" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer2/Container3/Panel2"]
 unique_name_in_owner = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-size_flags_vertical = 3
 texture = ExtResource( 7 )
 expand = true
 stretch_mode = 6
 
 [node name="BidValue" type="Label" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer2/Container3"]
 unique_name_in_owner = true
-margin_top = 186.0
+margin_top = 140.0
 margin_right = 181.0
 margin_bottom = 277.0
 size_flags_horizontal = 3
@@ -342,6 +340,7 @@ autowrap = true
 
 [node name="OpponentReadyButton" type="Button" parent="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer3/Container2"]
 pause_mode = 2
+unique_name_in_owner = true
 margin_top = 221.0
 margin_right = 183.0
 margin_bottom = 293.0

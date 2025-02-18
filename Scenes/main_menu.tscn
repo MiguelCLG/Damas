@@ -1,9 +1,9 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.cs" type="Script" id=1]
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=2]
 [ext_resource path="res://Assets/ui_assets/balance.webp" type="Texture" id=3]
-[ext_resource path="res://Assets/ui_assets/transparent-128x128.png" type="Texture" id=4]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/10.webp" type="Texture" id=4]
 [ext_resource path="res://Assets/FirstScreens Assets/Batalha Damas Logo.webp" type="Texture" id=5]
 [ext_resource path="res://Assets/FirstScreens Assets/Background2.webp" type="Texture" id=6]
 [ext_resource path="res://Assets/ui_assets/right.webp" type="Texture" id=7]
@@ -11,7 +11,13 @@
 [ext_resource path="res://Assets/ui_assets/users-icon.png" type="Texture" id=9]
 [ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=10]
 [ext_resource path="res://Scenes/room_popup.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Scenes/room_list.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/1.webp" type="Texture" id=12]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/100.webp" type="Texture" id=13]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/25.webp" type="Texture" id=14]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/5.webp" type="Texture" id=15]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/05.webp" type="Texture" id=16]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/3.webp" type="Texture" id=17]
+[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=18]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -49,7 +55,8 @@ margin_top = 10.0
 margin_bottom = 12.0
 modulate_color = Color( 1, 1, 1, 0.784314 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=7]
+size = 14
 font_data = ExtResource( 10 )
 
 [node name="MainMenu" type="Control"]
@@ -57,6 +64,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 2 )
 script = ExtResource( 1 )
+bidTextures = [ ExtResource( 16 ), ExtResource( 12 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 4 ), ExtResource( 14 ), ExtResource( 18 ), ExtResource( 13 ) ]
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 anchor_right = 1.0
@@ -84,13 +92,13 @@ margin_bottom = 536.0
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_right = 960.0
-margin_bottom = 87.0
+margin_bottom = 98.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
 margin_right = 478.0
-margin_bottom = 87.0
+margin_bottom = 98.0
 size_flags_horizontal = 3
 
 [node name="PlayerName" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
@@ -128,7 +136,7 @@ valign = 3
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
 margin_left = 482.0
 margin_right = 960.0
-margin_bottom = 87.0
+margin_bottom = 98.0
 size_flags_horizontal = 11
 
 [node name="TextureButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
@@ -140,9 +148,9 @@ mouse_default_cursor_shape = 2
 theme_type_variation = "SettingsButton"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_top = 91.0
+margin_top = 102.0
 margin_right = 960.0
-margin_bottom = 300.0
+margin_bottom = 337.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.38
 texture = ExtResource( 5 )
@@ -151,7 +159,7 @@ stretch_mode = 6
 
 [node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_left = 374.0
-margin_top = 304.0
+margin_top = 341.0
 margin_right = 585.0
 margin_bottom = 536.0
 size_flags_horizontal = 4
@@ -162,7 +170,7 @@ theme_type_variation = "ButtonsContainer"
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 201.0
-margin_bottom = 218.0
+margin_bottom = 181.0
 size_flags_horizontal = 7
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
@@ -171,14 +179,14 @@ alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
 margin_right = 191.0
-margin_bottom = 92.0
+margin_bottom = 80.0
 size_flags_vertical = 3
 alignment = 1
 
 [node name="LeftArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
-margin_top = 19.0
-margin_right = 27.0
-margin_bottom = 73.0
+margin_top = 13.0
+margin_right = 51.0
+margin_bottom = 67.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 3
@@ -190,25 +198,22 @@ custom_styles/normal = SubResource( 2 )
 enabled_focus_mode = 0
 align = 2
 
-[node name="Chips" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
-margin_left = 31.0
-margin_right = 159.0
-margin_bottom = 92.0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-size_flags_stretch_ratio = 4.0
-theme_type_variation = "ChipsButton"
-enabled_focus_mode = 0
-icon = ExtResource( 4 )
-icon_align = 1
+[node name="BidTexture" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 55.0
+margin_right = 135.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 3
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
 
 [node name="RightArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
-margin_left = 163.0
-margin_top = 19.0
+margin_left = 139.0
+margin_top = 13.0
 margin_right = 191.0
-margin_bottom = 73.0
+margin_bottom = 67.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 3
@@ -220,14 +225,14 @@ custom_styles/normal = SubResource( 5 )
 enabled_focus_mode = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
-margin_top = 92.0
+margin_top = 80.0
 margin_right = 191.0
-margin_bottom = 136.0
+margin_bottom = 99.0
 alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer2"]
 margin_right = 37.0
-margin_bottom = 44.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 texture = ExtResource( 9 )
@@ -238,18 +243,18 @@ stretch_mode = 6
 unique_name_in_owner = true
 margin_left = 41.0
 margin_right = 191.0
-margin_bottom = 44.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 size_flags_stretch_ratio = 4.0
-custom_fonts/normal_font = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 7 )
 text = "Aguardando Dados..."
 fit_content_height = true
 
 [node name="StartButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
-margin_top = 136.0
+margin_top = 99.0
 margin_right = 191.0
-margin_bottom = 208.0
+margin_bottom = 171.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 5
@@ -261,8 +266,6 @@ text = "JOGAR"
 [node name="RoomPopup" parent="." instance=ExtResource( 11 )]
 visible = false
 
-[node name="RoomList" parent="." instance=ExtResource( 12 )]
-unique_name_in_owner = true
-visible = false
-
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/LeftArrow" to="." method="OnArrowClicked" binds= [ 0 ]]
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/RightArrow" to="." method="OnArrowClicked" binds= [ 1 ]]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/StartButton" to="." method="OnStartGame"]
