@@ -5,7 +5,6 @@ using static Utils;
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
-
   private Checker SelectedChecker = null;
   private Checker CheckerToCapture = null;
   private BoardColors CurrentTurn = BoardColors.Black;
@@ -19,7 +18,6 @@ public partial class GameplaySystem : Node2D
   private ProgressBar WhitePlayerTimer;
   private Panel BlackPlayerPortraitBackground;
   private Panel WhitePlayerPortraitBackground;
-
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
 
@@ -148,6 +146,11 @@ public partial class GameplaySystem : Node2D
 
   private void GenerateCheckers()
   {
+
+    // TODO:
+    // Get boardscheme from game state
+    // Create checkers based on the board scheme and add the id data with them
+
     // Defined the board scheme for an easier way to spawn the checkers (1 = black checker, 2 = white checker, 0 = skip)
 
     int[,] boardScheme = new int[BoardSize, BoardSize]
@@ -163,15 +166,15 @@ public partial class GameplaySystem : Node2D
         };
 
     /*  int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
-     {
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 1, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 2, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 }
+    {
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 1, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 2, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 }
      }; */
     /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
     {

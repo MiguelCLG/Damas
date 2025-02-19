@@ -5,6 +5,7 @@ using Godot;
 using Godot.Collections;
 using Newtonsoft.Json.Linq;
 using System;
+using static GameState;
 public partial class MultiplayerPeerConnection : Node
 {
   WebSocketClient client;
@@ -30,8 +31,11 @@ public partial class MultiplayerPeerConnection : Node
     EventSubscriber.SubscribeToEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
     EventSubscriber.SubscribeToEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 
-    //var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token123&sessionid=session1&currency=USD");
-    var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
+    player = new GamePlayer();
+    player.token = "token123";
+    player.session_id = "session1";
+    var err = client.ConnectToUrl($"ws://localhost:8080/ws?token={player.token}&sessionid={player.session_id}&currency=USD");
+    //var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
     if (err != Error.Ok)
     {
       GD.Print("Unable To Connect: " + err);
@@ -80,6 +84,7 @@ public partial class MultiplayerPeerConnection : Node
           case Commands.leave_room:
             break;
           case Commands.paired:
+            player.color = parsedObject.value.ToObject<PairedValue>().color == 0 ? BoardColors.Black.ToString() : BoardColors.White.ToString();
             EventRegistry.GetEventPublisher("OnPairedReceived").RaiseEvent(parsedObject.value.ToObject<PairedValue>());
             break;
           case Commands.join_room:
@@ -132,7 +137,9 @@ public partial class MultiplayerPeerConnection : Node
 
   private void ConnectedCommandReceived(PlayerInfo playerInfo)
   {
-    GameState.playerName = playerInfo.player_name;
+    player.name = playerInfo.player_name;
+    player.id = playerInfo.player_id;
+    playerName = playerInfo.player_name;
     mainMenu.SetPlayerName(playerInfo.player_name);
     mainMenu.SetPlayerMoney(playerInfo.money.ToString());
   }

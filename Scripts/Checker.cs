@@ -3,6 +3,7 @@ using Godot.Collections;
 using static Utils;
 public partial class Checker : Control
 {
+  private string id;
   [Export] public BoardColors Color { get; set; }
   [Export] public Vector2 BoardPosition { get; set; } = new Vector2(4, 3); // The position on the board (goes from v(0,0) to v(7,7)
   [Export] public Array<Vector2> MovementSpaces { get; set; } = new Array<Vector2>(); // Tracker array for possible movement spaces
@@ -27,7 +28,8 @@ public partial class Checker : Control
     RectMinSize = new Vector2(CheckerSize, CheckerSize);
     texture.RectMinSize = new Vector2(CheckerSize, CheckerSize);
   }
-
+  public string GetId() { return id; }
+  public void SetId(string id) { this.id = id; }
   public void SetCheckerColor(BoardColors color)
   {
     Color = color;
@@ -38,10 +40,7 @@ public partial class Checker : Control
     selectedPanel.Visible = false;
     requiredPanel.Visible = false;
     animationPlayer.Stop();
-
-
   }
-
   // Selecting the checker will change its texture so we can visually see it is selected
   public void SelectChecker()
   {
