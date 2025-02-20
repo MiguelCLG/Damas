@@ -1,10 +1,11 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
-[ext_resource path="res://Scenes/board.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/tile.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/GameplaySystem.cs" type="Script" id=3]
 [ext_resource path="res://Scenes/checker.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/game-over-menu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/Board.cs" type="Script" id=6]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Assets/in_game_assets/retangle.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/in_game_assets/timerentagle.webp" type="Texture" id=9]
@@ -275,7 +276,7 @@ margin_right = 992.0
 margin_bottom = 198.0
 mouse_filter = 2
 
-[node name="Board" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer" instance=ExtResource( 2 )]
+[node name="Board" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
 unique_name_in_owner = true
 anchor_left = 0.5
 anchor_top = 0.5
@@ -286,6 +287,19 @@ margin_top = -209.5
 margin_right = 193.5
 margin_bottom = 171.5
 rect_pivot_offset = Vector2( -0.5, 0.5 )
+mouse_filter = 2
+script = ExtResource( 6 )
+tileScene = ExtResource( 2 )
+
+[node name="BoardContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/Board"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = -1
+custom_constants/hseparation = -1
+columns = 8
 
 [node name="CheckersContainer" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
 unique_name_in_owner = true

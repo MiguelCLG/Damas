@@ -1,3 +1,4 @@
+using System.Collections;
 using Godot;
 using Godot.Collections;
 using static Utils;
@@ -6,13 +7,13 @@ public partial class Board : Control
 {
   [Export] private PackedScene tileScene;
   private Array<Tile> BoardTiles { get; set; }
-  private Control BoardContainer { get; set; }
+  private GridContainer BoardContainer { get; set; }
   public bool IsCaptureMove = false;
 
   public override void _Ready()
   {
     BoardTiles = new Array<Tile>();
-    BoardContainer = GetNode<Control>("%BoardContainer");
+    BoardContainer = GetNode<GridContainer>("%BoardContainer");
   }
 
   // Function called from the GameplaySystem when all events have been registered and subscribed (Preventing a race condition)
@@ -313,7 +314,37 @@ public partial class Board : Control
   private void FillBoardTiles()
   {
     Vector2 screenSize = GetViewportRect().Size;
-    for (int i = 0; i < BoardSize; i++)
+    for (int row = 0; row < BoardSize; row++)
+    {
+      for (int col = 0; col < BoardSize; col++)
+      {
+        string tileKey = $"{(char)('A' + row)}{col + 1}";
+
+        // Create Tile and populate with ID / Name
+        var tileInstance = tileScene.Instance<Tile>();
+        tileInstance.Name = tileKey;
+        BoardContainer.AddChild(tileInstance);
+
+        // Determine the color (alternate white/black) based on position
+        bool isWhiteTile = (row + col) % 2 == 0;
+        tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
+      }
+    }
+    /* foreach (DictionaryEntry tile in GameState.board)
+    {
+      // Create Tile and populate with ID / Name
+      // Insert tile in Grid Container
+      var tileInstance = tileScene.Instance<Tile>();
+      tileInstance.Name = $"{tile.Key}";
+      GetNode<GridContainer>("%GridContainer").AddChild(tileInstance);
+      tileInstance.AddChild(new Label() { Text = $"{tile.Key}" });
+      var row = tile.Key.ToString().ToCharArray()[0];
+      var column = tile.Key.ToString().ToCharArray()[1];
+      var rowNumber = row - 'A' + 1;
+      tileInstance.SetTileColor(int.Parse(column.ToString()) % 2 == rowNumber % 2 ? BoardColors.White : BoardColors.Black);
+
+    } */
+    /* for (int i = 0; i < BoardSize; i++)
     {
       for (int j = 0; j < BoardSize; j++)
       {
@@ -334,7 +365,7 @@ public partial class Board : Control
         BoardContainer.AddChild(tile);
         tile.SetTileColor(i % 2 == j % 2 ? BoardColors.White : BoardColors.Black);
       }
-    }
+    } */
   }
 
 

@@ -83,6 +83,12 @@ public class Piece
   public string piece_id;
 }
 
+public class BoardTile
+{
+  public string name;
+  public Piece piece;
+}
+
 public class MovePieceData
 {
   public string player_id;  // The player making the move

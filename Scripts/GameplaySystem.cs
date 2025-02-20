@@ -1,3 +1,4 @@
+using System.Collections;
 using Godot;
 using Godot.Collections;
 using static Utils;
@@ -152,7 +153,26 @@ public partial class GameplaySystem : Node2D
     // Create checkers based on the board scheme and add the id data with them
 
     // Defined the board scheme for an easier way to spawn the checkers (1 = black checker, 2 = white checker, 0 = skip)
+    Hashtable boardSchemeHash = new Hashtable
+    {
+        { "A1", null },
+        { "B1", null },
+        { "C1", null },
+        { "D1", null },
+        { "E1", null },
+        { "F1", null },
+        { "G1", null },
+        { "H1", null },
 
+        { "A2", null },
+        { "B2", null },
+        { "C2", null },
+        { "D2", null },
+        { "E2", null },
+        { "F2", null },
+        { "G2", null },
+        { "H2", null },
+    };
     int[,] boardScheme = new int[BoardSize, BoardSize]
         {
             { 0, 1, 0, 0, 0, 2, 0, 2 },
