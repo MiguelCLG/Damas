@@ -137,68 +137,83 @@ public partial class Board : Control
 
   private void CheckerMovement(Checker checker, Array<Checker> checkersInPlay)
   {
-    int direction = (checker.Color == BoardColors.Black) ? 1 : -1;
+    int direction = (checker.Color == BoardColors.Black) ? -1 : 1;
 
     // setting up a diagonals vector so we can check its tiles, basically left or right and up or down (depending on the direction above)
-    Vector2[] diagonals = { new Vector2(-1, direction), new Vector2(1, direction) };
+    Vector2[] diagonals = { new Vector2(direction, -1), new Vector2(direction, 1) };
     Array<Vector2> captureMoves = new Array<Vector2>();
     Array<Vector2> regularMoves = new Array<Vector2>();
 
-    // we have only 2 directions so this loop will run 2 times
+    string tileName = checker.GetParent().Name;
+    int row = tileName[0] - 'A';
+    int column = int.Parse(tileName[1].ToString());
+
+
     foreach (var diagonal in diagonals)
     {
-      Vector2 checkPosition = checker.BoardPosition + diagonal;
+      char checkTileLetter = (char)('A' + (row + Mathf.FloorToInt(diagonal.x)));
+      int checkTileNumber = column + Mathf.FloorToInt(diagonal.y);
+      string checkTileName = checkTileLetter.ToString() + checkTileNumber.ToString();
+      var checkTile = FindTileByName(checkTileName);
+      checkTile.Select(false);
+    }
+    /*
 
-      if (IsWithinBounds(checkPosition))
-      {
-        if (IsEnemyAt(checkPosition, checker.Color, checkersInPlay))
+        // we have only 2 directions so this loop will run 2 times
+        foreach (var diagonal in diagonals)
         {
-          // Check the space behind the enemy
-          Vector2 behindEnemyPosition = checker.BoardPosition + diagonal * 2;
+          Vector2 checkPosition = checker.BoardPosition + diagonal;
 
-          // Ensure the behind position is within bounds and empty
-          // if so, we add it to the capture moves
-          if (IsWithinBounds(behindEnemyPosition) && IsSpaceEmpty(behindEnemyPosition, checkersInPlay))
+          if (IsWithinBounds(checkPosition))
           {
-            captureMoves.Add(behindEnemyPosition);
+            if (IsEnemyAt(checkPosition, checker.Color, checkersInPlay))
+            {
+              // Check the space behind the enemy
+              Vector2 behindEnemyPosition = checker.BoardPosition + diagonal * 2;
+
+              // Ensure the behind position is within bounds and empty
+              // if so, we add it to the capture moves
+              if (IsWithinBounds(behindEnemyPosition) && IsSpaceEmpty(behindEnemyPosition, checkersInPlay))
+              {
+                captureMoves.Add(behindEnemyPosition);
+              }
+            }
+            else if (IsSpaceEmpty(checkPosition, checkersInPlay))
+            {
+              regularMoves.Add(checkPosition);
+            }
           }
         }
-        else if (IsSpaceEmpty(checkPosition, checkersInPlay))
-        {
-          regularMoves.Add(checkPosition);
-        }
-      }
-    }
 
-    // Prioritize capture moves over regular moves
-    if (captureMoves.Count > 0)
-    {
-      foreach (var captureMove in captureMoves)
-      {
-        foreach (Tile tile in BoardTiles)
+        // Prioritize capture moves over regular moves
+        if (captureMoves.Count > 0)
         {
-          if (tile.TilePosition == captureMove)
+          foreach (var captureMove in captureMoves)
           {
-            tile.Select(true); // Highlight the tile for capture
+            foreach (Tile tile in BoardTiles)
+            {
+              if (tile.TilePosition == captureMove)
+              {
+                tile.Select(true); // Highlight the tile for capture
+              }
+            }
           }
         }
-      }
-    }
-    else // If no capture moves are available, highlight regular moves
-    {
-      foreach (var regularMove in regularMoves)
-      {
-        foreach (Tile tile in BoardTiles)
+        else // If no capture moves are available, highlight regular moves
         {
-          if (tile.TilePosition == regularMove)
+          foreach (var regularMove in regularMoves)
           {
-            tile.Select(false); // Highlight the tile for regular move
+            foreach (Tile tile in BoardTiles)
+            {
+              if (tile.TilePosition == regularMove)
+              {
+                tile.Select(false); // Highlight the tile for regular move
+              }
+            }
           }
         }
-      }
-    }
-    IsCaptureMove = captureMoves.Count > 0;
-    checker.MovementSpaces = IsCaptureMove ? captureMoves : regularMoves;
+        IsCaptureMove = captureMoves.Count > 0;
+        checker.MovementSpaces = IsCaptureMove ? captureMoves : regularMoves; */
   }
 
   private void KingMovement(Checker checker, Array<Checker> checkersInPlay)
@@ -303,32 +318,21 @@ public partial class Board : Control
     {
       for (int row = 0; row < BoardSize; row++)
       {
-        string tileKey = $"{(char)('A' + row)}{col + 1}";
-
+        string tileKey = $"{(char)('A' + col)}{row + 1}";
         // Create Tile and populate with ID / Name
         var tileInstance = tileScene.Instance<Tile>();
         tileInstance.Name = tileKey;
+        tileInstance.TilePosition = new Vector2(col, row);
         BoardContainer.AddChild(tileInstance);
 
         // Determine the color (alternate white/black) based on position
-        bool isWhiteTile = (row + col) % 2 == 0;
+        bool isWhiteTile = (row + col) % 2 == 1;
         tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
+        BoardTiles.Add(tileInstance);
+
       }
     }
-    /* foreach (DictionaryEntry tile in GameState.board)
-    {
-      // Create Tile and populate with ID / Name
-      // Insert tile in Grid Container
-      var tileInstance = tileScene.Instance<Tile>();
-      tileInstance.Name = $"{tile.Key}";
-      GetNode<GridContainer>("%GridContainer").AddChild(tileInstance);
-      tileInstance.AddChild(new Label() { Text = $"{tile.Key}" });
-      var row = tile.Key.ToString().ToCharArray()[0];
-      var column = tile.Key.ToString().ToCharArray()[1];
-      var rowNumber = row - 'A' + 1;
-      tileInstance.SetTileColor(int.Parse(column.ToString()) % 2 == rowNumber % 2 ? BoardColors.White : BoardColors.Black);
 
-    } */
     /* for (int i = 0; i < BoardSize; i++)
     {
       for (int j = 0; j < BoardSize; j++)

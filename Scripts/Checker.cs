@@ -25,8 +25,6 @@ public partial class Checker : Control
     animationPlayer = GetNode<AnimationPlayer>("%AnimationPlayer");
     selectedPanel.Visible = false;
     requiredPanel.Visible = false;
-    RectMinSize = new Vector2(CheckerSize, CheckerSize);
-    texture.RectMinSize = new Vector2(CheckerSize, CheckerSize);
   }
   public string GetId() { return id; }
   public void SetId(string id) { this.id = id; }
@@ -74,10 +72,11 @@ public partial class Checker : Control
   }
 
   // There are no animations for movement as of now, so we just change the position
-  public void Move(Vector2 newPosition, Vector2 newBoardPosition)
+  public void Move(Tile newParentTile, Vector2 newBoardPosition)
   {
     BoardPosition = newBoardPosition;
-    RectPosition = newPosition;
+    GetParent().RemoveChild(this);
+    newParentTile.AddChild(this);
   }
   public void OnCheckerClicked()
   {

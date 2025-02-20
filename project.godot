@@ -21,6 +21,8 @@ SceneLoaders="*res://Scripts/SceneLoaders.cs"
 
 [display]
 
+window/size/width=467
+window/size/height=867
 window/handheld/orientation="sensor"
 window/stretch/mode="2d"
 window/stretch/aspect="expand"

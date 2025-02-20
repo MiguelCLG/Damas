@@ -122,10 +122,6 @@ public partial class GameplaySystem : Node2D
   private void GenerateCheckers()
   {
 
-    // TODO:
-    // Get boardscheme from game state
-    // Create checkers based on the board scheme and add the id data with them
-
     foreach (DictionaryEntry pair in initialBoard)
     {
       if (pair.Value == null) continue;
@@ -139,6 +135,7 @@ public partial class GameplaySystem : Node2D
       else
         WhiteCheckers.Add(checker);
       AllCheckers.Add(checker);
+      checker.RectMinSize = tile.GetParent<GridContainer>().RectSize / 8;
       tile.AddChild(checker);
       checker.SetCheckerColor(checkerColor);
     }
@@ -231,7 +228,7 @@ public partial class GameplaySystem : Node2D
             OnCheckerKilled(CheckerToCapture);
             LastMoveWasCapture = true;
           }
-          SelectedChecker.Move(newCheckerPosition, tile.TilePosition);
+          SelectedChecker.Move(tile, tile.TilePosition);
 
           if (CurrentTurn == BoardColors.Black)
           {
