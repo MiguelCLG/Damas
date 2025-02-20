@@ -1,4 +1,3 @@
-using System.Collections;
 using Godot;
 using Godot.Collections;
 using static Utils;
@@ -20,24 +19,10 @@ public partial class Board : Control
   public void InitializeBoard()
   {
     FillBoardTiles();
-    EventRegistry.GetEventPublisher("SpawnCheckers").RaiseEvent(this);
   }
-
-  // function called from the GameplaySystem when the viewport is changed
-  // It updates the positions and sizes of the tiles depending on the new viewport size
-  public void OnViewPortChanged()
+  public Tile FindTileByName(string name)
   {
-    foreach (Tile tile in BoardTiles)
-    {
-      Vector2 screenSize = GetViewportRect().Size;
-
-      float sizeX = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
-      float sizeY = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
-      tile.RectMinSize = new Vector2(sizeX, sizeY);
-      tile.RectSize = new Vector2(sizeX, sizeY);
-
-      tile.RectPosition = new Vector2(tile.TilePosition.x * tile.RectMinSize.x, tile.TilePosition.y * tile.RectMinSize.y);
-    }
+    return BoardContainer.GetNode<Tile>(name);
   }
 
   public bool HasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
@@ -313,10 +298,10 @@ public partial class Board : Control
   // This function will create new tiles and place their respective positions, taking into account the viewport size
   private void FillBoardTiles()
   {
-    Vector2 screenSize = GetViewportRect().Size;
-    for (int row = 0; row < BoardSize; row++)
+    // Vector2 screenSize = GetViewportRect().Size;
+    for (int col = 0; col < BoardSize; col++)
     {
-      for (int col = 0; col < BoardSize; col++)
+      for (int row = 0; row < BoardSize; row++)
       {
         string tileKey = $"{(char)('A' + row)}{col + 1}";
 

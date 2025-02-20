@@ -1,7 +1,8 @@
-using System.Collections;
 using Godot;
 using Godot.Collections;
 using static Utils;
+using static GameState;
+using System.Collections;
 
 public partial class GameplaySystem : Node2D
 {
@@ -13,7 +14,6 @@ public partial class GameplaySystem : Node2D
   private Array<Checker> WhiteCheckers = new Array<Checker>();
   private Array<Checker> AllCheckers = new Array<Checker>();
   private Board board;
-  private Control checkersContainer;
   private GameOverMenu gameOverMenu;
   private ProgressBar BlackPlayerTimer;
   private ProgressBar WhitePlayerTimer;
@@ -29,13 +29,8 @@ public partial class GameplaySystem : Node2D
     // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
     EventRegistry.RegisterEvent("TileClicked");
     EventRegistry.RegisterEvent("CheckerClicked");
-    EventRegistry.RegisterEvent("SpawnCheckers");
     EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
     EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
-    EventSubscriber.SubscribeToEvent("SpawnCheckers", SpawnCheckers);
-
-    // added this signal to make sure we can resize our pieces if the window is resized
-    GetTree().Root.Connect("size_changed", this, nameof(OnViewportChanged));
 
     BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
     WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
@@ -44,12 +39,11 @@ public partial class GameplaySystem : Node2D
     WhitePlayerPortraitBackground.Visible = false;
     BlackPlayerPortraitBackground.Visible = true;
     board = GetNode<Board>("%Board");
-    checkersContainer = GetNode<Control>("%CheckersContainer");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
 
-    GenerateCheckers();
     board.InitializeBoard();
+    GenerateCheckers();
     OnTurnStart();
   }
 
@@ -71,14 +65,6 @@ public partial class GameplaySystem : Node2D
         NextTurn();
       }
     }
-
-  }
-
-  // Function to handle viewport changes, when the signal SizeChanged is emitted, this is what is executed
-  private void OnViewportChanged()
-  {
-    board.OnViewPortChanged();
-    PositionCheckers();
 
   }
 
@@ -132,18 +118,6 @@ public partial class GameplaySystem : Node2D
     }
     return checkers;
   }
-  private void PositionCheckers()
-  {
-    foreach (Checker checker in checkersContainer.GetChildren())
-    {
-      float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-      float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-      Vector2 tilePosition = new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
-      Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
-
-      checker.RectPosition = checkerPosition;
-    }
-  }
 
   private void GenerateCheckers()
   {
@@ -152,133 +126,31 @@ public partial class GameplaySystem : Node2D
     // Get boardscheme from game state
     // Create checkers based on the board scheme and add the id data with them
 
-    // Defined the board scheme for an easier way to spawn the checkers (1 = black checker, 2 = white checker, 0 = skip)
-    Hashtable boardSchemeHash = new Hashtable
+    foreach (DictionaryEntry pair in initialBoard)
     {
-        { "A1", null },
-        { "B1", null },
-        { "C1", null },
-        { "D1", null },
-        { "E1", null },
-        { "F1", null },
-        { "G1", null },
-        { "H1", null },
-
-        { "A2", null },
-        { "B2", null },
-        { "C2", null },
-        { "D2", null },
-        { "E2", null },
-        { "F2", null },
-        { "G2", null },
-        { "H2", null },
-    };
-    int[,] boardScheme = new int[BoardSize, BoardSize]
-        {
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 },
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 },
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 },
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 }
-        };
-
-    /*  int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
-    {
-        { 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 1, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 2, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0 }
-     }; */
-    /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
-    {
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 2, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 2, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 0, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 0 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 }
-    }; */
-    /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with two pieces to be killed.
-    {
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 2, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 0, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 }
-    }; */
-
-
-    for (int i = 0; i < BoardSize; i++)
-    {
-      for (int j = 0; j < BoardSize; j++)
-      {
-        int checkerType = boardScheme[i, j];
-        if (checkerType == 0) continue; // Skip empty tiles
-
-        var checker = checkerScene.Instance<Checker>();
-
-        // Name the checker with its position in the grid (helps with debugging in the editor)
-        checker.Name = $"Checker_{i}_{j}";
-
-        // Calculate the position of the checker
-        // Starts from the board's starting position, add the tile offset, and center the checker within the tile
-        // Using only the X axis for the resize / positioning so that we can resize the window keeping the width constant
-        float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-        float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-        Vector2 tilePosition = new Vector2(i * tileSizeX, j * tileSizeX);
-        Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
-
-        checker.RectPosition = checkerPosition;
-        checker.BoardPosition = new Vector2(i, j);
-        checker.Color = checkerType == 1 ? BoardColors.Black : BoardColors.White;
-
-        if (checkerType == 1)
-          BlackCheckers.Add(checker);
-        else
-          WhiteCheckers.Add(checker);
-        AllCheckers.Add(checker);
-
-      }
+      if (pair.Value == null) continue;
+      Tile tile = board.FindTileByName(pair.Key.ToString());
+      BoardColors checkerColor = pair.Value.ToString().Contains("W") ? BoardColors.White : BoardColors.Black;
+      var checker = checkerScene.Instance<Checker>();
+      checker.Name = pair.Value.ToString();
+      checker.BoardPosition = new Vector2(tile.TilePosition.x, tile.TilePosition.y);
+      if (checkerColor == BoardColors.Black)
+        BlackCheckers.Add(checker);
+      else
+        WhiteCheckers.Add(checker);
+      AllCheckers.Add(checker);
+      tile.AddChild(checker);
+      checker.SetCheckerColor(checkerColor);
     }
+
   }
 
-  private void SpawnCheckers(object sender, object args)
-  {
-    ClearCheckers();
 
-    for (int i = 0; i < BlackCheckers.Count; i++)
-    {
-      Checker checker = BlackCheckers[i];
-      checker.RectMinSize = new Vector2(CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100, CheckerSize * (GetViewportRect().Size.y * 100 / ViewportBaseY) / 100);
-      checkersContainer.AddChild(checker);
-      checker.SetCheckerColor(BoardColors.Black);
-    }
-    for (int i = 0; i < WhiteCheckers.Count; i++)
-    {
-      Checker checker = WhiteCheckers[i];
-      checker.RectMinSize = new Vector2(CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100, CheckerSize * (GetViewportRect().Size.y * 100 / ViewportBaseY) / 100);
-      checkersContainer.AddChild(checker);
-      checker.SetCheckerColor(BoardColors.White);
-
-    }
-  }
   public void ClearCheckers()
   {
-    foreach (Checker checker in checkersContainer.GetChildren())
+    foreach (Checker checker in AllCheckers)
     {
-      checkersContainer.RemoveChild(checker);
+      checker.GetParent().RemoveChild(checker);
     }
   }
 
@@ -457,9 +329,7 @@ public partial class GameplaySystem : Node2D
   {
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);
-    EventSubscriber.UnsubscribeFromEvent("SpawnCheckers", SpawnCheckers);
     EventRegistry.UnregisterEvent("TileClicked");
     EventRegistry.UnregisterEvent("CheckerClicked");
-    EventRegistry.UnregisterEvent("SpawnCheckers");
   }
 }
