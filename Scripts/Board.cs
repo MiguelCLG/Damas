@@ -8,6 +8,8 @@ public partial class Board : Control
   private Array<Tile> BoardTiles { get; set; }
   private GridContainer BoardContainer { get; set; }
   public bool IsCaptureMove = false;
+  public Dictionary<Checker, Tile> CaptureMoves = new Dictionary<Checker, Tile>(); // saves the checker to capture and the target tile for the current selected checker
+  public Array<Tile> RegularMoves = new Array<Tile>();
 
   public override void _Ready()
   {
@@ -127,7 +129,7 @@ public partial class Board : Control
   {
     if (checker.isKing)
     {
-      KingMovement(checker, checkersInPlay);
+      /*  KingMovement(checker, checkersInPlay); */
     }
     else
     {
@@ -141,8 +143,8 @@ public partial class Board : Control
 
     // setting up a diagonals vector so we can check its tiles, basically left or right and up or down (depending on the direction above)
     Vector2[] diagonals = { new Vector2(direction, -1), new Vector2(direction, 1) };
-    Array<Vector2> captureMoves = new Array<Vector2>();
-    Array<Vector2> regularMoves = new Array<Vector2>();
+    CaptureMoves = new Dictionary<Checker, Tile>(); // saves the checker to capture and the target tile for the current selected checker
+    RegularMoves = new Array<Tile>();
 
     string tileName = checker.GetParent().Name;
     int row = tileName[0] - 'A';
@@ -154,9 +156,56 @@ public partial class Board : Control
       char checkTileLetter = (char)('A' + (row + Mathf.FloorToInt(diagonal.x)));
       int checkTileNumber = column + Mathf.FloorToInt(diagonal.y);
       string checkTileName = checkTileLetter.ToString() + checkTileNumber.ToString();
+      GD.Print("Current checker tile name: ", checkTileName);
+
+      if (checkTileNumber < 1 || checkTileNumber > BoardSize || checkTileLetter < 'A' || checkTileLetter > 'H')
+        continue;
+
       var checkTile = FindTileByName(checkTileName);
-      checkTile.Select(false);
+      if (checkTile.GetChild(checkTile.GetChildCount() - 1) is Checker c) // There is a checker in the tile
+      {
+        if (checker.Color != c.Color)
+        {
+          // it is an enemy checker
+          char tileBehindLetter = (char)('A' + (row + Mathf.FloorToInt(diagonal.x * 2)));
+          int tileBehindNumber = checkTileNumber + Mathf.FloorToInt(diagonal.y);
+          string tileBehindName = tileBehindLetter.ToString() + tileBehindNumber.ToString();
+          GD.Print("Tile behind enemy checker: ", tileBehindName);
+
+          if (tileBehindNumber < 1 || tileBehindNumber > BoardSize || tileBehindLetter < 'A' || tileBehindLetter > 'H')
+            continue;
+
+          var tileBehind = FindTileByName(tileBehindName);
+
+          if (tileBehind.GetChild(tileBehind.GetChildCount() - 1) is Checker) // tile behind is not empty
+            continue;
+
+          CaptureMoves.Add(c, tileBehind);
+        }
+      }
+      else
+      { // there is no checker in the tile
+        RegularMoves.Add(checkTile);
+      }
     }
+    IsCaptureMove = CaptureMoves.Count > 0;
+
+    if (IsCaptureMove)
+    {
+      foreach (var captureMove in CaptureMoves)
+      {
+
+        captureMove.Value.Select(true);
+      }
+    }
+    else
+    {
+      foreach (var regularMove in RegularMoves)
+      {
+        regularMove.Select(false);
+      }
+    }
+    checker.MovementSpaces = (Array<Tile>)(IsCaptureMove ? CaptureMoves.Values : RegularMoves);
     /*
 
         // we have only 2 directions so this loop will run 2 times
@@ -216,12 +265,10 @@ public partial class Board : Control
         checker.MovementSpaces = IsCaptureMove ? captureMoves : regularMoves; */
   }
 
-  private void KingMovement(Checker checker, Array<Checker> checkersInPlay)
+  /* private void KingMovement(Checker checker, Array<Checker> checkersInPlay)
   {
     // Kings can move in all diagonal directions: up-left, up-right, down-left, down-right
     Vector2[] diagonals = { new Vector2(-1, 1), new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1) };
-    Array<Vector2> captureMoves = new Array<Vector2>();
-    Array<Vector2> regularMoves = new Array<Vector2>();
 
     // This time we have 4 directions so this loop will run 4 times
     foreach (var diagonal in diagonals)
@@ -243,7 +290,7 @@ public partial class Board : Control
 
           if (IsWithinBounds(behindEnemyPosition) && IsSpaceEmpty(behindEnemyPosition, checkersInPlay)) // Check if the space behind the enemy is free for a capture
           {
-            captureMoves.Add(behindEnemyPosition);
+            CaptureMoves.Add(behindEnemyPosition);
             break; // Following the rules, the king must capture the enemy and stop right after
           }
           else
@@ -253,7 +300,7 @@ public partial class Board : Control
         }
         else if (IsSpaceEmpty(currentPosition, checkersInPlay))
         {
-          regularMoves.Add(currentPosition); // Add a regular move
+          RegularMoves.Add(currentPosition); // Add a regular move
         }
         else
         {
@@ -263,9 +310,9 @@ public partial class Board : Control
     }
 
     // Prioritize capture moves over regular moves
-    if (captureMoves.Count > 0)
+    if (CaptureMoves.Count > 0)
     {
-      foreach (var captureMove in captureMoves)
+      foreach (var captureMove in CaptureMoves)
       {
         foreach (Tile tile in BoardTiles)
         {
@@ -278,7 +325,7 @@ public partial class Board : Control
     }
     else // If no capture moves are available, highlight regular moves
     {
-      foreach (var regularMove in regularMoves)
+      foreach (var regularMove in RegularMoves)
       {
         foreach (Tile tile in BoardTiles)
         {
@@ -290,23 +337,17 @@ public partial class Board : Control
       }
     }
 
-    IsCaptureMove = captureMoves.Count > 0;
-    checker.MovementSpaces = IsCaptureMove ? captureMoves : regularMoves;
+    IsCaptureMove = CaptureMoves.Count > 0;
+    checker.MovementSpaces = IsCaptureMove ? CaptureMoves.Values : RegularMoves;
   }
-
+ */
 
   // This function will unselect all the tiles that were highlighted
   public void CleanUpFreeTiles(Checker checker)
   {
-    foreach (var freeSpace in checker.MovementSpaces)
+    foreach (Tile tile in checker.MovementSpaces)
     {
-      foreach (Tile tile in BoardTiles)
-      {
-        if (tile.TilePosition == freeSpace)
-        {
-          tile.Unselect();
-        }
-      }
+      tile.Unselect();
     }
   }
 
@@ -332,29 +373,6 @@ public partial class Board : Control
 
       }
     }
-
-    /* for (int i = 0; i < BoardSize; i++)
-    {
-      for (int j = 0; j < BoardSize; j++)
-      {
-        var tile = tileScene.Instance<Tile>();
-        tile.Name = $"Tile_{i}_{j}"; // Names tiles with their respective positions in the grid
-
-        var tileSizeX = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
-        var tileSizeY = TileSize * (screenSize.x * 100 / ViewportBaseX) / 100;
-
-        // Set the tile's size, this can be changed if the viewport is changed.
-        tile.RectMinSize = new Vector2(tileSizeX, tileSizeY);
-        tile.RectSize = new Vector2(tileSizeX, tileSizeY);
-        // Position the tiles in the grid with a size offset, starting from the calculated position
-
-        tile.RectPosition = new Vector2(i * tileSizeX, j * tileSizeY);
-        tile.TilePosition = new Vector2(i, j);
-        BoardTiles.Add(tile);
-        BoardContainer.AddChild(tile);
-        tile.SetTileColor(i % 2 == j % 2 ? BoardColors.White : BoardColors.Black);
-      }
-    } */
   }
 
 

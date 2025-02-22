@@ -82,28 +82,28 @@ margin_right = -32.0
 margin_bottom = -32.0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 960.0
-margin_bottom = 536.0
+margin_right = 403.0
+margin_bottom = 803.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
-margin_right = 960.0
-margin_bottom = 536.0
+margin_right = 403.0
+margin_bottom = 803.0
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_right = 960.0
-margin_bottom = 98.0
+margin_right = 403.0
+margin_bottom = 177.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_right = 478.0
-margin_bottom = 98.0
+margin_right = 199.0
+margin_bottom = 177.0
 size_flags_horizontal = 3
 
 [node name="PlayerName" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 478.0
+margin_right = 199.0
 margin_bottom = 40.0
 theme_type_variation = "HemiLabel"
 text = "GuiGate"
@@ -111,7 +111,7 @@ valign = 3
 
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 margin_top = 44.0
-margin_right = 478.0
+margin_right = 199.0
 margin_bottom = 44.0
 
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer/Control"]
@@ -134,9 +134,9 @@ text = "R$993,82"
 valign = 3
 
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_left = 482.0
-margin_right = 960.0
-margin_bottom = 98.0
+margin_left = 203.0
+margin_right = 403.0
+margin_bottom = 177.0
 size_flags_horizontal = 11
 
 [node name="TextureButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
@@ -148,9 +148,9 @@ mouse_default_cursor_shape = 2
 theme_type_variation = "SettingsButton"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_top = 102.0
-margin_right = 960.0
-margin_bottom = 337.0
+margin_top = 181.0
+margin_right = 403.0
+margin_bottom = 604.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.38
 texture = ExtResource( 5 )
@@ -158,10 +158,10 @@ expand = true
 stretch_mode = 6
 
 [node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_left = 374.0
-margin_top = 341.0
-margin_right = 585.0
-margin_bottom = 536.0
+margin_left = 96.0
+margin_top = 608.0
+margin_right = 307.0
+margin_bottom = 803.0
 size_flags_horizontal = 4
 size_flags_stretch_ratio = 3.0
 theme_type_variation = "ButtonsContainer"

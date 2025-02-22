@@ -219,7 +219,7 @@ public partial class GameplaySystem : Node2D
     if (SelectedChecker != null)
       if (args is Tile tile)
       {
-        if (SelectedChecker.MovementSpaces.Contains(tile.TilePosition))
+        if (SelectedChecker.MovementSpaces.Contains(tile))
         {
           Vector2 tilePosition = new Vector2(tile.TilePosition.x * TileSize, tile.TilePosition.y * TileSize);
           Vector2 newCheckerPosition = tilePosition + new Vector2(TileSize - CheckerSize, TileSize - CheckerSize) / 2;
