@@ -15,7 +15,7 @@ public enum Commands
   queue_confirmation,
   message,
   opponent_ready,
-  game_starting,
+  game_start,
 }
 
 public enum MessageType
@@ -108,8 +108,9 @@ public class GamePlayer
 }
 public class GameStartMessage
 {
-  public Hashtable board;
-  public string current_player_id;
+  public Hashtable Board;
+  public string CurrentPlayerID;
+  public List<GamePlayer> GamePlayers;
 }
 
 public class GameUpdatetMessage

@@ -32,6 +32,23 @@ public partial class MainMenu : Control
 
   private void OnGameStarting(object sender, object args)
   {
+    if (args is GameStartMessage message)
+    {
+      initialBoard = message.Board;
+      playerName = message.CurrentPlayerID;
+      foreach (var player in message.GamePlayers)
+      {
+        if (player.id == message.CurrentPlayerID)
+        {
+          playerName = player.name;
+          GameState.player = player;
+        }
+        else
+        {
+          opponentName = player.name;
+        }
+      }
+    }
     LoadNextScene();
 
   }
@@ -86,6 +103,11 @@ public partial class MainMenu : Control
   public void OnStartGame()
   {
     EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(betValue);
+  }
+
+  public override void _ExitTree()
+  {
+    EventSubscriber.UnsubscribeFromEvent("OnGameStarting", OnGameStarting);
   }
 }
 

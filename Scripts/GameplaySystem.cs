@@ -3,6 +3,7 @@ using Godot.Collections;
 using static Utils;
 using static GameState;
 using System.Collections;
+using Newtonsoft.Json;
 
 public partial class GameplaySystem : Node2D
 {
@@ -24,6 +25,11 @@ public partial class GameplaySystem : Node2D
 
   public override void _Ready()
   {
+    GD.Print(playerName);
+    GD.Print(opponentName);
+    GD.Print(betValue);
+    GD.Print(currentGameColor);
+
     GetTree().Paused = false;
     // Registering events and subscribing to them, since this is the system that will handle them.
     // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
@@ -126,9 +132,12 @@ public partial class GameplaySystem : Node2D
     {
       if (pair.Value == null) continue;
       Tile tile = board.FindTileByName(pair.Key.ToString());
-      BoardColors checkerColor = pair.Value.ToString().Contains("W") ? BoardColors.White : BoardColors.Black;
+
+      Piece piece = JsonConvert.DeserializeObject<Piece>(pair.Value.ToString());
+
+      BoardColors checkerColor = piece.type == "w" ? BoardColors.White : BoardColors.Black;
       var checker = checkerScene.Instance<Checker>();
-      checker.Name = pair.Value.ToString();
+      checker.Name = piece.piece_id;
       checker.BoardPosition = new Vector2(tile.TilePosition.x, tile.TilePosition.y);
       if (checkerColor == BoardColors.Black)
         BlackCheckers.Add(checker);

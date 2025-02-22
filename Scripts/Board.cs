@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Godot.Collections;
 using static Utils;
@@ -42,33 +43,8 @@ public partial class Board : Control
 
   private bool CheckerHasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
   {
-    int direction = (checker.Color == BoardColors.Black) ? 1 : -1;
-
-    Vector2[] diagonals = { new Vector2(-1, direction), new Vector2(1, direction) };
-    Array<Vector2> captureMoves = new Array<Vector2>();
-
-    foreach (var diagonal in diagonals)
-    {
-      Vector2 checkPosition = checker.BoardPosition + diagonal;
-
-      if (IsWithinBounds(checkPosition))
-      {
-        if (IsEnemyAt(checkPosition, checker.Color, checkersInPlay))
-        {
-          // Check the space behind the enemy
-          Vector2 behindEnemyPosition = checker.BoardPosition + diagonal * 2;
-          if (IsWithinBounds(behindEnemyPosition))
-          {
-            if (IsSpaceEmpty(behindEnemyPosition, checkersInPlay))
-            {
-              captureMoves.Add(behindEnemyPosition);
-            }
-          }
-        }
-      }
-    }
-
-    return captureMoves.Count > 0;
+    CalculateMoves(checker);
+    return IsCaptureMove;
   }
 
   private bool KingHasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
@@ -133,11 +109,32 @@ public partial class Board : Control
     }
     else
     {
-      CheckerMovement(checker, checkersInPlay);
+      CheckerMovement(checker);
     }
   }
 
-  private void CheckerMovement(Checker checker, Array<Checker> checkersInPlay)
+  private void CheckerMovement(Checker checker)
+  {
+    CalculateMoves(checker);
+    if (IsCaptureMove)
+    {
+      foreach (var captureMove in CaptureMoves)
+      {
+
+        captureMove.Value.Select(true);
+      }
+    }
+    else
+    {
+      foreach (var regularMove in RegularMoves)
+      {
+        regularMove.Select(false);
+      }
+    }
+    checker.MovementSpaces = (Array<Tile>)(IsCaptureMove ? CaptureMoves.Values : RegularMoves);
+  }
+
+  private void CalculateMoves(Checker checker)
   {
     int direction = (checker.Color == BoardColors.Black) ? -1 : 1;
 
@@ -156,7 +153,6 @@ public partial class Board : Control
       char checkTileLetter = (char)('A' + (row + Mathf.FloorToInt(diagonal.x)));
       int checkTileNumber = column + Mathf.FloorToInt(diagonal.y);
       string checkTileName = checkTileLetter.ToString() + checkTileNumber.ToString();
-      GD.Print("Current checker tile name: ", checkTileName);
 
       if (checkTileNumber < 1 || checkTileNumber > BoardSize || checkTileLetter < 'A' || checkTileLetter > 'H')
         continue;
@@ -170,7 +166,6 @@ public partial class Board : Control
           char tileBehindLetter = (char)('A' + (row + Mathf.FloorToInt(diagonal.x * 2)));
           int tileBehindNumber = checkTileNumber + Mathf.FloorToInt(diagonal.y);
           string tileBehindName = tileBehindLetter.ToString() + tileBehindNumber.ToString();
-          GD.Print("Tile behind enemy checker: ", tileBehindName);
 
           if (tileBehindNumber < 1 || tileBehindNumber > BoardSize || tileBehindLetter < 'A' || tileBehindLetter > 'H')
             continue;
@@ -189,80 +184,6 @@ public partial class Board : Control
       }
     }
     IsCaptureMove = CaptureMoves.Count > 0;
-
-    if (IsCaptureMove)
-    {
-      foreach (var captureMove in CaptureMoves)
-      {
-
-        captureMove.Value.Select(true);
-      }
-    }
-    else
-    {
-      foreach (var regularMove in RegularMoves)
-      {
-        regularMove.Select(false);
-      }
-    }
-    checker.MovementSpaces = (Array<Tile>)(IsCaptureMove ? CaptureMoves.Values : RegularMoves);
-    /*
-
-        // we have only 2 directions so this loop will run 2 times
-        foreach (var diagonal in diagonals)
-        {
-          Vector2 checkPosition = checker.BoardPosition + diagonal;
-
-          if (IsWithinBounds(checkPosition))
-          {
-            if (IsEnemyAt(checkPosition, checker.Color, checkersInPlay))
-            {
-              // Check the space behind the enemy
-              Vector2 behindEnemyPosition = checker.BoardPosition + diagonal * 2;
-
-              // Ensure the behind position is within bounds and empty
-              // if so, we add it to the capture moves
-              if (IsWithinBounds(behindEnemyPosition) && IsSpaceEmpty(behindEnemyPosition, checkersInPlay))
-              {
-                captureMoves.Add(behindEnemyPosition);
-              }
-            }
-            else if (IsSpaceEmpty(checkPosition, checkersInPlay))
-            {
-              regularMoves.Add(checkPosition);
-            }
-          }
-        }
-
-        // Prioritize capture moves over regular moves
-        if (captureMoves.Count > 0)
-        {
-          foreach (var captureMove in captureMoves)
-          {
-            foreach (Tile tile in BoardTiles)
-            {
-              if (tile.TilePosition == captureMove)
-              {
-                tile.Select(true); // Highlight the tile for capture
-              }
-            }
-          }
-        }
-        else // If no capture moves are available, highlight regular moves
-        {
-          foreach (var regularMove in regularMoves)
-          {
-            foreach (Tile tile in BoardTiles)
-            {
-              if (tile.TilePosition == regularMove)
-              {
-                tile.Select(false); // Highlight the tile for regular move
-              }
-            }
-          }
-        }
-        IsCaptureMove = captureMoves.Count > 0;
-        checker.MovementSpaces = IsCaptureMove ? captureMoves : regularMoves; */
   }
 
   /* private void KingMovement(Checker checker, Array<Checker> checkersInPlay)

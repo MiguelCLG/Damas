@@ -21,6 +21,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("OnPairedReceived");
 		EventRegistry.RegisterEvent("OnReadyButtonPressed");
 		EventRegistry.RegisterEvent("OnOpponentReadyReceived");
+		EventRegistry.RegisterEvent("OnGameStarting");
 
 		client = new WebSocketClient();
 		client.Connect("connection_established", this, "OnConnect");
@@ -70,8 +71,8 @@ public partial class MultiplayerPeerConnection : Node
 
 			var parsedObject = JsonConvert.DeserializeObject<DataReceived<JToken>>(jsonString);
 
-			GD.Print($"Data Received: {jsonString}");
-			GD.Print($"Parsed Object Received: {parsedObject}");
+			/* GD.Print($"Data Received: {jsonString}");
+			GD.Print($"Parsed Object Received: {parsedObject}"); */
 
 			try
 			{
@@ -95,8 +96,8 @@ public partial class MultiplayerPeerConnection : Node
 						break;
 					case Commands.game_info:
 						break;
-					case Commands.game_starting:
-						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(null); //TODO: Send the game starting data and fill the GameState
+					case Commands.game_start:
+						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>()); //TODO: Send the game starting data and fill the GameState
 						break;
 					case Commands.queue_confirmation:
 						// vem um boolean que diz se conseguiu entrar na fila
@@ -193,6 +194,8 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnJoinRoom", OnJoinRoom);
 		EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
+
+		EventRegistry.UnregisterEvent("OnGameStarting");
 		EventRegistry.UnregisterEvent("OnOpponentReadyReceived");
 		EventRegistry.UnregisterEvent("OnReadyButtonPressed");
 		EventRegistry.UnregisterEvent("OnPairedReceived");
