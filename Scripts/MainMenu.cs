@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Godot;
 using Godot.Collections;
 using static GameState;
@@ -35,17 +36,18 @@ public partial class MainMenu : Control
     if (args is GameStartMessage message)
     {
       initialBoard = message.Board;
-      playerName = message.CurrentPlayerID;
-      foreach (var player in message.GamePlayers)
+      foreach (DictionaryEntry p in initialBoard)
       {
-        if (player.id == message.CurrentPlayerID)
+        GD.Print(p.Key);
+
+      }
+      blackPieceDirection = currentGameColor == BoardColors.Black ? -1 : 1;
+      foreach (var gamePlayer in message.GamePlayers)
+      {
+        GD.Print($"Message: {gamePlayer.name}, State: {playerName}");
+        if (playerName == gamePlayer.name)
         {
-          playerName = player.name;
-          GameState.player = player;
-        }
-        else
-        {
-          opponentName = player.name;
+          player = gamePlayer;
         }
       }
     }

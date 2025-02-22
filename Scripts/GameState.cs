@@ -1,4 +1,5 @@
 using System.Collections;
+using Godot;
 using Godot.Collections;
 
 public static class GameState
@@ -29,4 +30,48 @@ public static class GameState
   public static float betValue = 1f;
   public static string room_id;
   public static Array<float> availableBidValues = new Array<float>() { 0.5f, 1f, 3f, 5f, 10f, 25f, 50f, 100f };
+  public static int blackPieceDirection = -1; // up by default
+  public static Hashtable RotateBoard(Hashtable board)
+  {
+    // Define the tile positions for a 180-degree rotation
+    string[,] originalKeys = {
+        { "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8" },
+        { "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8" },
+        { "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8" },
+        { "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8" },
+        { "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8" },
+        { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8" },
+        { "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8" },
+        { "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8" }
+    };
+
+    string[,] rotatedKeys = {
+        { "H8", "H7", "H6", "H5", "H4", "H3", "H2", "H1" },
+        { "G8", "G7", "G6", "G5", "G4", "G3", "G2", "G1" },
+        { "F8", "F7", "F6", "F5", "F4", "F3", "F2", "F1" },
+        { "E8", "E7", "E6", "E5", "E4", "E3", "E2", "E1" },
+        { "D8", "D7", "D6", "D5", "D4", "D3", "D2", "D1" },
+        { "C8", "C7", "C6", "C5", "C4", "C3", "C2", "C1" },
+        { "B8", "B7", "B6", "B5", "B4", "B3", "B2", "B1" },
+        { "A8", "A7", "A6", "A5", "A4", "A3", "A2", "A1" }
+    };
+
+    // Create a new hashtable to store the rotated board
+    Hashtable rotatedBoard = new Hashtable();
+
+    // Perform the rotation by mapping each original key to its rotated position
+    for (int i = 0; i < originalKeys.GetLength(0); i++)
+    {
+      for (int j = 0; j < originalKeys.GetLength(1); j++)
+      {
+        string originalKey = originalKeys[i, j];
+        string rotatedKey = rotatedKeys[i, j];
+
+        // Transfer the value from the original key to the rotated key
+        rotatedBoard[rotatedKey] = board[originalKey];
+      }
+    }
+    GD.Print(rotatedBoard);
+    return rotatedBoard;
+  }
 }

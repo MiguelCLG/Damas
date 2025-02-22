@@ -1,7 +1,7 @@
-using System;
 using Godot;
 using Godot.Collections;
 using static Utils;
+using static GameState;
 
 public partial class Board : Control
 {
@@ -11,6 +11,7 @@ public partial class Board : Control
   public bool IsCaptureMove = false;
   public Dictionary<Checker, Tile> CaptureMoves = new Dictionary<Checker, Tile>(); // saves the checker to capture and the target tile for the current selected checker
   public Array<Tile> RegularMoves = new Array<Tile>();
+  int direction = -1;
 
   public override void _Ready()
   {
@@ -21,7 +22,7 @@ public partial class Board : Control
   // Function called from the GameplaySystem when all events have been registered and subscribed (Preventing a race condition)
   public void InitializeBoard()
   {
-    FillBoardTiles();
+    if (currentGameColor == BoardColors.Black) FillBoardTiles(); else FillBoardTilesReverse();
   }
   public Tile FindTileByName(string name)
   {
@@ -136,7 +137,7 @@ public partial class Board : Control
 
   private void CalculateMoves(Checker checker)
   {
-    int direction = (checker.Color == BoardColors.Black) ? -1 : 1;
+    direction = (checker.Color == BoardColors.White) ? blackPieceDirection : -blackPieceDirection;
 
     // setting up a diagonals vector so we can check its tiles, basically left or right and up or down (depending on the direction above)
     Vector2[] diagonals = { new Vector2(direction, -1), new Vector2(direction, 1) };
@@ -291,7 +292,28 @@ public partial class Board : Control
         bool isWhiteTile = (row + col) % 2 == 1;
         tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
         BoardTiles.Add(tileInstance);
+        tileInstance.AddChild(new Label() { Text = tileKey.ToString() });
 
+      }
+    }
+  }
+
+  private void FillBoardTilesReverse()
+  {
+    for (int col = 0; col < BoardSize; col++)
+    {
+      for (int row = 0; row < BoardSize; row++)
+      {
+        string tileKey = $"{(char)('H' - col)}{BoardSize - row}"; // Swap row and col
+        var tileInstance = tileScene.Instance<Tile>();
+        tileInstance.Name = tileKey;
+        tileInstance.TilePosition = new Vector2(col, BoardSize - 1 - row); // Swap row and col
+        BoardContainer.AddChild(tileInstance);
+
+        bool isWhiteTile = (row + col) % 2 == 1;
+        tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
+        BoardTiles.Add(tileInstance);
+        tileInstance.AddChild(new Label() { Text = tileKey.ToString() });
       }
     }
   }

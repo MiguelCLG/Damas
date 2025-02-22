@@ -74,8 +74,9 @@ public partial class Checker : Control
   // There are no animations for movement as of now, so we just change the position
   public void Move(Tile newParentTile, Vector2 newBoardPosition)
   {
+    Tile Parent = GetParent<Tile>();
     BoardPosition = newBoardPosition;
-    GetParent().RemoveChild(this);
+    Parent.RemoveChild(this);
     newParentTile.AddChild(this);
   }
   public void OnCheckerClicked()

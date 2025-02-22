@@ -16,6 +16,7 @@ public enum Commands
   message,
   opponent_ready,
   game_start,
+  move_piece,
 }
 
 public enum MessageType
@@ -131,6 +132,10 @@ public class DataReceived<T>
 
   public Commands command;
   public T value;
+
+  public DataReceived()
+  {
+  }
 
   public DataReceived(Commands commandReceived, T _value)
   {

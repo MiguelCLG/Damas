@@ -22,6 +22,8 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("OnReadyButtonPressed");
 		EventRegistry.RegisterEvent("OnOpponentReadyReceived");
 		EventRegistry.RegisterEvent("OnGameStarting");
+		EventRegistry.RegisterEvent("SendMessage");
+		EventRegistry.RegisterEvent("OnMovePiece");
 
 		client = new WebSocketClient();
 		client.Connect("connection_established", this, "OnConnect");
@@ -31,6 +33,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.SubscribeToEvent("OnJoinRoom", OnJoinRoom);
 		EventSubscriber.SubscribeToEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
 		EventSubscriber.SubscribeToEvent("OnReadyButtonPressed", OnReadyButtonPressed);
+		EventSubscriber.SubscribeToEvent("SendMessage", SendMessageEvent);
 
 		player = new GamePlayer();
 		player.token = "token123";
@@ -39,12 +42,20 @@ public partial class MultiplayerPeerConnection : Node
 		// player.token = "token456";
 		// player.session_id = "session2";
 
-		//var err = client.ConnectToUrl($"ws://localhost:8080/ws?token={player.token}&sessionid={player.session_id}&currency=USD");
+		// var err = client.ConnectToUrl($"ws://localhost:8080/ws?token={player.token}&sessionid={player.session_id}&currency=USD");
 		var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
 		if (err != Error.Ok)
 		{
 			GD.Print("Unable To Connect: " + err);
 			SetProcess(false);
+		}
+	}
+
+	private void SendMessageEvent(object sender, object args)
+	{
+		if (args is MovePieceData data)
+		{
+			SendMessageComplex(Commands.move_piece, data);
 		}
 	}
 
@@ -71,8 +82,8 @@ public partial class MultiplayerPeerConnection : Node
 
 			var parsedObject = JsonConvert.DeserializeObject<DataReceived<JToken>>(jsonString);
 
-			/* GD.Print($"Data Received: {jsonString}");
-			GD.Print($"Parsed Object Received: {parsedObject}"); */
+			GD.Print($"Data Received: {jsonString}");
+			/*GD.Print($"Parsed Object Received: {parsedObject}"); */
 
 			try
 			{
@@ -107,6 +118,9 @@ public partial class MultiplayerPeerConnection : Node
 						break;
 					case Commands.opponent_ready:
 						EventRegistry.GetEventPublisher("OnOpponentReadyReceived").RaiseEvent(parsedObject.value.ToObject<OpponentReady>());
+						break;
+					case Commands.move_piece:
+						EventRegistry.GetEventPublisher("OnMovePiece").RaiseEvent(parsedObject.value.ToObject<MovePieceData>());
 						break;
 				}
 			}
@@ -183,9 +197,21 @@ public partial class MultiplayerPeerConnection : Node
 		Dictionary dict = new Dictionary();
 		dict["command"] = command.ToString();
 		dict["value"] = args;
+		var conversion = JsonConvert.SerializeObject(dict);
 		string jsonString = JSON.Print(dict);
-		GD.Print($"Sending: {jsonString}");
-		byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
+		GD.Print($"Sending: {conversion}");
+		byte[] encodedMessage = Encoding.ASCII.GetBytes(conversion);
+		client.GetPeer(1).PutPacket(encodedMessage);
+	}
+	private void SendMessageComplex(Commands command, MovePieceData args)
+	{
+		DataReceived<JToken> dict = new DataReceived<JToken>();
+		dict.command = command;
+		dict.value = JToken.FromObject(args);
+		var novo = new { command = command.ToString(), value = dict.value };
+		var conversion = JsonConvert.SerializeObject(novo);
+		GD.Print($"Sending: {conversion}");
+		byte[] encodedMessage = Encoding.ASCII.GetBytes(conversion);
 		client.GetPeer(1).PutPacket(encodedMessage);
 	}
 	public override void _ExitTree()
@@ -194,7 +220,9 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnJoinRoom", OnJoinRoom);
 		EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
+		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
 
+		EventRegistry.UnregisterEvent("SendMessage");
 		EventRegistry.UnregisterEvent("OnGameStarting");
 		EventRegistry.UnregisterEvent("OnOpponentReadyReceived");
 		EventRegistry.UnregisterEvent("OnReadyButtonPressed");

@@ -4,6 +4,8 @@ using static Utils;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 
 public partial class GameplaySystem : Node2D
 {
@@ -20,16 +22,13 @@ public partial class GameplaySystem : Node2D
   private ProgressBar WhitePlayerTimer;
   private Panel BlackPlayerPortraitBackground;
   private Panel WhitePlayerPortraitBackground;
+  private Label OpponentNameLabel;
+  private Label PlayerNameLabel;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
 
   public override void _Ready()
   {
-    GD.Print(playerName);
-    GD.Print(opponentName);
-    GD.Print(betValue);
-    GD.Print(currentGameColor);
-
     GetTree().Paused = false;
     // Registering events and subscribing to them, since this is the system that will handle them.
     // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
@@ -37,13 +36,21 @@ public partial class GameplaySystem : Node2D
     EventRegistry.RegisterEvent("CheckerClicked");
     EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
     EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
+    EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
 
     BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
     WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
+
     BlackPlayerPortraitBackground = GetNode<Panel>("%BlackPlayerPortraitBackground");
     WhitePlayerPortraitBackground = GetNode<Panel>("%WhitePlayerPortraitBackground");
     WhitePlayerPortraitBackground.Visible = false;
     BlackPlayerPortraitBackground.Visible = true;
+
+    PlayerNameLabel = GetNode<Label>("%PlayerNameLabel");
+    OpponentNameLabel = GetNode<Label>("%OpponentNameLabel");
+    PlayerNameLabel.Text = player.name;
+    OpponentNameLabel.Text = opponentName;
+
     board = GetNode<Board>("%Board");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
@@ -51,6 +58,30 @@ public partial class GameplaySystem : Node2D
     board.InitializeBoard();
     GenerateCheckers();
     OnTurnStart();
+  }
+
+  private void OnMovePiece(object sender, object args)
+  {
+    if (args is MovePieceData data)
+    {
+
+      Tile toTile = board.FindTileByName(data.to);
+      Tile fromTile = board.FindTileByName(data.from);
+      Checker checker = fromTile.GetNode<Checker>(data.piece_id);
+      fromTile.RemoveChild(checker);
+      toTile.AddChild(checker);
+
+      if (data.is_capture)
+      {
+        GD.Print("This is a capture move sent by the server");
+      }
+
+      if (data.is_kinged)
+      {
+        GD.Print("The checker should be made king");
+      }
+
+    }
   }
 
   public override void _Process(float delta)
@@ -163,6 +194,7 @@ public partial class GameplaySystem : Node2D
   // Event OnCheckerClicked will execute this function
   private void OnCheckerClicked(object sender, object args)
   {
+    if (currentGameColor != CurrentTurn) return;
     // If we already have a selected checker
     if (SelectedChecker != null)
     {
@@ -225,6 +257,7 @@ public partial class GameplaySystem : Node2D
   // Event OnTileClicked will execute this function
   private void OnTileClicked(object sender, object args)
   {
+    if (currentGameColor != CurrentTurn) return;
     if (SelectedChecker != null)
       if (args is Tile tile)
       {
@@ -234,23 +267,32 @@ public partial class GameplaySystem : Node2D
           Vector2 newCheckerPosition = tilePosition + new Vector2(TileSize - CheckerSize, TileSize - CheckerSize) / 2;
           if (IsCaptureMove(SelectedChecker.BoardPosition, tile.TilePosition))
           {
-            OnCheckerKilled(CheckerToCapture);
+            // OnCheckerKilled(CheckerToCapture);
             LastMoveWasCapture = true;
           }
-          SelectedChecker.Move(tile, tile.TilePosition);
-
-          if (CurrentTurn == BoardColors.Black)
+          // TODO: Send command to server
+          /* if (CurrentTurn == BoardColors.Black)
           {
             if (tile.TilePosition.y == BoardSize - 1)
               SelectedChecker.SetKing();
           }
           else if (CurrentTurn == BoardColors.White)
             if (tile.TilePosition.y == 0)
-              SelectedChecker.SetKing();
+              SelectedChecker.SetKing(); */
+
+
+          MovePieceData movePieceData = new MovePieceData();
+          movePieceData.player_id = player.id;
+          movePieceData.piece_id = SelectedChecker.Name;
+          movePieceData.from = SelectedChecker.GetParent<Tile>().Name;
+          movePieceData.to = tile.Name;
+          SelectedChecker.Move(tile, tile.TilePosition);
+
+          EventRegistry.GetEventPublisher("SendMessage").RaiseEvent(movePieceData);
 
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker.UnselectChecker();
-          NextTurn();
+          /* NextTurn(); */
         }
       }
   }
@@ -333,6 +375,7 @@ public partial class GameplaySystem : Node2D
   // We remove tiles or any event subscription, etc...
   public override void _ExitTree()
   {
+    EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);
     EventRegistry.UnregisterEvent("TileClicked");
