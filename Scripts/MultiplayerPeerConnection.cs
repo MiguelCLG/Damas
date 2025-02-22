@@ -42,8 +42,8 @@ public partial class MultiplayerPeerConnection : Node
 		// player.token = "token456";
 		// player.session_id = "session2";
 
-		// var err = client.ConnectToUrl($"ws://localhost:8080/ws?token={player.token}&sessionid={player.session_id}&currency=USD");
-		var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
+		var err = client.ConnectToUrl($"ws://localhost:8080/ws?token={player.token}&sessionid={player.session_id}&currency=USD");
+		//var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
 		if (err != Error.Ok)
 		{
 			GD.Print("Unable To Connect: " + err);

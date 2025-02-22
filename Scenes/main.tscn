@@ -65,6 +65,7 @@ region_rect = Rect2( 0, 0, 250, 49 )
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 checkerScene = ExtResource( 4 )
+playerPortraits = [ ExtResource( 15 ), ExtResource( 17 ) ]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
@@ -123,13 +124,14 @@ margin_right = 64.0
 margin_bottom = 64.0
 custom_styles/panel = SubResource( 11 )
 
-[node name="BlackPlayerPortraitBackground" type="Panel" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
+[node name="OpponentPortraitBackground" type="Panel" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
 unique_name_in_owner = true
 margin_right = 64.0
 margin_bottom = 64.0
 custom_styles/panel = SubResource( 12 )
 
-[node name="BlackPlayerPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
+[node name="OpponentPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
+unique_name_in_owner = true
 margin_right = 64.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
@@ -470,13 +472,14 @@ margin_bottom = 64.0
 rect_pivot_offset = Vector2( -639, 351 )
 custom_styles/panel = SubResource( 13 )
 
-[node name="WhitePlayerPortraitBackground" type="Panel" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
+[node name="PlayerPortraitBackground" type="Panel" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
 unique_name_in_owner = true
 margin_right = 64.0
 margin_bottom = 64.0
 custom_styles/panel = SubResource( 12 )
 
-[node name="WhitePlayerPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
+[node name="PlayerPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
+unique_name_in_owner = true
 margin_right = 64.0
 margin_bottom = 64.0
 size_flags_horizontal = 3

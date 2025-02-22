@@ -4,12 +4,11 @@ using static Utils;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
+  [Export] private Texture[] playerPortraits;
   private Checker SelectedChecker = null;
   private Checker CheckerToCapture = null;
   private BoardColors CurrentTurn = BoardColors.Black;
@@ -20,10 +19,12 @@ public partial class GameplaySystem : Node2D
   private GameOverMenu gameOverMenu;
   private ProgressBar BlackPlayerTimer;
   private ProgressBar WhitePlayerTimer;
-  private Panel BlackPlayerPortraitBackground;
-  private Panel WhitePlayerPortraitBackground;
+  private Panel OpponentPortraitBackground;
+  private Panel PlayerPortraitBackground;
   private Label OpponentNameLabel;
   private Label PlayerNameLabel;
+  private TextureRect PlayerPortrait;
+  private TextureRect OpponentPortrait;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
 
@@ -38,13 +39,19 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
     EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
 
+    PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
+    OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
+
     BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
     WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
 
-    BlackPlayerPortraitBackground = GetNode<Panel>("%BlackPlayerPortraitBackground");
-    WhitePlayerPortraitBackground = GetNode<Panel>("%WhitePlayerPortraitBackground");
-    WhitePlayerPortraitBackground.Visible = false;
-    BlackPlayerPortraitBackground.Visible = true;
+    OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
+    PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
+
+    OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
+    PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
+    PlayerPortraitBackground.Visible = CurrentTurn == currentGameColor;
+    OpponentPortraitBackground.Visible = CurrentTurn != currentGameColor;
 
     PlayerNameLabel = GetNode<Label>("%PlayerNameLabel");
     OpponentNameLabel = GetNode<Label>("%OpponentNameLabel");
@@ -55,6 +62,8 @@ public partial class GameplaySystem : Node2D
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
 
+    PlayerPortrait.Texture = currentGameColor == BoardColors.Black ? playerPortraits[0] : playerPortraits[1];
+    OpponentPortrait.Texture = currentGameColor == BoardColors.White ? playerPortraits[0] : playerPortraits[1];
     board.InitializeBoard();
     GenerateCheckers();
     OnTurnStart();
@@ -80,6 +89,9 @@ public partial class GameplaySystem : Node2D
       {
         GD.Print("The checker should be made king");
       }
+
+      NextTurn();
+
 
     }
   }
@@ -109,13 +121,13 @@ public partial class GameplaySystem : Node2D
   {
     if (CurrentTurn == BoardColors.Black)
     {
-      WhitePlayerPortraitBackground.Visible = false;
-      BlackPlayerPortraitBackground.Visible = true;
+      PlayerPortraitBackground.Visible = false;
+      OpponentPortraitBackground.Visible = true;
     }
     else
     {
-      BlackPlayerPortraitBackground.Visible = false;
-      WhitePlayerPortraitBackground.Visible = true;
+      OpponentPortraitBackground.Visible = false;
+      PlayerPortraitBackground.Visible = true;
     }
     GetNode<Label>("%BlackPieceCount").Text = $"{BlackCheckers.Count}";
     GetNode<Label>("%WhitePieceCount").Text = $"{WhiteCheckers.Count}";

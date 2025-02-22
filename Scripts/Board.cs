@@ -292,7 +292,7 @@ public partial class Board : Control
         bool isWhiteTile = (row + col) % 2 == 1;
         tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
         BoardTiles.Add(tileInstance);
-        tileInstance.AddChild(new Label() { Text = tileKey.ToString() });
+        /* tileInstance.AddChild(new Label() { Text = tileKey.ToString() }); */
 
       }
     }
@@ -313,7 +313,7 @@ public partial class Board : Control
         bool isWhiteTile = (row + col) % 2 == 1;
         tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
         BoardTiles.Add(tileInstance);
-        tileInstance.AddChild(new Label() { Text = tileKey.ToString() });
+        /* tileInstance.AddChild(new Label() { Text = tileKey.ToString() }); */
       }
     }
   }
