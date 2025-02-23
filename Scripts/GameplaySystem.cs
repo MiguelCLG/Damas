@@ -89,6 +89,10 @@ public partial class GameplaySystem : Node2D
       {
         Tile captureTile = GetCheckerToBeCaptured(fromTile, toTile);
         OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
+        if (board.HasCaptureMove(checker))
+        {
+          return;
+        }
       }
 
       if (data.is_kinged)
