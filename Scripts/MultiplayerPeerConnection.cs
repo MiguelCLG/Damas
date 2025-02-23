@@ -108,6 +108,8 @@ public partial class MultiplayerPeerConnection : Node
 						break;
 					case Commands.join_room:
 						break;
+					case Commands.ready_queue:
+						break;
 					case Commands.game_info:
 						break;
 					case Commands.game_start:
@@ -132,12 +134,12 @@ public partial class MultiplayerPeerConnection : Node
 			}
 			catch (Exception e)
 			{
-				GD.PrintErr("[Server Command Parser] - " + e.Message);
+				GD.PrintErr("[Server Command Parser] - " + e.Message + " - " + jsonString);
 			}
 		}
 		catch (Exception e)
 		{
-			GD.PrintErr("[Server Data Parser] - " + e.Message);
+			GD.PrintErr("[Server Data Parser] - " + e.Message + " - " + jsonString);
 		}
 
 	}

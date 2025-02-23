@@ -108,6 +108,7 @@ public partial class GameplaySystem : Node2D
 
   private void OnTurnStart()
   {
+    if (CurrentTurn != currentGameColor) return;
     if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
     {
       PlayerPortraitBackground.Visible = true;
