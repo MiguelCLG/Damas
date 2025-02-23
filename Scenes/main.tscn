@@ -66,6 +66,7 @@ region_rect = Rect2( 0, 0, 250, 49 )
 script = ExtResource( 3 )
 checkerScene = ExtResource( 4 )
 playerPortraits = [ ExtResource( 15 ), ExtResource( 17 ) ]
+pieceCountTextures = [ ExtResource( 14 ), ExtResource( 12 ) ]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
@@ -86,31 +87,31 @@ margin_right = -16.0
 margin_bottom = -16.0
 
 [node name="Sections" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
-margin_right = 768.0
-margin_bottom = 968.0
+margin_right = 568.0
+margin_bottom = 768.0
 mouse_filter = 2
 theme = ExtResource( 1 )
 custom_constants/separation = 64
 
 [node name="TopContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_right = 768.0
+margin_right = 568.0
 margin_bottom = 137.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 4 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer"]
-margin_right = 768.0
+margin_right = 568.0
 margin_bottom = 137.0
 custom_constants/margin_bottom = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer"]
-margin_right = 768.0
+margin_right = 568.0
 margin_bottom = 105.0
 
 [node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
 margin_top = 41.0
-margin_right = 674.0
+margin_right = 474.0
 margin_bottom = 105.0
 size_flags_horizontal = 3
 size_flags_vertical = 8
@@ -158,7 +159,7 @@ margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="BlackPlayerTimer" type="ProgressBar" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
+[node name="OpponentTimer" type="ProgressBar" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
 unique_name_in_owner = true
 anchor_top = 0.5
 anchor_right = 1.0
@@ -170,8 +171,8 @@ margin_bottom = 12.0
 size_flags_horizontal = 3
 custom_styles/fg = SubResource( 2 )
 custom_styles/bg = SubResource( 3 )
-max_value = 15.0
-value = 15.0
+max_value = 30.0
+value = 30.0
 percent_visible = false
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
@@ -186,8 +187,8 @@ expand = true
 stretch_mode = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
-margin_left = 678.0
-margin_right = 768.0
+margin_left = 478.0
+margin_right = 568.0
 margin_bottom = 105.0
 custom_constants/separation = 10
 alignment = 2
@@ -203,7 +204,8 @@ margin_bottom = 105.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Control"]
+[node name="OpponentPieceCountTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Control"]
+unique_name_in_owner = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -216,7 +218,7 @@ texture = ExtResource( 14 )
 expand = true
 stretch_mode = 6
 
-[node name="BlackPieceCount" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Control/TextureRect"]
+[node name="OpponentPieceCountLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Control/OpponentPieceCountTexture"]
 unique_name_in_owner = true
 anchor_left = 1.0
 anchor_top = 0.5
@@ -257,7 +259,7 @@ custom_fonts/font = ExtResource( 11 )
 text = "Aposta"
 align = 1
 
-[node name="BlackBetSizeTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="OpponentBetTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 33.0
 margin_right = 78.0
@@ -267,16 +269,16 @@ stretch_mode = 6
 
 [node name="CenterContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
 margin_top = 201.0
-margin_right = 768.0
-margin_bottom = 799.0
+margin_right = 568.0
+margin_bottom = 599.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 6.0
 custom_styles/panel = SubResource( 5 )
 
 [node name="BoardContainer" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer"]
-margin_right = 768.0
-margin_bottom = 598.0
+margin_right = 568.0
+margin_bottom = 398.0
 mouse_filter = 2
 
 [node name="Board" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
@@ -319,24 +321,24 @@ size_flags_vertical = 0
 theme_type_variation = "BoardContainer"
 
 [node name="BottomContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_top = 863.0
-margin_right = 768.0
-margin_bottom = 968.0
+margin_top = 663.0
+margin_right = 568.0
+margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 6 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer"]
-margin_right = 768.0
+margin_right = 568.0
 margin_bottom = 105.0
 
 [node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer"]
-margin_right = 768.0
+margin_right = 568.0
 margin_bottom = 105.0
 alignment = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
-margin_right = 575.0
+margin_right = 375.0
 margin_bottom = 105.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -367,7 +369,7 @@ custom_fonts/font = ExtResource( 11 )
 text = "Aposta"
 align = 1
 
-[node name="WhiteBetSizeTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="PlayerBetTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 33.0
 margin_right = 78.0
@@ -383,7 +385,8 @@ margin_bottom = 105.0
 size_flags_horizontal = 9
 size_flags_vertical = 12
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/Control"]
+[node name="PlayerPieceCountTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/Control"]
+unique_name_in_owner = true
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -44.0
@@ -394,7 +397,7 @@ texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
 
-[node name="WhitePieceCount" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/Control/TextureRect"]
+[node name="PlayerPieceCountLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/Control/PlayerPieceCountTexture"]
 unique_name_in_owner = true
 anchor_left = 1.0
 anchor_top = 0.5
@@ -409,9 +412,9 @@ align = 1
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
-margin_left = 579.0
+margin_left = 379.0
 margin_top = 41.0
-margin_right = 768.0
+margin_right = 568.0
 margin_bottom = 105.0
 size_flags_vertical = 8
 
@@ -434,7 +437,7 @@ margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="WhitePlayerTimer" type="ProgressBar" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
+[node name="PlayerTimer" type="ProgressBar" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
 unique_name_in_owner = true
 anchor_left = 1.0
 anchor_top = 0.5
@@ -448,8 +451,8 @@ rect_rotation = -180.0
 size_flags_horizontal = 3
 custom_styles/fg = SubResource( 9 )
 custom_styles/bg = SubResource( 10 )
-max_value = 15.0
-value = 15.0
+max_value = 30.0
+value = 30.0
 percent_visible = false
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]

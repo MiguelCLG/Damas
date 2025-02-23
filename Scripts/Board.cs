@@ -22,7 +22,7 @@ public partial class Board : Control
   // Function called from the GameplaySystem when all events have been registered and subscribed (Preventing a race condition)
   public void InitializeBoard()
   {
-    if (currentGameColor == BoardColors.Black) FillBoardTiles(); else FillBoardTilesReverse();
+    if (currentGameColor == BoardColors.White) FillBoardTiles(); else FillBoardTilesReverse();
   }
   public Tile FindTileByName(string name)
   {
@@ -137,7 +137,7 @@ public partial class Board : Control
 
   private void CalculateMoves(Checker checker)
   {
-    direction = (checker.Color == BoardColors.White) ? blackPieceDirection : -blackPieceDirection;
+    direction = (checker.Color == BoardColors.White) ? -1 : 1;
 
     // setting up a diagonals vector so we can check its tiles, basically left or right and up or down (depending on the direction above)
     Vector2[] diagonals = { new Vector2(direction, -1), new Vector2(direction, 1) };
@@ -292,7 +292,7 @@ public partial class Board : Control
         bool isWhiteTile = (row + col) % 2 == 1;
         tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
         BoardTiles.Add(tileInstance);
-        /* tileInstance.AddChild(new Label() { Text = tileKey.ToString() }); */
+        //tileInstance.AddChild(new Label() { Text = tileKey.ToString() });
 
       }
     }
@@ -313,7 +313,7 @@ public partial class Board : Control
         bool isWhiteTile = (row + col) % 2 == 1;
         tileInstance.SetTileColor(isWhiteTile ? BoardColors.White : BoardColors.Black);
         BoardTiles.Add(tileInstance);
-        /* tileInstance.AddChild(new Label() { Text = tileKey.ToString() }); */
+        //tileInstance.AddChild(new Label() { Text = tileKey.ToString() });
       }
     }
   }

@@ -17,6 +17,7 @@ public enum Commands
   opponent_ready,
   game_start,
   move_piece,
+  game_timer,
 }
 
 public enum MessageType

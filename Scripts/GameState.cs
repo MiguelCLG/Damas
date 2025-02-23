@@ -30,7 +30,6 @@ public static class GameState
   public static float betValue = 1f;
   public static string room_id;
   public static Array<float> availableBidValues = new Array<float>() { 0.5f, 1f, 3f, 5f, 10f, 25f, 50f, 100f };
-  public static int blackPieceDirection = -1; // up by default
   public static Hashtable RotateBoard(Hashtable board)
   {
     // Define the tile positions for a 180-degree rotation
@@ -71,7 +70,6 @@ public static class GameState
         rotatedBoard[rotatedKey] = board[originalKey];
       }
     }
-    GD.Print(rotatedBoard);
     return rotatedBoard;
   }
 }

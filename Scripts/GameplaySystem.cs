@@ -9,6 +9,9 @@ public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
   [Export] private Texture[] playerPortraits;
+  [Export] private Texture[] pieceCountTextures;
+  private TextureRect OpponentPieceCountTexture;
+  private TextureRect PlayerPieceCountTexture;
   private Checker SelectedChecker = null;
   private Checker CheckerToCapture = null;
   private BoardColors CurrentTurn = BoardColors.Black;
@@ -17,8 +20,8 @@ public partial class GameplaySystem : Node2D
   private Array<Checker> AllCheckers = new Array<Checker>();
   private Board board;
   private GameOverMenu gameOverMenu;
-  private ProgressBar BlackPlayerTimer;
-  private ProgressBar WhitePlayerTimer;
+  private ProgressBar OpponentTimer;
+  private ProgressBar PlayerTimer;
   private Panel OpponentPortraitBackground;
   private Panel PlayerPortraitBackground;
   private Label OpponentNameLabel;
@@ -38,15 +41,15 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
     EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
     EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
+    EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
 
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
     OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
+    OpponentPieceCountTexture = GetNode<TextureRect>("%OpponentPieceCountTexture");
+    PlayerPieceCountTexture = GetNode<TextureRect>("%PlayerPieceCountTexture");
 
-    BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
-    WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
-
-    OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
-    PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
+    OpponentTimer = GetNode<ProgressBar>("%OpponentTimer");
+    PlayerTimer = GetNode<ProgressBar>("%PlayerTimer");
 
     OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
     PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
@@ -64,6 +67,10 @@ public partial class GameplaySystem : Node2D
 
     PlayerPortrait.Texture = currentGameColor == BoardColors.Black ? playerPortraits[0] : playerPortraits[1];
     OpponentPortrait.Texture = currentGameColor == BoardColors.White ? playerPortraits[0] : playerPortraits[1];
+
+    PlayerPieceCountTexture.Texture = currentGameColor == BoardColors.Black ? pieceCountTextures[0] : pieceCountTextures[1];
+    OpponentPieceCountTexture.Texture = currentGameColor == BoardColors.White ? pieceCountTextures[0] : pieceCountTextures[1];
+    GD.Print("Current game color: " + currentGameColor);
     board.InitializeBoard();
     GenerateCheckers();
     OnTurnStart();
@@ -96,41 +103,20 @@ public partial class GameplaySystem : Node2D
     }
   }
 
-  public override void _Process(float delta)
-  {
-    if (CurrentTurn == BoardColors.Black)
-    {
-      BlackPlayerTimer.Value -= delta;
-      if (BlackPlayerTimer.Value <= 0)
-      {
-        NextTurn();
-      }
-    }
-    else
-    {
-      WhitePlayerTimer.Value -= delta;
-      if (WhitePlayerTimer.Value <= 0)
-      {
-        NextTurn();
-      }
-    }
-
-  }
-
   private void OnTurnStart()
   {
-    if (CurrentTurn == BoardColors.Black)
+    if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
+    {
+      PlayerPortraitBackground.Visible = true;
+      OpponentPortraitBackground.Visible = false;
+    }
+    else
     {
       PlayerPortraitBackground.Visible = false;
       OpponentPortraitBackground.Visible = true;
     }
-    else
-    {
-      OpponentPortraitBackground.Visible = false;
-      PlayerPortraitBackground.Visible = true;
-    }
-    GetNode<Label>("%BlackPieceCount").Text = $"{BlackCheckers.Count}";
-    GetNode<Label>("%WhitePieceCount").Text = $"{WhiteCheckers.Count}";
+    GetNode<Label>("%OpponentPieceCountLabel").Text = $"{(currentGameColor == BoardColors.Black ? WhiteCheckers.Count : BlackCheckers.Count)}";
+    GetNode<Label>("%PlayerPieceCountLabel").Text = $"{(currentGameColor == BoardColors.White ? WhiteCheckers.Count : BlackCheckers.Count)}";
     LastMoveWasCapture = false;
     checkersWithCaptureMoves = new Array<Checker>();
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
@@ -304,7 +290,7 @@ public partial class GameplaySystem : Node2D
 
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker.UnselectChecker();
-          /* NextTurn(); */
+          NextTurn();
         }
       }
   }
@@ -348,8 +334,8 @@ public partial class GameplaySystem : Node2D
     {
       checker.UnselectChecker();
     }
-    WhitePlayerTimer.Value = 15;
-    BlackPlayerTimer.Value = 15;
+    PlayerTimer.Value = 30;
+    OpponentTimer.Value = 30;
     OnTurnStart();
   }
 
@@ -382,11 +368,35 @@ public partial class GameplaySystem : Node2D
 
   }
 
+  public void OnTimerUpdate(object sender, object args)
+  {
+    if (args is GameTimer timerData)
+    {
+      if (currentGameColor == CurrentTurn)
+      {
+        PlayerTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 1)
+        {
+          NextTurn();
+        }
+      }
+      else
+      {
+        OpponentTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 1)
+        {
+          NextTurn();
+        }
+      }
+    }
+  }
+
   // In the case of a restart, this function will be called
   // So we do a cleanup here to free the memory no longer used
   // We remove tiles or any event subscription, etc...
   public override void _ExitTree()
   {
+    EventSubscriber.UnsubscribeFromEvent("OnTimerUpdate", OnTimerUpdate);
     EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);

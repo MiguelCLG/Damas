@@ -24,6 +24,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("OnGameStarting");
 		EventRegistry.RegisterEvent("SendMessage");
 		EventRegistry.RegisterEvent("OnMovePiece");
+		EventRegistry.RegisterEvent("OnTimerUpdate");
 
 		client = new WebSocketClient();
 		client.Connect("connection_established", this, "OnConnect");
@@ -43,7 +44,7 @@ public partial class MultiplayerPeerConnection : Node
 		// player.session_id = "session2";
 		//WebUtils.PrintUrlParams();
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
-		
+
 		var err = client.ConnectToUrl($"ws://localhost:8080/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
 		//var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
 		if (err != Error.Ok)
@@ -84,7 +85,7 @@ public partial class MultiplayerPeerConnection : Node
 
 			var parsedObject = JsonConvert.DeserializeObject<DataReceived<JToken>>(jsonString);
 
-			GD.Print($"Data Received: {jsonString}");
+			//GD.Print($"Data Received: {jsonString}");
 			/*GD.Print($"Parsed Object Received: {parsedObject}"); */
 
 			try
@@ -123,6 +124,9 @@ public partial class MultiplayerPeerConnection : Node
 						break;
 					case Commands.move_piece:
 						EventRegistry.GetEventPublisher("OnMovePiece").RaiseEvent(parsedObject.value.ToObject<MovePieceData>());
+						break;
+					case Commands.game_timer:
+						EventRegistry.GetEventPublisher("OnTimerUpdate").RaiseEvent(parsedObject.value.ToObject<GameTimer>());
 						break;
 				}
 			}
@@ -224,6 +228,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
 
+		EventRegistry.UnregisterEvent("OnTimerUpdate");
 		EventRegistry.UnregisterEvent("SendMessage");
 		EventRegistry.UnregisterEvent("OnGameStarting");
 		EventRegistry.UnregisterEvent("OnOpponentReadyReceived");
