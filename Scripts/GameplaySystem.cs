@@ -13,7 +13,6 @@ public partial class GameplaySystem : Node2D
   private TextureRect OpponentPieceCountTexture;
   private TextureRect PlayerPieceCountTexture;
   private Checker SelectedChecker = null;
-  private Checker CheckerToCapture = null;
   private BoardColors CurrentTurn = BoardColors.Black;
   private Array<Checker> BlackCheckers = new Array<Checker>();
   private Array<Checker> WhiteCheckers = new Array<Checker>();
@@ -70,7 +69,6 @@ public partial class GameplaySystem : Node2D
 
     PlayerPieceCountTexture.Texture = currentGameColor == BoardColors.Black ? pieceCountTextures[0] : pieceCountTextures[1];
     OpponentPieceCountTexture.Texture = currentGameColor == BoardColors.White ? pieceCountTextures[0] : pieceCountTextures[1];
-    GD.Print("Current game color: " + currentGameColor);
     board.InitializeBoard();
     GenerateCheckers();
     OnTurnStart();
@@ -89,12 +87,13 @@ public partial class GameplaySystem : Node2D
 
       if (data.is_capture)
       {
-        GD.Print("This is a capture move sent by the server");
+        Tile captureTile = GetCheckerToBeCaptured(fromTile, toTile);
+        OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
       }
 
       if (data.is_kinged)
       {
-        GD.Print("The checker should be made king");
+        checker.SetKing();
       }
 
       NextTurn();
@@ -146,7 +145,7 @@ public partial class GameplaySystem : Node2D
     }
     foreach (var checker in currentTurnCheckers)
     {
-      if (board.HasCaptureMove(checker, AllCheckers))
+      if (board.HasCaptureMove(checker))
       {
         checkers.Add(checker);
       }
@@ -261,22 +260,21 @@ public partial class GameplaySystem : Node2D
       {
         if (SelectedChecker.MovementSpaces.Contains(tile))
         {
-          Vector2 tilePosition = new Vector2(tile.TilePosition.x * TileSize, tile.TilePosition.y * TileSize);
-          Vector2 newCheckerPosition = tilePosition + new Vector2(TileSize - CheckerSize, TileSize - CheckerSize) / 2;
-          if (IsCaptureMove(SelectedChecker.BoardPosition, tile.TilePosition))
+          if (board.HasCaptureMove(SelectedChecker))
           {
-            // OnCheckerKilled(CheckerToCapture);
+            Tile fromTile = SelectedChecker.GetParent<Tile>();
+            Tile captureTile = GetCheckerToBeCaptured(fromTile, tile);
+            OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
             LastMoveWasCapture = true;
           }
-          // TODO: Send command to server
-          /* if (CurrentTurn == BoardColors.Black)
+          if (CurrentTurn == BoardColors.Black)
           {
-            if (tile.TilePosition.y == BoardSize - 1)
+            if (tile.Name[0] == 'H')
               SelectedChecker.SetKing();
           }
           else if (CurrentTurn == BoardColors.White)
-            if (tile.TilePosition.y == 0)
-              SelectedChecker.SetKing(); */
+            if (tile.Name[0] == 'A')
+              SelectedChecker.SetKing();
 
 
           MovePieceData movePieceData = new MovePieceData();
@@ -284,6 +282,9 @@ public partial class GameplaySystem : Node2D
           movePieceData.piece_id = SelectedChecker.Name;
           movePieceData.from = SelectedChecker.GetParent<Tile>().Name;
           movePieceData.to = tile.Name;
+          movePieceData.is_capture = LastMoveWasCapture;
+          movePieceData.is_kinged = SelectedChecker.isKing;
+
           SelectedChecker.Move(tile, tile.TilePosition);
 
           EventRegistry.GetEventPublisher("SendMessage").RaiseEvent(movePieceData);
@@ -295,24 +296,32 @@ public partial class GameplaySystem : Node2D
       }
   }
 
-  private bool IsCaptureMove(Vector2 currentPosition, Vector2 targetPosition)
+  private Tile GetCheckerToBeCaptured(Tile fromTile, Tile toTile)
   {
-
-    var direction = new Vector2(Mathf.Sign(targetPosition.x - currentPosition.x), Mathf.Sign(targetPosition.y - currentPosition.y));
-    Vector2 midPosition = targetPosition - direction;
-
-    var checkers = CurrentTurn == BoardColors.Black ? WhiteCheckers : BlackCheckers;
-    foreach (Checker checker in checkers)
+    string fromTileName = fromTile.Name;
+    string toTileName = toTile.Name;
+    char letter = 'Z';
+    int number = 0;
+    if (fromTileName[0] > toTileName[0])
     {
-      if (checker.BoardPosition == midPosition)
-      {
-        CheckerToCapture = checker;
-        return true;
-      }
+      letter = (char)(fromTileName[0] - 1);
+
+    }
+    else if (fromTileName[0] < toTileName[0])
+    {
+      letter = (char)(fromTileName[0] + 1);
+
     }
 
-    return false; // No checker found
+    if (int.TryParse(toTileName[1].ToString(), out int toTileNumber) &&
+    int.TryParse(fromTileName[1].ToString(), out int fromTileNumber))
+    {
+      number = (fromTileNumber + toTileNumber) / 2;
+    }
 
+    string tileName = letter.ToString() + number.ToString();
+    GD.Print($"target: {tileName}");
+    return board.FindTileByName(tileName);
   }
   private void NextTurn()
   {
@@ -321,7 +330,7 @@ public partial class GameplaySystem : Node2D
       board.CleanUpFreeTiles(SelectedChecker);
       SelectedChecker.UnselectChecker();
     }
-    if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker, AllCheckers))
+    if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
     {
       OnTurnStart();
       return;

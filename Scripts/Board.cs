@@ -29,26 +29,26 @@ public partial class Board : Control
     return BoardContainer.GetNode<Tile>(name);
   }
 
-  public bool HasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
+  public bool HasCaptureMove(Checker checker)
   {
     if (checker.isKing)
     {
-      return KingHasCaptureMove(checker, checkersInPlay);
+      /* return KingHasCaptureMove(checker); */
     }
     else
     {
-      return CheckerHasCaptureMove(checker, checkersInPlay);
     }
+    return CheckerHasCaptureMove(checker);
 
   }
 
-  private bool CheckerHasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
+  private bool CheckerHasCaptureMove(Checker checker)
   {
     CalculateMoves(checker);
     return IsCaptureMove;
   }
 
-  private bool KingHasCaptureMove(Checker checker, Array<Checker> checkersInPlay)
+  /* private bool KingHasCaptureMove(Checker checker)
   {
     Vector2[] diagonals = { new Vector2(-1, 1), new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1) };
     var captureMoves = new Array<Vector2>();
@@ -80,7 +80,7 @@ public partial class Board : Control
     }
 
     return captureMoves.Count > 0;
-  }
+  } */
 
   private bool IsAllyAt(Vector2 checkPosition, BoardColors color, Array<Checker> checkersInPlay)
   {
