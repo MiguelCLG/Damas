@@ -83,7 +83,6 @@ tracks/0/keys = {
 [node name="Checker" type="Control"]
 margin_right = 32.0
 margin_bottom = 32.0
-rect_min_size = Vector2( 64, 64 )
 mouse_filter = 2
 script = ExtResource( 1 )
 WhiteCheckerTexture = ExtResource( 4 )

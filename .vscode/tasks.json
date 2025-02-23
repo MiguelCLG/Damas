@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "build",
-      "command": "D:/PC FOLDERS/Desktop/Godot_v3.6-stable_mono_win64/Godot_v3.6-stable_mono_win64.exe\r",
+      "command": "${env:GODOT_3_BIN}",
       "type": "process",
       "args": [
         "--build-solutions",

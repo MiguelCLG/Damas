@@ -1,103 +1,29 @@
-{
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
-  "configurations": [
-    // For these launch configurations to work, you need to setup a GODOT4
-    // environment variable. On mac or linux, this can be done by adding
-    // the following to your .zshrc, .bashrc, or .bash_profile file:
-    // export GODOT4="/Applications/Godot.app/Contents/MacOS/Godot"
-    {
-      "name": "Play",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "build",
-      "program": "${env:GODOT_3_BIN}",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "stopAtEntry": false,
-    },
-    {
-      "name": "Play (Select Scene)",
-      "type": "godot-mono",
-      "request": "launch",
-      "preLaunchTask": "build",
-      "mode": "executable",
-      "executable": "${env:GODOT_3_BIN}",
-      "executableArguments": [
-        "--path",
-        "${workspaceFolder}",
-        "${command:SelectLaunchScene}"
-      ],
-    },
-    /*  {
-      "name": "Play",
-      "type": "coreclr",
-      "request": "launch",
-      "logging": {"engineLogging": true},
-      "preLaunchTask": "build",
-      "program": "D:\\PC FOLDERS/Desktop/Godot_v4.1-stable_mono_win64/Godot_v4.1-stable_mono_win64.exe",
-      "args": ["--path", "${workspaceFolder}"],
-      "cwd": "${workspaceFolder}",
-      "stopAtEntry": false,
-    }, */
-    {
-      "name": ".NET Core Launch (console)",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "build",
-      "program": "${env:GODOT_3_BIN}",
-      "args": [
-        "--editor",
-        "--path",
-        "${workspaceFolder}"
-      ],
-      "cwd": "${workspaceFolder}",
-      "stopAtEntry": false,
-      "console": "internalConsole"
-    },
-    {
-      "name": "Launch",
-      "type": "godot-mono",
-      "request": "launch",
-      "mode": "executable",
-      "preLaunchTask": "build",
-      "executable": "${env:GODOT_3_BIN}",
-      // See which arguments are available here:
-      // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
-      "executableArguments": [
-        "--path",
-        "${workspaceRoot}"
-      ]
-    },
-    {
-      "name": "Attach",
-      "type": "godot-mono",
-      "request": "attach",
-      "address": "localhost",
-      "port": 23685
-    },
-    {
-      "name": "Play in Editor",
-      "type": "godot-mono",
-      "mode": "playInEditor",
-      "request": "launch"
-    },
-    {
-      "name": "Launch (Select Scene)",
-      "type": "godot-mono",
-      "request": "launch",
-      "mode": "executable",
-      "preLaunchTask": "build",
-      "executable": "${env:GODOT_3_BIN}",
-      // See which arguments are available here:
-      // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
-      "executableArguments": [
-        "--path",
-        "${workspaceRoot}",
-        "${command:SelectLaunchScene}"
-      ]
-    }
-  ]
-}
+  // See which arguments are available here:
+  // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
+  {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Play in Editor",
+        "type": "godot-mono",
+        "mode": "playInEditor",
+        "request": "launch"
+      },
+      {
+        "name": "Launch (Select Scene)",
+        "type": "godot-mono",
+        "request": "launch",
+        "mode": "executable",
+        "preLaunchTask": "build",
+        "executable": "${env:GODOT_3_BIN}",
+        "executableArguments": [
+          "--path",
+          "${workspaceRoot}",
+          "${command:SelectLaunchScene}"
+        ]
+      }
+    ]
+  }
