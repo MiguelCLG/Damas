@@ -1,28 +1,32 @@
-using System;
 using Godot;
 using Godot.Collections;
 using static Utils;
+using static GameState;
+using System.Collections;
+using Newtonsoft.Json;
 
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
-  [Export] private StyleBoxFlat portraitBgStyle;
-  [Export] private StyleBoxFlat portraitBgSelectedStyle;
-
+  [Export] private Texture[] playerPortraits;
+  [Export] private Texture[] pieceCountTextures;
+  private TextureRect OpponentPieceCountTexture;
+  private TextureRect PlayerPieceCountTexture;
   private Checker SelectedChecker = null;
-  private Checker CheckerToCapture = null;
   private BoardColors CurrentTurn = BoardColors.Black;
   private Array<Checker> BlackCheckers = new Array<Checker>();
   private Array<Checker> WhiteCheckers = new Array<Checker>();
   private Array<Checker> AllCheckers = new Array<Checker>();
   private Board board;
-  private Control checkersContainer;
   private GameOverMenu gameOverMenu;
-  private ProgressBar BlackPlayerTimer;
-  private ProgressBar WhitePlayerTimer;
-  private Panel BlackPlayerPortraitBackground;
-  private Panel WhitePlayerPortraitBackground;
-
+  private ProgressBar OpponentTimer;
+  private ProgressBar PlayerTimer;
+  private Panel OpponentPortraitBackground;
+  private Panel PlayerPortraitBackground;
+  private Label OpponentNameLabel;
+  private Label PlayerNameLabel;
+  private TextureRect PlayerPortrait;
+  private TextureRect OpponentPortrait;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
 
@@ -33,73 +37,90 @@ public partial class GameplaySystem : Node2D
     // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
     EventRegistry.RegisterEvent("TileClicked");
     EventRegistry.RegisterEvent("CheckerClicked");
-    EventRegistry.RegisterEvent("SpawnCheckers");
     EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
     EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
-    EventSubscriber.SubscribeToEvent("SpawnCheckers", SpawnCheckers);
+    EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
+    EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
 
-    // added this signal to make sure we can resize our pieces if the window is resized
-    GetTree().Root.Connect("size_changed", this, nameof(OnViewportChanged));
+    PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
+    OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
+    OpponentPieceCountTexture = GetNode<TextureRect>("%OpponentPieceCountTexture");
+    PlayerPieceCountTexture = GetNode<TextureRect>("%PlayerPieceCountTexture");
 
-    BlackPlayerTimer = GetNode<ProgressBar>("%BlackPlayerTimer");
-    WhitePlayerTimer = GetNode<ProgressBar>("%WhitePlayerTimer");
-    BlackPlayerPortraitBackground = GetNode<Panel>("%BlackPlayerPortraitBackground");
-    WhitePlayerPortraitBackground = GetNode<Panel>("%WhitePlayerPortraitBackground");
-    WhitePlayerPortraitBackground.Visible = false;
-    BlackPlayerPortraitBackground.Visible = true;
+    OpponentTimer = GetNode<ProgressBar>("%OpponentTimer");
+    PlayerTimer = GetNode<ProgressBar>("%PlayerTimer");
+
+    OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
+    PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
+    PlayerPortraitBackground.Visible = CurrentTurn == currentGameColor;
+    OpponentPortraitBackground.Visible = CurrentTurn != currentGameColor;
+
+    PlayerNameLabel = GetNode<Label>("%PlayerNameLabel");
+    OpponentNameLabel = GetNode<Label>("%OpponentNameLabel");
+    PlayerNameLabel.Text = player.name;
+    OpponentNameLabel.Text = opponentName;
+
     board = GetNode<Board>("%Board");
-    checkersContainer = GetNode<Control>("%CheckersContainer");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
 
-    GenerateCheckers();
+    PlayerPortrait.Texture = currentGameColor == BoardColors.Black ? playerPortraits[0] : playerPortraits[1];
+    OpponentPortrait.Texture = currentGameColor == BoardColors.White ? playerPortraits[0] : playerPortraits[1];
+
+    PlayerPieceCountTexture.Texture = currentGameColor == BoardColors.Black ? pieceCountTextures[0] : pieceCountTextures[1];
+    OpponentPieceCountTexture.Texture = currentGameColor == BoardColors.White ? pieceCountTextures[0] : pieceCountTextures[1];
     board.InitializeBoard();
+    GenerateCheckers();
     OnTurnStart();
   }
 
-  public override void _Process(float delta)
+  private void OnMovePiece(object sender, object args)
   {
-    if (CurrentTurn == BoardColors.Black)
+    if (args is MovePieceData data)
     {
-      BlackPlayerTimer.Value -= delta;
-      if (BlackPlayerTimer.Value <= 0)
+
+      Tile toTile = board.FindTileByName(data.to);
+      Tile fromTile = board.FindTileByName(data.from);
+      Checker checker = fromTile.GetNode<Checker>(data.piece_id);
+      fromTile.RemoveChild(checker);
+      toTile.AddChild(checker);
+
+      if (data.is_capture)
       {
-        NextTurn();
+        Tile captureTile = GetCheckerToBeCaptured(fromTile, toTile);
+        OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
+        if (board.HasCaptureMove(checker))
+        {
+          return;
+        }
       }
-    }
-    else
-    {
-      WhitePlayerTimer.Value -= delta;
-      if (WhitePlayerTimer.Value <= 0)
+
+      if (data.is_kinged)
       {
-        NextTurn();
+        checker.SetKing();
       }
+
+      NextTurn();
+
+
     }
-
-  }
-
-  // Function to handle viewport changes, when the signal SizeChanged is emitted, this is what is executed
-  private void OnViewportChanged()
-  {
-    board.OnViewPortChanged();
-    PositionCheckers();
-
   }
 
   private void OnTurnStart()
   {
-    if (CurrentTurn == BoardColors.Black)
+    if (CurrentTurn != currentGameColor) return;
+    if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
     {
-      WhitePlayerPortraitBackground.Visible = false;
-      BlackPlayerPortraitBackground.Visible = true;
+      PlayerPortraitBackground.Visible = true;
+      OpponentPortraitBackground.Visible = false;
     }
     else
     {
-      BlackPlayerPortraitBackground.Visible = false;
-      WhitePlayerPortraitBackground.Visible = true;
+      PlayerPortraitBackground.Visible = false;
+      OpponentPortraitBackground.Visible = true;
     }
-    GetNode<Label>("%BlackPieceCount").Text = $"{BlackCheckers.Count}";
-    GetNode<Label>("%WhitePieceCount").Text = $"{WhiteCheckers.Count}";
+    GetNode<Label>("%OpponentPieceCountLabel").Text = $"{(currentGameColor == BoardColors.Black ? WhiteCheckers.Count : BlackCheckers.Count)}";
+    GetNode<Label>("%PlayerPieceCountLabel").Text = $"{(currentGameColor == BoardColors.White ? WhiteCheckers.Count : BlackCheckers.Count)}";
     LastMoveWasCapture = false;
     checkersWithCaptureMoves = new Array<Checker>();
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
@@ -129,142 +150,53 @@ public partial class GameplaySystem : Node2D
     }
     foreach (var checker in currentTurnCheckers)
     {
-      if (board.HasCaptureMove(checker, AllCheckers))
+      if (board.HasCaptureMove(checker))
       {
         checkers.Add(checker);
       }
     }
     return checkers;
   }
-  private void PositionCheckers()
-  {
-    foreach (Checker checker in checkersContainer.GetChildren())
-    {
-      float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-      float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-      Vector2 tilePosition = new Vector2(checker.BoardPosition.x * tileSizeX, checker.BoardPosition.y * tileSizeX);
-      Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
-
-      checker.RectPosition = checkerPosition;
-    }
-  }
 
   private void GenerateCheckers()
   {
-    // Defined the board scheme for an easier way to spawn the checkers (1 = black checker, 2 = white checker, 0 = skip)
 
-    int[,] boardScheme = new int[BoardSize, BoardSize]
-        {
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 },
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 },
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 },
-            { 0, 1, 0, 0, 0, 2, 0, 2 },
-            { 1, 0, 1, 0, 0, 0, 2, 0 }
-        };
-
-    /*  int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
-     {
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 1, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 2, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 },
-         { 0, 0, 0, 0, 0, 0, 0, 0 }
-     }; */
-    /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with three pieces to be killed.
+    foreach (DictionaryEntry pair in initialBoard)
     {
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 2, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 2, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 0, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 0 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 }
-    }; */
-    /* int[,] boardScheme = new int[BoardSize, BoardSize] // Test board with two pieces to be killed.
-    {
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 2, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 0, 0 },
-        { 0, 1, 0, 0, 0, 2, 0, 2 },
-        { 1, 0, 1, 0, 0, 0, 2, 0 }
-    }; */
+      if (pair.Value == null) continue;
+      Tile tile = board.FindTileByName(pair.Key.ToString());
 
+      Piece piece = JsonConvert.DeserializeObject<Piece>(pair.Value.ToString());
 
-    for (int i = 0; i < BoardSize; i++)
-    {
-      for (int j = 0; j < BoardSize; j++)
-      {
-        int checkerType = boardScheme[i, j];
-        if (checkerType == 0) continue; // Skip empty tiles
-
-        var checker = checkerScene.Instance<Checker>();
-
-        // Name the checker with its position in the grid (helps with debugging in the editor)
-        checker.Name = $"Checker_{i}_{j}";
-
-        // Calculate the position of the checker
-        // Starts from the board's starting position, add the tile offset, and center the checker within the tile
-        // Using only the X axis for the resize / positioning so that we can resize the window keeping the width constant
-        float tileSizeX = TileSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-        float checkerSizeX = CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100;
-        Vector2 tilePosition = new Vector2(i * tileSizeX, j * tileSizeX);
-        Vector2 checkerPosition = tilePosition + new Vector2(tileSizeX - checkerSizeX, tileSizeX - checkerSizeX) / 2;
-
-        checker.RectPosition = checkerPosition;
-        checker.BoardPosition = new Vector2(i, j);
-        checker.Color = checkerType == 1 ? BoardColors.Black : BoardColors.White;
-
-        if (checkerType == 1)
-          BlackCheckers.Add(checker);
-        else
-          WhiteCheckers.Add(checker);
-        AllCheckers.Add(checker);
-
-      }
+      BoardColors checkerColor = piece.type == "w" ? BoardColors.White : BoardColors.Black;
+      var checker = checkerScene.Instance<Checker>();
+      checker.Name = piece.piece_id;
+      checker.BoardPosition = new Vector2(tile.TilePosition.x, tile.TilePosition.y);
+      if (checkerColor == BoardColors.Black)
+        BlackCheckers.Add(checker);
+      else
+        WhiteCheckers.Add(checker);
+      AllCheckers.Add(checker);
+      checker.RectMinSize = tile.GetParent<GridContainer>().RectSize / 8;
+      tile.AddChild(checker);
+      checker.SetCheckerColor(checkerColor);
     }
+
   }
 
-  private void SpawnCheckers(object sender, object args)
-  {
-    ClearCheckers();
 
-    for (int i = 0; i < BlackCheckers.Count; i++)
-    {
-      Checker checker = BlackCheckers[i];
-      checker.RectMinSize = new Vector2(CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100, CheckerSize * (GetViewportRect().Size.y * 100 / ViewportBaseY) / 100);
-      checkersContainer.AddChild(checker);
-      checker.SetCheckerColor(BoardColors.Black);
-    }
-    for (int i = 0; i < WhiteCheckers.Count; i++)
-    {
-      Checker checker = WhiteCheckers[i];
-      checker.RectMinSize = new Vector2(CheckerSize * (GetViewportRect().Size.x * 100 / ViewportBaseX) / 100, CheckerSize * (GetViewportRect().Size.y * 100 / ViewportBaseY) / 100);
-      checkersContainer.AddChild(checker);
-      checker.SetCheckerColor(BoardColors.White);
-
-    }
-  }
   public void ClearCheckers()
   {
-    foreach (Checker checker in checkersContainer.GetChildren())
+    foreach (Checker checker in AllCheckers)
     {
-      checkersContainer.RemoveChild(checker);
+      checker.GetParent().RemoveChild(checker);
     }
   }
 
   // Event OnCheckerClicked will execute this function
   private void OnCheckerClicked(object sender, object args)
   {
+    if (currentGameColor != CurrentTurn) return;
     // If we already have a selected checker
     if (SelectedChecker != null)
     {
@@ -327,28 +259,40 @@ public partial class GameplaySystem : Node2D
   // Event OnTileClicked will execute this function
   private void OnTileClicked(object sender, object args)
   {
+    if (currentGameColor != CurrentTurn) return;
     if (SelectedChecker != null)
       if (args is Tile tile)
       {
-        if (SelectedChecker.MovementSpaces.Contains(tile.TilePosition))
+        if (SelectedChecker.MovementSpaces.Contains(tile))
         {
-          Vector2 tilePosition = new Vector2(tile.TilePosition.x * TileSize, tile.TilePosition.y * TileSize);
-          Vector2 newCheckerPosition = tilePosition + new Vector2(TileSize - CheckerSize, TileSize - CheckerSize) / 2;
-          if (IsCaptureMove(SelectedChecker.BoardPosition, tile.TilePosition))
+          if (board.HasCaptureMove(SelectedChecker))
           {
-            OnCheckerKilled(CheckerToCapture);
+            Tile fromTile = SelectedChecker.GetParent<Tile>();
+            Tile captureTile = GetCheckerToBeCaptured(fromTile, tile);
+            OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
             LastMoveWasCapture = true;
           }
-          SelectedChecker.Move(newCheckerPosition, tile.TilePosition);
-
           if (CurrentTurn == BoardColors.Black)
           {
-            if (tile.TilePosition.y == BoardSize - 1)
+            if (tile.Name[0] == 'H')
               SelectedChecker.SetKing();
           }
           else if (CurrentTurn == BoardColors.White)
-            if (tile.TilePosition.y == 0)
+            if (tile.Name[0] == 'A')
               SelectedChecker.SetKing();
+
+
+          MovePieceData movePieceData = new MovePieceData();
+          movePieceData.player_id = player.id;
+          movePieceData.piece_id = SelectedChecker.Name;
+          movePieceData.from = SelectedChecker.GetParent<Tile>().Name;
+          movePieceData.to = tile.Name;
+          movePieceData.is_capture = LastMoveWasCapture;
+          movePieceData.is_kinged = SelectedChecker.isKing;
+
+          SelectedChecker.Move(tile, tile.TilePosition);
+
+          EventRegistry.GetEventPublisher("SendMessage").RaiseEvent(movePieceData);
 
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker.UnselectChecker();
@@ -357,24 +301,32 @@ public partial class GameplaySystem : Node2D
       }
   }
 
-  private bool IsCaptureMove(Vector2 currentPosition, Vector2 targetPosition)
+  private Tile GetCheckerToBeCaptured(Tile fromTile, Tile toTile)
   {
-
-    var direction = new Vector2(Mathf.Sign(targetPosition.x - currentPosition.x), Mathf.Sign(targetPosition.y - currentPosition.y));
-    Vector2 midPosition = targetPosition - direction;
-
-    var checkers = CurrentTurn == BoardColors.Black ? WhiteCheckers : BlackCheckers;
-    foreach (Checker checker in checkers)
+    string fromTileName = fromTile.Name;
+    string toTileName = toTile.Name;
+    char letter = 'Z';
+    int number = 0;
+    if (fromTileName[0] > toTileName[0])
     {
-      if (checker.BoardPosition == midPosition)
-      {
-        CheckerToCapture = checker;
-        return true;
-      }
+      letter = (char)(fromTileName[0] - 1);
+
+    }
+    else if (fromTileName[0] < toTileName[0])
+    {
+      letter = (char)(fromTileName[0] + 1);
+
     }
 
-    return false; // No checker found
+    if (int.TryParse(toTileName[1].ToString(), out int toTileNumber) &&
+    int.TryParse(fromTileName[1].ToString(), out int fromTileNumber))
+    {
+      number = (fromTileNumber + toTileNumber) / 2;
+    }
 
+    string tileName = letter.ToString() + number.ToString();
+    GD.Print($"target: {tileName}");
+    return board.FindTileByName(tileName);
   }
   private void NextTurn()
   {
@@ -383,7 +335,7 @@ public partial class GameplaySystem : Node2D
       board.CleanUpFreeTiles(SelectedChecker);
       SelectedChecker.UnselectChecker();
     }
-    if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker, AllCheckers))
+    if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
     {
       OnTurnStart();
       return;
@@ -396,8 +348,8 @@ public partial class GameplaySystem : Node2D
     {
       checker.UnselectChecker();
     }
-    WhitePlayerTimer.Value = 15;
-    BlackPlayerTimer.Value = 15;
+    PlayerTimer.Value = 30;
+    OpponentTimer.Value = 30;
     OnTurnStart();
   }
 
@@ -430,16 +382,39 @@ public partial class GameplaySystem : Node2D
 
   }
 
+  public void OnTimerUpdate(object sender, object args)
+  {
+    if (args is GameTimer timerData)
+    {
+      if (currentGameColor == CurrentTurn)
+      {
+        PlayerTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 1)
+        {
+          NextTurn();
+        }
+      }
+      else
+      {
+        OpponentTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 1)
+        {
+          NextTurn();
+        }
+      }
+    }
+  }
+
   // In the case of a restart, this function will be called
   // So we do a cleanup here to free the memory no longer used
   // We remove tiles or any event subscription, etc...
   public override void _ExitTree()
   {
+    EventSubscriber.UnsubscribeFromEvent("OnTimerUpdate", OnTimerUpdate);
+    EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);
-    EventSubscriber.UnsubscribeFromEvent("SpawnCheckers", SpawnCheckers);
     EventRegistry.UnregisterEvent("TileClicked");
     EventRegistry.UnregisterEvent("CheckerClicked");
-    EventRegistry.UnregisterEvent("SpawnCheckers");
   }
 }

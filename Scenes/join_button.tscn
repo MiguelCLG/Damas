@@ -1,0 +1,11 @@
+[gd_scene format=2]
+
+[node name="JoinButton" type="Button"]
+margin_left = 498.0
+margin_top = 37.0
+margin_right = 743.0
+margin_bottom = 109.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_type_variation = "JogarButton"
+text = "Join"
