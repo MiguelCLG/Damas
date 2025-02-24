@@ -9,6 +9,7 @@ public enum Commands
   paired,
   ready_queue,
   join_room,
+  leave_queue,
   leave_room,
   game_info,
   queue,
