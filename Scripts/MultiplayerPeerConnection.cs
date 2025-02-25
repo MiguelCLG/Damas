@@ -44,10 +44,11 @@ public partial class MultiplayerPeerConnection : Node
 		// player = new GamePlayer();
 		// player.token = "token456";
 		// player.session_id = "session2";
-		//WebUtils.PrintUrlParams();
+		WebUtils.PrintUrlParams();
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
-		var ip = "3.75.187.224";
-		var port = "80";
+		//var ip = "3.75.187.224";
+		var ip = "localhost";
+		var port = "8080";
 
 		var err = client.ConnectToUrl($"ws://{ip}:{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
 		//var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
@@ -133,6 +134,8 @@ public partial class MultiplayerPeerConnection : Node
 						break;
 					case Commands.game_timer:
 						EventRegistry.GetEventPublisher("OnTimerUpdate").RaiseEvent(parsedObject.value.ToObject<GameTimer>());
+						break;
+					case Commands.balance_update:
 						break;
 				}
 			}

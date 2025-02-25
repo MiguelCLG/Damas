@@ -19,6 +19,7 @@ public enum Commands
   game_start,
   move_piece,
   game_timer,
+  balance_update
 }
 
 public enum MessageType

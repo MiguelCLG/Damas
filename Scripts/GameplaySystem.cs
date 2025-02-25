@@ -305,23 +305,29 @@ public partial class GameplaySystem : Node2D
   {
     string fromTileName = fromTile.Name;
     string toTileName = toTile.Name;
-    char letter = 'Z';
-    int number = 0;
+    char letter;
+    int number;
     if (fromTileName[0] > toTileName[0])
     {
-      letter = (char)(fromTileName[0] - 1);
+      letter = (char)(toTileName[0] + 1);
 
     }
-    else if (fromTileName[0] < toTileName[0])
+    else
     {
-      letter = (char)(fromTileName[0] + 1);
+      letter = (char)(toTileName[0] - 1);
 
     }
 
-    if (int.TryParse(toTileName[1].ToString(), out int toTileNumber) &&
-    int.TryParse(fromTileName[1].ToString(), out int fromTileNumber))
+    int toTileNumber = int.Parse(toTileName[1].ToString());
+    int fromTileNumber = int.Parse(fromTileName[1].ToString());
+
+    if (toTileNumber > fromTileNumber)
     {
-      number = (fromTileNumber + toTileNumber) / 2;
+      number = toTileNumber - 1;
+    }
+    else
+    {
+      number = toTileNumber + 1;
     }
 
     string tileName = letter.ToString() + number.ToString();

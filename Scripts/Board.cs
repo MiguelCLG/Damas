@@ -48,7 +48,7 @@ public partial class Board : Control
 
   private bool KingHasCaptureMove(Checker checker)
   {
-    KingMovement(checker);
+    CalculateKingMoves(checker);
     return IsCaptureMove;
   }
 
@@ -185,12 +185,12 @@ public partial class Board : Control
 
     CaptureMoves = new Dictionary<Checker, Tile>(); // saves the checker to capture and the target tile for the current selected checker
     RegularMoves = new Array<Tile>();
-    string currentTileName = checker.GetParent().Name;
 
 
     // This time we have 4 directions so this loop will run 4 times
     foreach (var diagonal in diagonals)
     {
+      string currentTileName = checker.GetParent().Name;
       while (true) // we want to loop through all the available spaces until we are out of bounds, so that we can select the space we want to go
       {
         int row = currentTileName[0] - 'A';
@@ -229,8 +229,8 @@ public partial class Board : Control
           RegularMoves.Add(checkTile);
         }
       }
-      IsCaptureMove = CaptureMoves.Count > 0;
     }
+    IsCaptureMove = CaptureMoves.Count > 0;
   }
 
 
