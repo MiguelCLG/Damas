@@ -369,6 +369,7 @@ public partial class GameplaySystem : Node2D
     else
       WhiteCheckers.Remove(checker);
     AllCheckers.Remove(checker);
+    checker.GetParent().RemoveChild(checker);
     checker.QueueFree();
 
     if (BlackCheckers.Count == 0)
