@@ -46,11 +46,9 @@ public partial class MultiplayerPeerConnection : Node
 		// player.session_id = "session2";
 		WebUtils.PrintUrlParams();
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
-		//var ip = "3.75.187.224";
-		var ip = "localhost";
-		var port = "8080";
+		var ip = "games.qlean.pt";
 
-		var err = client.ConnectToUrl($"ws://{ip}:{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
+		var err = client.ConnectToUrl($"wss://{ip}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
 		//var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
 		if (err != Error.Ok)
 		{
