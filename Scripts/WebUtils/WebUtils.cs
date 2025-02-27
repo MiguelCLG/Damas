@@ -95,6 +95,7 @@ public static class WebUtils
 		string protocol = (string)JavaScript.Eval(script);
 
 		// Determine the WebSocket prefix based on the protocol
+		GD.Print($"[ URL PARAMS ] :: Determined WebSocket Protocol: {protocol}");
 		string prefix = protocol == "https:" ? "wss" : "ws";
 		GD.Print($"[ URL PARAMS ] :: Determined WebSocket Prefix: {prefix}");
 
