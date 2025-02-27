@@ -7,12 +7,14 @@ public class UrlParamsModel
 	public string Token { get; set; }
 	public string SessionId { get; set; }
 	public string Currency { get; set; }
+	public string Prefix { get; set; }
 
-	public UrlParamsModel(string token, string sessionId, string currency)
+	public UrlParamsModel(string token, string sessionId, string currency, string prefix)
 	{
 		Token = token;
 		SessionId = sessionId;
 		Currency = currency;
+		Prefix = prefix;
 	}
 }
 
@@ -27,7 +29,7 @@ public static class WebUtils
 		string osName = OS.GetName();
 
 		if (osName != "Web" && osName != "HTML5") {
-			GD.Print($"[ URL PARAMS ] :: Running on non-HTML environment: {OS.GetName()}");
+			GD.Print($"[ URL PARAMS ] :: Running on non-HTML environment: {OS.GetName()}. URL params will not be processed.");
 			return new Dictionary<string, string>();
 		}
 
@@ -65,8 +67,20 @@ public static class WebUtils
 		string token = parameters.ContainsKey("token") ? parameters["token"] : "N/A";
 		string sessionId = parameters.ContainsKey("sessionid") ? parameters["sessionid"] : "N/A";
 		string currency = parameters.ContainsKey("currency") ? parameters["currency"] : "N/A";
+		
+		// Use JavaScript to get the current protocol (http or https)
+		string script = @"
+			var protocol = window.location.protocol;
+			console.log('Current Protocol:', protocol); // Debug line
+			return protocol;
+		";
+		string protocol = (string)JavaScript.Eval(script);
 
-		return new UrlParamsModel(token, sessionId, currency);
+		// Determine the WebSocket prefix based on the protocol
+		string prefix = protocol == "https:" ? "wss" : "ws";
+		GD.Print($"[ URL PARAMS ] :: Determined WebSocket Prefix: {prefix}");
+
+		return new UrlParamsModel(token, sessionId, currency, prefix);
 	}
 
 
