@@ -1,6 +1,5 @@
 using Godot;
 using Godot.Collections;
-using static Utils;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
@@ -41,6 +40,7 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
     EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
+    EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
 
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
     OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
@@ -74,6 +74,12 @@ public partial class GameplaySystem : Node2D
     OnTurnStart();
   }
 
+  private void OnTurnSwitch(object sender, object args)
+  {
+    if (args is string player_id)
+      NextTurn(player_id);
+  }
+
   private void OnMovePiece(object sender, object args)
   {
     if (args is MovePieceData data)
@@ -89,20 +95,12 @@ public partial class GameplaySystem : Node2D
       {
         Tile captureTile = GetCheckerToBeCaptured(fromTile, toTile);
         OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
-        if (board.HasCaptureMove(checker))
-        {
-          return;
-        }
       }
 
       if (data.is_kinged)
       {
         checker.SetKing();
       }
-
-      NextTurn();
-
-
     }
   }
 
@@ -296,7 +294,10 @@ public partial class GameplaySystem : Node2D
 
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker.UnselectChecker();
-          NextTurn();
+          if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
+          {
+            OnTurnStart();
+          }
         }
       }
   }
@@ -334,20 +335,20 @@ public partial class GameplaySystem : Node2D
     GD.Print($"target: {tileName}");
     return board.FindTileByName(tileName);
   }
-  private void NextTurn()
+  private void NextTurn(string player_id)
   {
     if (SelectedChecker != null)
     {
       board.CleanUpFreeTiles(SelectedChecker);
       SelectedChecker.UnselectChecker();
     }
-    if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
-    {
-      OnTurnStart();
-      return;
-    }
+
+    GD.Print("from turn: " + CurrentTurn);
+
     CurrentTurn = CurrentTurn == BoardColors.Black ? BoardColors.White : BoardColors.Black;
+
     SelectedChecker = null;
+    GD.Print("to turn: " + CurrentTurn);
 
     // clean up capture status of checkers
     foreach (var checker in checkersWithCaptureMoves)
@@ -396,18 +397,10 @@ public partial class GameplaySystem : Node2D
       if (currentGameColor == CurrentTurn)
       {
         PlayerTimer.Value = timerData.player_timer;
-        if (timerData.player_timer <= 1)
-        {
-          NextTurn();
-        }
       }
       else
       {
         OpponentTimer.Value = timerData.player_timer;
-        if (timerData.player_timer <= 1)
-        {
-          NextTurn();
-        }
       }
     }
   }

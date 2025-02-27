@@ -28,7 +28,8 @@ public static class WebUtils
 	{
 		string osName = OS.GetName();
 
-		if (osName != "Web" && osName != "HTML5") {
+		if (osName != "Web" && osName != "HTML5")
+		{
 			GD.Print($"[ URL PARAMS ] :: Running on non-HTML environment: {OS.GetName()}. URL params will not be processed.");
 			return new Dictionary<string, string>();
 		}
@@ -42,10 +43,10 @@ public static class WebUtils
 		";
 
 		string result = (string)JavaScript.Eval(script);
-		
+
 		// Debug print to see the raw JSON result
 		GD.Print("[ URL PARAMS ] :: Raw JSON Result: ", result);
-		
+
 		var jsonParseResult = JSON.Parse(result);
 		if (jsonParseResult.Error == Error.Ok && jsonParseResult.Result is Godot.Collections.Dictionary dict)
 		{
@@ -63,11 +64,28 @@ public static class WebUtils
 	public static UrlParamsModel GetUrlParamsModel()
 	{
 		var parameters = GetUrlParams();
+		string osName = OS.GetName();
+		string token;
+		string sessionId;
+		string currency;
+		var isWeb = osName == "Web" || osName == "HTML5";
 		// Extract values safely
-		string token = parameters.ContainsKey("token") ? parameters["token"] : "N/A";
-		string sessionId = parameters.ContainsKey("sessionid") ? parameters["sessionid"] : "N/A";
-		string currency = parameters.ContainsKey("currency") ? parameters["currency"] : "N/A";
-		
+		if (isWeb)
+		{
+			token = parameters.ContainsKey("token") ? parameters["token"] : "N/A";
+			sessionId = parameters.ContainsKey("sessionid") ? parameters["sessionid"] : "N/A";
+			currency = parameters.ContainsKey("currency") ? parameters["currency"] : "N/A";
+		}
+		else
+		{
+			/* token = "token123";
+			sessionId = "session1"; */
+			token = "token456";
+			sessionId = "session2";
+			currency = "USD";
+			return new UrlParamsModel(token, sessionId, currency, "ws");
+		}
+
 		// Use JavaScript to get the current protocol (http or https)
 		string script = @"
 			var protocol = window.location.protocol;
@@ -87,7 +105,7 @@ public static class WebUtils
 	public static void PrintUrlParams()
 	{
 		var parameters = GetUrlParams();
-		
+
 		// Extract values safely
 		string token = parameters.ContainsKey("token") ? parameters["token"] : "N/A";
 		string sessionId = parameters.ContainsKey("sessionid") ? parameters["sessionid"] : "N/A";

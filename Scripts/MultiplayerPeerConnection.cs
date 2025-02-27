@@ -26,6 +26,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("SendMessage");
 		EventRegistry.RegisterEvent("OnMovePiece");
 		EventRegistry.RegisterEvent("OnTimerUpdate");
+		EventRegistry.RegisterEvent("OnTurnSwitch");
 
 		client = new WebSocketClient();
 		client.Connect("connection_established", this, "OnConnect");
@@ -48,10 +49,12 @@ public partial class MultiplayerPeerConnection : Node
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
 		var port = "";
 		var ip = "";
-		if (parameters.Prefix == "wss"){
+		if (parameters.Prefix == "wss")
+		{
 			ip = "games.qlean.pt";
 		}
-		else {
+		else
+		{
 			ip = "localhost";
 			port = ":80";
 		}
@@ -141,6 +144,9 @@ public partial class MultiplayerPeerConnection : Node
 						EventRegistry.GetEventPublisher("OnTimerUpdate").RaiseEvent(parsedObject.value.ToObject<GameTimer>());
 						break;
 					case Commands.balance_update:
+						break;
+					case Commands.turn_switch:
+						EventRegistry.GetEventPublisher("OnTurnSwitch").RaiseEvent(parsedObject.value.ToString());
 						break;
 				}
 			}
@@ -257,6 +263,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
 
+		EventRegistry.UnregisterEvent("OnTurnSwitch");
 		EventRegistry.UnregisterEvent("OnTimerUpdate");
 		EventRegistry.UnregisterEvent("SendMessage");
 		EventRegistry.UnregisterEvent("OnGameStarting");

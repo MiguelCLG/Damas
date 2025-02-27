@@ -19,7 +19,8 @@ public enum Commands
   game_start,
   move_piece,
   game_timer,
-  balance_update
+  balance_update,
+  turn_switch
 }
 
 public enum MessageType
@@ -29,6 +30,10 @@ public enum MessageType
   error
 }
 
+public class TurnSwitch
+{
+  public string player_id;
+}
 public class PlayerInfo
 {
   public string player_id;

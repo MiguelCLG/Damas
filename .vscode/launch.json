@@ -10,7 +10,15 @@
         "name": "Play in Editor",
         "type": "godot-mono",
         "mode": "playInEditor",
-        "request": "launch"
+        "request": "launch",
+        "executable": "${env:GODOT_3_BIN}"
+      },
+      {
+        "name": "Play executable",
+        "type": "godot-mono",
+        "mode": "executable",
+        "request": "launch",
+        "executable": "${env:GODOT_3_BIN}"
       },
       {
         "name": "Launch (Select Scene)",

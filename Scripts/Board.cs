@@ -46,6 +46,7 @@ public partial class Board : Control
     return IsCaptureMove;
   }
 
+
   private bool KingHasCaptureMove(Checker checker)
   {
     CalculateKingMoves(checker);
