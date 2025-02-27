@@ -1,6 +1,5 @@
 using Godot;
 using Godot.Collections;
-using static Utils;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
@@ -41,6 +40,7 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
     EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
+    EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
 
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
     OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
@@ -74,6 +74,12 @@ public partial class GameplaySystem : Node2D
     OnTurnStart();
   }
 
+  private void OnTurnSwitch(object sender, object args)
+  {
+    if (args is string player_id)
+      NextTurn(player_id);
+  }
+
   private void OnMovePiece(object sender, object args)
   {
     if (args is MovePieceData data)
@@ -89,20 +95,12 @@ public partial class GameplaySystem : Node2D
       {
         Tile captureTile = GetCheckerToBeCaptured(fromTile, toTile);
         OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
-        if (board.HasCaptureMove(checker))
-        {
-          return;
-        }
       }
 
       if (data.is_kinged)
       {
         checker.SetKing();
       }
-
-      NextTurn();
-
-
     }
   }
 
@@ -296,7 +294,10 @@ public partial class GameplaySystem : Node2D
 
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker.UnselectChecker();
-          NextTurn();
+          if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
+          {
+            OnTurnStart();
+          }
         }
       }
   }
@@ -305,43 +306,49 @@ public partial class GameplaySystem : Node2D
   {
     string fromTileName = fromTile.Name;
     string toTileName = toTile.Name;
-    char letter = 'Z';
-    int number = 0;
+    char letter;
+    int number;
     if (fromTileName[0] > toTileName[0])
     {
-      letter = (char)(fromTileName[0] - 1);
+      letter = (char)(toTileName[0] + 1);
 
     }
-    else if (fromTileName[0] < toTileName[0])
+    else
     {
-      letter = (char)(fromTileName[0] + 1);
+      letter = (char)(toTileName[0] - 1);
 
     }
 
-    if (int.TryParse(toTileName[1].ToString(), out int toTileNumber) &&
-    int.TryParse(fromTileName[1].ToString(), out int fromTileNumber))
+    int toTileNumber = int.Parse(toTileName[1].ToString());
+    int fromTileNumber = int.Parse(fromTileName[1].ToString());
+
+    if (toTileNumber > fromTileNumber)
     {
-      number = (fromTileNumber + toTileNumber) / 2;
+      number = toTileNumber - 1;
+    }
+    else
+    {
+      number = toTileNumber + 1;
     }
 
     string tileName = letter.ToString() + number.ToString();
     GD.Print($"target: {tileName}");
     return board.FindTileByName(tileName);
   }
-  private void NextTurn()
+  private void NextTurn(string player_id)
   {
     if (SelectedChecker != null)
     {
       board.CleanUpFreeTiles(SelectedChecker);
       SelectedChecker.UnselectChecker();
     }
-    if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
-    {
-      OnTurnStart();
-      return;
-    }
+
+    GD.Print("from turn: " + CurrentTurn);
+
     CurrentTurn = CurrentTurn == BoardColors.Black ? BoardColors.White : BoardColors.Black;
+
     SelectedChecker = null;
+    GD.Print("to turn: " + CurrentTurn);
 
     // clean up capture status of checkers
     foreach (var checker in checkersWithCaptureMoves)
@@ -363,6 +370,7 @@ public partial class GameplaySystem : Node2D
     else
       WhiteCheckers.Remove(checker);
     AllCheckers.Remove(checker);
+    checker.GetParent().RemoveChild(checker);
     checker.QueueFree();
 
     if (BlackCheckers.Count == 0)
@@ -389,18 +397,10 @@ public partial class GameplaySystem : Node2D
       if (currentGameColor == CurrentTurn)
       {
         PlayerTimer.Value = timerData.player_timer;
-        if (timerData.player_timer <= 1)
-        {
-          NextTurn();
-        }
       }
       else
       {
         OpponentTimer.Value = timerData.player_timer;
-        if (timerData.player_timer <= 1)
-        {
-          NextTurn();
-        }
       }
     }
   }

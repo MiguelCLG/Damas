@@ -26,6 +26,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("SendMessage");
 		EventRegistry.RegisterEvent("OnMovePiece");
 		EventRegistry.RegisterEvent("OnTimerUpdate");
+		EventRegistry.RegisterEvent("OnTurnSwitch");
 
 		client = new WebSocketClient();
 		client.Connect("connection_established", this, "OnConnect");
@@ -44,12 +45,20 @@ public partial class MultiplayerPeerConnection : Node
 		// player = new GamePlayer();
 		// player.token = "token456";
 		// player.session_id = "session2";
-		//WebUtils.PrintUrlParams();
+		WebUtils.PrintUrlParams();
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
-		var ip = "3.75.187.224";
-		var port = "80";
-
-		var err = client.ConnectToUrl($"ws://{ip}:{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
+		var port = "";
+		var ip = "";
+		if (parameters.Prefix == "wss")
+		{
+			ip = "games.qlean.pt";
+		}
+		else
+		{
+			ip = "localhost";
+			port = ":80";
+		}
+		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
 		//var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
 		if (err != Error.Ok)
 		{
@@ -133,6 +142,11 @@ public partial class MultiplayerPeerConnection : Node
 						break;
 					case Commands.game_timer:
 						EventRegistry.GetEventPublisher("OnTimerUpdate").RaiseEvent(parsedObject.value.ToObject<GameTimer>());
+						break;
+					case Commands.balance_update:
+						break;
+					case Commands.turn_switch:
+						EventRegistry.GetEventPublisher("OnTurnSwitch").RaiseEvent(parsedObject.value.ToString());
 						break;
 				}
 			}
@@ -249,6 +263,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
 
+		EventRegistry.UnregisterEvent("OnTurnSwitch");
 		EventRegistry.UnregisterEvent("OnTimerUpdate");
 		EventRegistry.UnregisterEvent("SendMessage");
 		EventRegistry.UnregisterEvent("OnGameStarting");
