@@ -87,14 +87,12 @@ public static class WebUtils
 		}
 
 		// Use JavaScript to get the current protocol (http or https)
-		string script = @"
-			var protocol = window.location.protocol;
-			console.log('Current Protocol:', protocol); // Debug line
-			return protocol;
-		";
+		string script = @"window.location.protocol;";
+
 		string protocol = (string)JavaScript.Eval(script);
 
 		// Determine the WebSocket prefix based on the protocol
+		GD.Print($"[ URL PARAMS ] :: Determined WebSocket Protocol: {protocol}");
 		string prefix = protocol == "https:" ? "wss" : "ws";
 		GD.Print($"[ URL PARAMS ] :: Determined WebSocket Prefix: {prefix}");
 
