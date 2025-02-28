@@ -77,7 +77,10 @@ public partial class GameplaySystem : Node2D
   private void OnTurnSwitch(object sender, object args)
   {
     if (args is string player_id)
+    {
+      GD.Print("___ SWITCHING TURNS __ ");
       NextTurn(player_id);
+    }
   }
 
   private void OnMovePiece(object sender, object args)
@@ -296,6 +299,7 @@ public partial class GameplaySystem : Node2D
           SelectedChecker.UnselectChecker();
           if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
           {
+            GD.Print("CAN CAPTURE AGAIN?!");
             OnTurnStart();
           }
         }
@@ -355,8 +359,8 @@ public partial class GameplaySystem : Node2D
     {
       checker.UnselectChecker();
     }
-    PlayerTimer.Value = 30;
-    OpponentTimer.Value = 30;
+    PlayerTimer.Value = 15;
+    OpponentTimer.Value = 15;
     OnTurnStart();
   }
 
