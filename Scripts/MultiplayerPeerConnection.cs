@@ -96,13 +96,16 @@ public partial class MultiplayerPeerConnection : Node
 		try
 		{
 
-			var parsedObject = JsonConvert.DeserializeObject<DataReceived<JToken>>(jsonString);
-
+			var parsedObject = JsonConvert.DeserializeObject<DataReceived<JToken>>(jsonString.Trim());
 			//GD.Print($"Data Received: {jsonString}");
-			/*GD.Print($"Parsed Object Received: {parsedObject}"); */
 
 			try
 			{
+				if (parsedObject.command != Commands.game_timer)
+				{
+					GD.Print("COMMAND: " + parsedObject.command);
+					GD.Print("VALUE: " + parsedObject.value);
+				}
 				switch (parsedObject.command)
 				{
 					default: break;
@@ -149,6 +152,8 @@ public partial class MultiplayerPeerConnection : Node
 						GD.Print($"Turn Switch: {parsedObject}");
 						GD.Print($"Turn Switch: {parsedObject.value}");
 						EventRegistry.GetEventPublisher("OnTurnSwitch").RaiseEvent(parsedObject.value.ToString());
+						break;
+					case Commands.game_over:
 						break;
 				}
 			}
