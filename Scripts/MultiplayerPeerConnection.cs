@@ -127,6 +127,7 @@ public partial class MultiplayerPeerConnection : Node
 					case Commands.ready_queue:
 						break;
 					case Commands.game_info:
+						mainMenu.SetWaitingQueue(parsedObject.value.ToObject<RoomInfoList>().players_waiting.ToString());
 						break;
 					case Commands.game_start:
 						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>()); //TODO: Send the game starting data and fill the GameState
