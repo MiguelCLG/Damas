@@ -17,7 +17,7 @@ public partial class SceneLoaders : Node
     // Add scenes to build order
     // basically we are creating a build order for the scenes
     // so that we can use NextScene() and PreviousScene()
-    scenePaths.Add("Scenes/main-menu.tscn");
+    scenePaths.Add("Scenes/main_menu.tscn");
     scenePaths.Add("Scenes/main.tscn");
     currentScenePath = scenePaths[0];
 
@@ -53,7 +53,7 @@ public partial class SceneLoaders : Node
   {
     transitionAnim.Play("fade_out");
     var index = scenePaths.IndexOf(currentScenePath);
-    currentScenePath = scenePaths[index > scenePaths.Count - 1 ? 0 : index + 1];
+    currentScenePath = scenePaths[index >= scenePaths.Count - 1 ? 0 : index + 1];
   }
   public void PreviousScene()
   {

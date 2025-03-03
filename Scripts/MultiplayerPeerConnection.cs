@@ -9,35 +9,15 @@ using static GameState;
 public partial class MultiplayerPeerConnection : Node
 {
 	WebSocketClient client;
-	MainMenu mainMenu;
-
 	public override void _Ready()
 	{
-		mainMenu = GetNode<MainMenu>("/root/MainMenu");
-		EventRegistry.RegisterEvent("OnJoinRoom");
-		EventRegistry.RegisterEvent("OnRoomCheck");
-		EventRegistry.RegisterEvent("OnDisconnectFromLobby");
-		EventRegistry.RegisterEvent("OnDisconnectFromQueue");
-		EventRegistry.RegisterEvent("OnDataReceived");
-		EventRegistry.RegisterEvent("OnPairedReceived");
-		EventRegistry.RegisterEvent("OnReadyButtonPressed");
-		EventRegistry.RegisterEvent("OnOpponentReadyReceived");
-		EventRegistry.RegisterEvent("OnGameStarting");
-		EventRegistry.RegisterEvent("SendMessage");
-		EventRegistry.RegisterEvent("OnMovePiece");
-		EventRegistry.RegisterEvent("OnTimerUpdate");
-		EventRegistry.RegisterEvent("OnTurnSwitch");
-
+		RegisterEvents();
 		client = new WebSocketClient();
 		client.Connect("connection_established", this, "OnConnect");
 		client.Connect("connection_closed", this, "OnConnectionClosed");
 		client.Connect("connection_error", this, "OnConnectionClosed");
 		client.Connect("data_received", this, "OnData");
-		EventSubscriber.SubscribeToEvent("OnJoinRoom", OnJoinRoom);
-		EventSubscriber.SubscribeToEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
-		EventSubscriber.SubscribeToEvent("OnDisconnectFromQueue", OnDisconnectFromQueue);
-		EventSubscriber.SubscribeToEvent("OnReadyButtonPressed", OnReadyButtonPressed);
-		EventSubscriber.SubscribeToEvent("SendMessage", SendMessageEvent);
+		SubscribeToEvents();
 
 		player = new GamePlayer();
 		player.token = "token123";
@@ -66,6 +46,8 @@ public partial class MultiplayerPeerConnection : Node
 			SetProcess(false);
 		}
 	}
+
+
 
 	private void SendMessageEvent(object sender, object args)
 	{
@@ -127,7 +109,7 @@ public partial class MultiplayerPeerConnection : Node
 					case Commands.ready_queue:
 						break;
 					case Commands.game_info:
-						mainMenu.SetWaitingQueue(parsedObject.value.ToObject<RoomInfoList>().players_waiting.ToString());
+						EventRegistry.GetEventPublisher("SetWaitingQueue").RaiseEvent(parsedObject.value.ToObject<RoomInfoList>().players_waiting.ToString());
 						break;
 					case Commands.game_start:
 						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>()); //TODO: Send the game starting data and fill the GameState
@@ -193,9 +175,9 @@ public partial class MultiplayerPeerConnection : Node
 		player.name = playerInfo.player_name;
 		player.id = playerInfo.player_id;
 		playerName = playerInfo.player_name;
-		mainMenu.SetPlayerName(playerInfo.player_name);
-		mainMenu.SetPlayerMoney(playerInfo.money.ToString());
-		mainMenu.OnConnectionStart();
+		GameState.playerInfo = playerInfo;
+
+		EventRegistry.GetEventPublisher("PlayerConnected").RaiseEvent(playerInfo);
 	}
 
 	public void OnDisconnectFromLobby(object sender, object args)
@@ -230,10 +212,8 @@ public partial class MultiplayerPeerConnection : Node
 
 	public void OnJoinRoom(object sender, object args)
 	{
-		// mainMenu.HideRoomList();
-
 		SendMessage(Commands.queue, args);
-		mainMenu.ShowRoom();
+		EventRegistry.GetEventPublisher("ShowRoom").RaiseEvent(this);
 	}
 
 	private void OnReadyButtonPressed(object sender, object args)
@@ -263,6 +243,36 @@ public partial class MultiplayerPeerConnection : Node
 		byte[] encodedMessage = Encoding.ASCII.GetBytes(conversion);
 		client.GetPeer(1).PutPacket(encodedMessage);
 	}
+
+
+	public void RegisterEvents()
+	{
+		EventRegistry.RegisterEvent("OnJoinRoom");
+		EventRegistry.RegisterEvent("OnRoomCheck");
+		EventRegistry.RegisterEvent("OnDisconnectFromLobby");
+		EventRegistry.RegisterEvent("OnDisconnectFromQueue");
+		EventRegistry.RegisterEvent("OnDataReceived");
+		EventRegistry.RegisterEvent("OnPairedReceived");
+		EventRegistry.RegisterEvent("OnReadyButtonPressed");
+		EventRegistry.RegisterEvent("OnOpponentReadyReceived");
+		EventRegistry.RegisterEvent("OnGameStarting");
+		EventRegistry.RegisterEvent("SendMessage");
+		EventRegistry.RegisterEvent("OnMovePiece");
+		EventRegistry.RegisterEvent("OnTimerUpdate");
+		EventRegistry.RegisterEvent("OnTurnSwitch");
+		EventRegistry.RegisterEvent("ShowRoom");
+		EventRegistry.RegisterEvent("SetWaitingQueue");
+		EventRegistry.RegisterEvent("PlayerConnected");
+	}
+
+	private void SubscribeToEvents()
+	{
+		EventSubscriber.SubscribeToEvent("OnJoinRoom", OnJoinRoom);
+		EventSubscriber.SubscribeToEvent("OnDisconnectFromLobby", OnDisconnectFromLobby);
+		EventSubscriber.SubscribeToEvent("OnDisconnectFromQueue", OnDisconnectFromQueue);
+		EventSubscriber.SubscribeToEvent("OnReadyButtonPressed", OnReadyButtonPressed);
+		EventSubscriber.SubscribeToEvent("SendMessage", SendMessageEvent);
+	}
 	public override void _ExitTree()
 	{
 		client.DisconnectFromHost(200, "Exited the game, ending connection.");
@@ -272,6 +282,9 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
 
+		EventRegistry.UnregisterEvent("PlayerConnected");
+		EventRegistry.UnregisterEvent("SetWaitingQueue");
+		EventRegistry.UnregisterEvent("ShowRoom");
 		EventRegistry.UnregisterEvent("OnTurnSwitch");
 		EventRegistry.UnregisterEvent("OnTimerUpdate");
 		EventRegistry.UnregisterEvent("SendMessage");

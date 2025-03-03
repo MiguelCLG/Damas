@@ -5,6 +5,7 @@ using Godot.Collections;
 public static class GameState
 {
   public static GamePlayer player;
+  public static PlayerInfo playerInfo;
   public static BoardColors currentGameColor;
   public static Hashtable initialBoard = new Hashtable
     {

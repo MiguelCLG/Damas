@@ -23,6 +23,6 @@ public class GameOverMenu : Control
 
     public void OnRestartTriggered()
     {
-        GetTree().ReloadCurrentScene();
+        GetNode<SceneLoaders>("/root/SceneLoaders").NextScene();
     }
 }
