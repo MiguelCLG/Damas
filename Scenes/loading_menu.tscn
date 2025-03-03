@@ -58,7 +58,7 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0, 1.5 ),
-"transitions": PoolRealArray( 3.24901, 2.73208 ),
+"transitions": PoolRealArray( 1.18, 2.73208 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
@@ -188,7 +188,6 @@ align = 1
 [node name="LoadingAnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 root_node = NodePath("../..")
-autoplay = "fade_out"
 anims/LoadingAnimation = ExtResource( 1 )
 anims/RESET = SubResource( 9 )
 anims/fade_out = SubResource( 10 )

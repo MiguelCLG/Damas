@@ -268,7 +268,6 @@ text = "JOGAR"
 visible = false
 
 [node name="LoadingMenu" parent="." instance=ExtResource( 19 )]
-visible = true
 
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/LeftArrow" to="." method="OnArrowClicked" binds= [ 0 ]]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/RightArrow" to="." method="OnArrowClicked" binds= [ 1 ]]
