@@ -11,7 +11,8 @@ public partial class MainMenu : Control
 	private Label PlayerName;
 	private Label PlayerMoney;
 	private RichTextLabel WaitingQueueLabel;
-	RoomPopup roomPopup;
+	private RoomPopup roomPopup;
+	private Panel LoadingMenu;
 	// Panel roomList;
 
 
@@ -21,6 +22,8 @@ public partial class MainMenu : Control
 		ViewportBaseY = GetViewportRect().Size.y;
 		sceneLoaders = GetNode<SceneLoaders>("/root/SceneLoaders");
 		roomPopup = GetNode<RoomPopup>("%RoomPopup");
+		LoadingMenu = GetNode<Panel>("%LoadingMenu");
+
 		//  roomList = GetNode<Panel>("%RoomList");
 		PlayerName = GetNode<Label>("%PlayerName");
 		PlayerMoney = GetNode<Label>("%PlayerMoney");
@@ -93,6 +96,15 @@ public partial class MainMenu : Control
 	public void HideRoom()
 	{
 		roomPopup.Visible = false;
+	}
+
+	public async void OnConnectionStart()
+	{
+		AnimationPlayer loadingAnimationPlayer = LoadingMenu.GetNode<AnimationPlayer>("%LoadingAnimationPlayer");
+		loadingAnimationPlayer.Play("fade_out");
+		await ToSignal(loadingAnimationPlayer, "animation_finished");
+		LoadingMenu.Visible = false;
+		LoadingMenu.Modulate = new Color(1, 1, 1, 1);
 	}
 
 	public void OnStartGame()
