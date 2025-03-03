@@ -195,6 +195,7 @@ public partial class MultiplayerPeerConnection : Node
 		playerName = playerInfo.player_name;
 		mainMenu.SetPlayerName(playerInfo.player_name);
 		mainMenu.SetPlayerMoney(playerInfo.money.ToString());
+		mainMenu.OnConnectionStart();
 	}
 
 	public void OnDisconnectFromLobby(object sender, object args)

@@ -67,6 +67,11 @@ public partial class SceneLoaders : Node
     currentScenePath = scenePath;
   }
 
+  public void PlayAnimation(string animationName)
+  {
+    transitionAnim.Play(animationName);
+  }
+
   public void OnQuitGame()
   {
     GetTree().Quit();

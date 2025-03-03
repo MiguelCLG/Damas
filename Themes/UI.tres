@@ -1,11 +1,10 @@
-[gd_resource type="Theme" load_steps=37 format=2]
+[gd_resource type="Theme" load_steps=36 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=4]
 [ext_resource path="res://Assets/ui_assets/Painel.webp" type="Texture" id=5]
-[ext_resource path="res://Themes/ReadyButtonStylebox.tres" type="StyleBox" id=6]
 [ext_resource path="res://Assets/ui_assets/purple.webp" type="Texture" id=7]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with no Glow/50.webp" type="Texture" id=9]
@@ -182,7 +181,7 @@ HeaderFont/fonts/font = SubResource( 3 )
 HemiLabel/base_type = "Label"
 HemiLabel/fonts/font = ExtResource( 2 )
 JogarButton/base_type = "Button"
-JogarButton/styles/hover = ExtResource( 6 )
+JogarButton/styles/hover = SubResource( 30 )
 JogarButton/styles/normal = SubResource( 30 )
 JogarButton/styles/pressed = SubResource( 30 )
 Label/fonts/font = SubResource( 4 )

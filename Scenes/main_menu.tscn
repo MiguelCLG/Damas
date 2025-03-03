@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.cs" type="Script" id=1]
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/05.webp" type="Texture" id=16]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/3.webp" type="Texture" id=17]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=18]
+[ext_resource path="res://Scenes/loading_menu.tscn" type="PackedScene" id=19]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -265,6 +266,8 @@ text = "JOGAR"
 
 [node name="RoomPopup" parent="." instance=ExtResource( 11 )]
 visible = false
+
+[node name="LoadingMenu" parent="." instance=ExtResource( 19 )]
 
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/LeftArrow" to="." method="OnArrowClicked" binds= [ 0 ]]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/RightArrow" to="." method="OnArrowClicked" binds= [ 1 ]]

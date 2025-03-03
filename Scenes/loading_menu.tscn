@@ -1,0 +1,248 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Animations/LoadingMenu/LoadingTextAnimation.tres" type="Animation" id=1]
+[ext_resource path="res://Themes/UI.tres" type="Theme" id=2]
+[ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Assets/FirstScreens Assets/Batalha Damas Logo.webp" type="Texture" id=4]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 0.392157 )
+
+[sub_resource type="Animation" id=9]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("LoadingMenu/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/WinnerName:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "Loading ..." ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("LoadingMenu:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("LoadingMenu:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "fade_out"
+length = 1.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("LoadingMenu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1, 1.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("LoadingMenu:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1, 1.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "LoadingAnimation"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("LoadingMenu/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/WinnerName:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ "Loading ", "Loading .", "Loading ..", "Loading ..." ]
+}
+
+[sub_resource type="Animation" id=12]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("LoadingMenu/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/WinnerName:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "Loading ..." ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("LoadingMenu:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("LoadingMenu:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "fade_out"
+length = 1.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("LoadingMenu:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1, 1.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("LoadingMenu:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1, 1.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[node name="LoadingMenu" type="Panel"]
+pause_mode = 2
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 8 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 600.0
+margin_bottom = 800.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="GameOverUI" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 800.0
+mouse_filter = 2
+size_flags_horizontal = 7
+size_flags_vertical = 7
+size_flags_stretch_ratio = 5.0
+theme = ExtResource( 2 )
+theme_type_variation = "GameOverContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/GameOverUI"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 597.0
+margin_bottom = 797.0
+custom_constants/margin_right = 32
+custom_constants/margin_top = 32
+custom_constants/margin_left = 32
+custom_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 562.0
+margin_bottom = 762.0
+mouse_filter = 2
+size_flags_vertical = 5
+custom_constants/separation = 20
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
+margin_right = 530.0
+margin_bottom = 230.0
+size_flags_vertical = 3
+theme_type_variation = "FlatContainer"
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
+margin_top = 250.0
+margin_right = 530.0
+margin_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="WinnerName" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
+margin_top = 500.0
+margin_right = 530.0
+margin_bottom = 730.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Loading ..."
+align = 1
+
+[node name="LoadingAnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+root_node = NodePath("../..")
+anims/LoadingAnimation = ExtResource( 1 )
+anims/RESET = SubResource( 9 )
+anims/fade_out = SubResource( 10 )
+
+[node name="TextAnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../..")
+autoplay = "LoadingAnimation"
+anims/LoadingAnimation = SubResource( 11 )
+anims/RESET = SubResource( 12 )
+anims/fade_out = SubResource( 13 )
