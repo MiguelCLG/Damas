@@ -49,7 +49,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=10]
 resource_name = "fade_out"
-length = 1.7
+length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("LoadingMenu:modulate")
 tracks/0/interp = 1
@@ -57,8 +57,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 1, 1.7 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 3.24901, 2.73208 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
@@ -69,8 +69,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 1, 1.7 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 2.73208 ),
 "update": 1,
 "values": [ true, false ]
 }
@@ -105,58 +105,10 @@ tracks/0/keys = {
 "update": 1,
 "values": [ "Loading ..." ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("LoadingMenu:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("LoadingMenu:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
 
 [sub_resource type="Animation" id=13]
 resource_name = "fade_out"
 length = 1.7
-tracks/0/type = "value"
-tracks/0/path = NodePath("LoadingMenu:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 1, 1.7 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("LoadingMenu:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 1, 1.7 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
-}
 
 [node name="LoadingMenu" type="Panel"]
 pause_mode = 2
@@ -236,6 +188,7 @@ align = 1
 [node name="LoadingAnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 root_node = NodePath("../..")
+autoplay = "fade_out"
 anims/LoadingAnimation = ExtResource( 1 )
 anims/RESET = SubResource( 9 )
 anims/fade_out = SubResource( 10 )

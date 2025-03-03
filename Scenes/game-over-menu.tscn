@@ -117,20 +117,20 @@ text = "White checkers wins!"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
-margin_left = 78.0
+margin_left = 91.0
 margin_top = 242.0
-margin_right = 267.0
+margin_right = 255.0
 margin_bottom = 314.0
 mouse_filter = 2
 size_flags_horizontal = 6
 size_flags_vertical = 2
 
-[node name="RestartButton" type="Button" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="InicioButton" type="Button" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer"]
 pause_mode = 2
-margin_right = 189.0
+margin_right = 164.0
 margin_bottom = 72.0
 theme_type_variation = "JogarButton"
-text = "Restart"
+text = "Inicio"
 
 [node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 686.0
@@ -150,4 +150,4 @@ size_flags_vertical = 3
 theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer/RestartButton" to="." method="OnRestartTriggered"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer/InicioButton" to="." method="OnRestartTriggered"]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Godot;
 using Godot.Collections;
@@ -30,7 +31,24 @@ public partial class MainMenu : Control
 		WaitingQueueLabel = GetNode<RichTextLabel>("%WaitingQueueLabel");
 		BidTexture = GetNode<TextureRect>("%BidTexture");
 
-		EventSubscriber.SubscribeToEvent("OnGameStarting", OnGameStarting);
+		SubscribeToEvents();
+
+		if (playerInfo != null) // in case the player is already connected
+		{
+			SetPlayerName(playerInfo.player_name);
+			SetPlayerMoney(playerInfo.money.ToString());
+			OnConnectionStart();
+		}
+	}
+
+	private void PlayerConnected(object sender, object args)
+	{
+		if (args is PlayerInfo playerInfo)
+		{
+			SetPlayerName(playerInfo.player_name);
+			SetPlayerMoney(playerInfo.money.ToString());
+			OnConnectionStart();
+		}
 	}
 
 	private void OnGameStarting(object sender, object args)
@@ -84,11 +102,12 @@ public partial class MainMenu : Control
 		PlayerMoney.Text = newPlayerMoney;
 	}
 
-	public void SetWaitingQueue(string numberOfPlayers)
+	public void SetWaitingQueue(object sender, object args)
 	{
-		WaitingQueueLabel.Text = $"{numberOfPlayers} jogadores na fila.";
+		if (args is string numberOfPlayers)
+			WaitingQueueLabel.Text = $"{numberOfPlayers} jogadores na fila.";
 	}
-	public void ShowRoom()
+	public void ShowRoom(object sender, object args)
 	{
 		roomPopup.SetBidTexture(BidTexture.Texture);
 		roomPopup.Visible = true;
@@ -112,8 +131,19 @@ public partial class MainMenu : Control
 		EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(betValue);
 	}
 
+	private void SubscribeToEvents()
+	{
+		EventSubscriber.SubscribeToEvent("OnGameStarting", OnGameStarting);
+		EventSubscriber.SubscribeToEvent("SetWaitingQueue", SetWaitingQueue);
+		EventSubscriber.SubscribeToEvent("ShowRoom", ShowRoom);
+		EventSubscriber.SubscribeToEvent("PlayerConnected", PlayerConnected);
+	}
+
 	public override void _ExitTree()
 	{
+		EventSubscriber.UnsubscribeFromEvent("PlayerConnected", PlayerConnected);
+		EventSubscriber.UnsubscribeFromEvent("ShowRoom", ShowRoom);
+		EventSubscriber.UnsubscribeFromEvent("SetWaitingQueue", SetWaitingQueue);
 		EventSubscriber.UnsubscribeFromEvent("OnGameStarting", OnGameStarting);
 	}
 }
