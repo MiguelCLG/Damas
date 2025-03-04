@@ -31,7 +31,6 @@ public partial class SceneLoaders : Node
     AddChild(cv);
 
     // the animation player has a signal called animation_finished which helps time the transitions and changing of the scene.
-    Action<string> CallTransition = (string animationName) => OnAnimationFinished(animationName);
     transitionAnim.Connect("animation_finished", this, nameof(OnAnimationFinished));
     transitionAnim.Play("fade_in");
   }

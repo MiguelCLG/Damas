@@ -19,6 +19,7 @@ public partial class MainMenu : Control
 
 	public override void _Ready()
 	{
+		GetTree().Paused = false;
 		ViewportBaseX = GetViewportRect().Size.x;
 		ViewportBaseY = GetViewportRect().Size.y;
 		sceneLoaders = GetNode<SceneLoaders>("/root/SceneLoaders");
