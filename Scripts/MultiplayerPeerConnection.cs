@@ -216,6 +216,8 @@ public partial class MultiplayerPeerConnection : Node
 
 	private void OnReadyButtonPressed(object sender, object args)
 	{
+		AudioOptionsResource clickSound = ResourceLoader.Load<AudioOptionsResource>("res://Resources/Sounds/click_hover.tres");
+		GetNode<AudioManager>("/root/AudioManager")?.Play(clickSound, this);
 		SendMessage(Commands.ready_queue, args);
 	}
 

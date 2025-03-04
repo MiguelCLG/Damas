@@ -78,10 +78,10 @@ public static class WebUtils
 		}
 		else
 		{
-			/* token = "token123";
-			sessionId = "session1"; */
-			token = "token456";
-			sessionId = "session2";
+			token = "token123";
+			sessionId = "session1";
+			/* token = "token456";
+			sessionId = "session2"; */
 			currency = "USD";
 			return new UrlParamsModel(token, sessionId, currency, "ws");
 		}

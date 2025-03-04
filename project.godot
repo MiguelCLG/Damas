@@ -18,10 +18,11 @@ config/icon="res://icon.png"
 
 MultiplayerPeerConnection="*res://Scripts/MultiplayerPeerConnection.cs"
 SceneLoaders="*res://Scripts/SceneLoaders.cs"
+AudioManager="*res://Scenes/audio_manager.tscn"
 
 [display]
 
-window/size/width=600
+window/size/width=667
 window/size/height=800
 window/handheld/orientation="sensor"
 window/stretch/mode="2d"

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Sounds/click-21156.mp3" type="AudioStream" id=1]
+[ext_resource path="res://Scripts/Sound/AudioOptionsResource.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+AudioStream = ExtResource( 1 )
+BusName = "UI_Effects"
+VolumeDb = -10.0
+PitchScale = 1.0
+StartOffset = 0.0
+FadeInDuration = 0.0
+FadeOutDuration = 0.0
+Mute = false
+Is3D = false
+Position = Vector3( 0, 0, 0 )
+Priority = 0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/game-bonus-144751.mp3-294f28d7f59a9f66f96a8cf9316d3bc0.mp3str"
+
+[deps]
+
+source_file="res://Sounds/game-bonus-144751.mp3"
+dest_files=[ "res://.import/game-bonus-144751.mp3-294f28d7f59a9f66f96a8cf9316d3bc0.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
