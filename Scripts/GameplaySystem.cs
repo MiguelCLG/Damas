@@ -3,7 +3,6 @@ using Godot.Collections;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 public partial class GameplaySystem : Node2D
 {
@@ -33,16 +32,8 @@ public partial class GameplaySystem : Node2D
   public override void _Ready()
   {
     GetTree().Paused = false;
-    // Registering events and subscribing to them, since this is the system that will handle them.
-    // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
-    EventRegistry.RegisterEvent("TileClicked");
-    EventRegistry.RegisterEvent("CheckerClicked");
-    EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
-    EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
-    EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
-    EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
-    EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
-
+    RegisterEvents();
+    SubscribeToEvents();
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
     OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
     OpponentPieceCountTexture = GetNode<TextureRect>("%OpponentPieceCountTexture");
@@ -77,10 +68,9 @@ public partial class GameplaySystem : Node2D
 
   private void OnTurnSwitch(object sender, object args)
   {
-    if (args is string player_id)
+    if (args is string)
     {
-      GD.Print("___ SWITCHING TURNS __ ");
-      NextTurn(player_id);
+      NextTurn();
     }
   }
 
@@ -94,8 +84,6 @@ public partial class GameplaySystem : Node2D
       Tile fromTile = board.FindTileByName(data.from);
       Checker checker = fromTile.GetNode<Checker>(data.piece_id);
       checker.Move(toTile, toTile.TilePosition);
-      /* fromTile.RemoveChild(checker);
-      toTile.AddChild(checker); */
 
       if (data.is_capture)
       {
@@ -113,14 +101,15 @@ public partial class GameplaySystem : Node2D
       {
         c.UnselectChecker();
       }
+      board.CleanUpPreviousMovement();
+      fromTile.SelectAsMovement();
+      toTile.SelectAsMovement();
       OnTurnStart();
     }
   }
 
   private void OnTurnStart()
   {
-    GD.Print("ON_TURN_START_CURRENT TURN: " + CurrentTurn);
-    if (CurrentTurn != currentGameColor) return;
     if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
     {
       PlayerPortraitBackground.Visible = true;
@@ -133,6 +122,7 @@ public partial class GameplaySystem : Node2D
     }
     GetNode<Label>("%OpponentPieceCountLabel").Text = $"{(currentGameColor == BoardColors.Black ? WhiteCheckers.Count : BlackCheckers.Count)}";
     GetNode<Label>("%PlayerPieceCountLabel").Text = $"{(currentGameColor == BoardColors.White ? WhiteCheckers.Count : BlackCheckers.Count)}";
+    if (CurrentTurn != currentGameColor) return;
     LastMoveWasCapture = false;
     checkersWithCaptureMoves = new Array<Checker>();
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
@@ -280,8 +270,8 @@ public partial class GameplaySystem : Node2D
         {
           if (board.HasCaptureMove(SelectedChecker))
           {
-            Tile fromTile = SelectedChecker.GetParent<Tile>();
-            Tile captureTile = GetCheckerToBeCaptured(fromTile, tile);
+            Tile startingTile = SelectedChecker.GetParent<Tile>();
+            Tile captureTile = GetCheckerToBeCaptured(startingTile, tile);
             OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
             LastMoveWasCapture = true;
           }
@@ -308,6 +298,8 @@ public partial class GameplaySystem : Node2D
           EventRegistry.GetEventPublisher("SendMessage").RaiseEvent(movePieceData);
 
           board.CleanUpFreeTiles(SelectedChecker);
+          board.CleanUpPreviousMovement();
+
           SelectedChecker.UnselectChecker();
           foreach (var c in checkersWithCaptureMoves)
           {
@@ -354,7 +346,7 @@ public partial class GameplaySystem : Node2D
     GD.Print($"target: {tileName}");
     return board.FindTileByName(tileName);
   }
-  private void NextTurn(string player_id)
+  private void NextTurn()
   {
     if (SelectedChecker != null)
     {
@@ -434,15 +426,31 @@ public partial class GameplaySystem : Node2D
     }
   }
 
+  public void RegisterEvents()
+  {
+    // Registering events and subscribing to them, since this is the system that will handle them.
+    // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
+    EventRegistry.RegisterEvent("TileClicked");
+    EventRegistry.RegisterEvent("CheckerClicked");
+  }
+  public void SubscribeToEvents()
+  {
+    EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
+    EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
+    EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
+    EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
+    EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
+  }
   // In the case of a restart, this function will be called
   // So we do a cleanup here to free the memory no longer used
   // We remove tiles or any event subscription, etc...
   public override void _ExitTree()
   {
-    EventSubscriber.UnsubscribeFromEvent("OnTimerUpdate", OnTimerUpdate);
-    EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);
+    EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);
+    EventSubscriber.UnsubscribeFromEvent("OnTimerUpdate", OnTimerUpdate);
+    EventSubscriber.UnsubscribeFromEvent("OnTurnSwitch", OnTurnSwitch);
     EventRegistry.UnregisterEvent("TileClicked");
     EventRegistry.UnregisterEvent("CheckerClicked");
   }
