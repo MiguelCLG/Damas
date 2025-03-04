@@ -32,6 +32,11 @@ public partial class Tile : Control
     SetTileColor(TileColor);
   }
 
+  public void SelectAsMovement()
+  {
+    texture.TextureNormal = GD.Load<Texture>("res://Assets/movement-tile.webp");
+  }
+
   // Event sent so that the turn base system knows which tile was clicked
   public void OnTileClicked()
   {

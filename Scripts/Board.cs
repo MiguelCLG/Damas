@@ -243,6 +243,13 @@ public partial class Board : Control
       tile.Unselect();
     }
   }
+  public void CleanUpPreviousMovement()
+  {
+    foreach (Tile tile in BoardTiles)
+    {
+      tile.Unselect();
+    }
+  }
 
   // This function will create new tiles and place their respective positions, taking into account the viewport size
   private void FillBoardTiles()

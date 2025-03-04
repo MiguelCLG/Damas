@@ -132,8 +132,6 @@ public partial class MultiplayerPeerConnection : Node
 					case Commands.balance_update:
 						break;
 					case Commands.turn_switch:
-						GD.Print($"Turn Switch: {parsedObject}");
-						GD.Print($"Turn Switch: {parsedObject.value}");
 						EventRegistry.GetEventPublisher("OnTurnSwitch").RaiseEvent(parsedObject.value.ToString());
 						break;
 					case Commands.game_over:
