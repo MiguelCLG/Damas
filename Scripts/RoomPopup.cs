@@ -6,6 +6,7 @@ public class RoomPopup : Panel
 	[Export] private StyleBoxTexture ReadyButtonBackground;
 	[Export] private Texture WhiteCheckersTexture;
 	[Export] private Texture BlackCheckersTexture;
+	[Export] AudioOptionsResource clickSound;
 	private Label PlayerName;
 	private Label OponentName;
 	private TextureRect PlayerTexture;
@@ -115,14 +116,15 @@ public class RoomPopup : Panel
 
 	public void OnClose()
 	{
+		GetNode<AudioManager>("/root/AudioManager")?.Play(clickSound, this);
 		WaitingForDataContainer.Visible = true;
 		RoomContainer.Visible = false;
 		Visible = false;
 		if (WaitingForDataContainer.Visible == true || RoomContainer.Visible == false)
 			EventRegistry.GetEventPublisher("OnDisconnectFromQueue").RaiseEvent(this);
-		else 
+		else
 			EventRegistry.GetEventPublisher("OnDisconnectFromLobby").RaiseEvent(this);
-		
+
 	}
 
 	public override void _ExitTree()

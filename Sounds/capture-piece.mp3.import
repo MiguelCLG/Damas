@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/capture-piece.mp3-34d4aa25748fa812f0c1923009077503.mp3str"
+
+[deps]
+
+source_file="res://Sounds/capture-piece.mp3"
+dest_files=[ "res://.import/capture-piece.mp3-34d4aa25748fa812f0c1923009077503.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

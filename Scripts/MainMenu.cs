@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using Godot;
 using Godot.Collections;
 using static GameState;
@@ -7,6 +5,8 @@ using static Utils;
 public partial class MainMenu : Control
 {
 	[Export] Array<Texture> bidTextures;
+	[Export] AudioOptionsResource clickSound;
+	[Export] AudioOptionsResource music;
 	TextureRect BidTexture;
 	private SceneLoaders sceneLoaders; // autoload to handle transitions and switching scenes
 	private Label PlayerName;
@@ -14,6 +14,7 @@ public partial class MainMenu : Control
 	private RichTextLabel WaitingQueueLabel;
 	private RoomPopup roomPopup;
 	private Panel LoadingMenu;
+	private AudioManager audioManager;
 	// Panel roomList;
 
 
@@ -25,7 +26,8 @@ public partial class MainMenu : Control
 		sceneLoaders = GetNode<SceneLoaders>("/root/SceneLoaders");
 		roomPopup = GetNode<RoomPopup>("%RoomPopup");
 		LoadingMenu = GetNode<Panel>("%LoadingMenu");
-
+		audioManager = GetNode<AudioManager>("/root/AudioManager");
+		audioManager?.Play(music, this);
 		//  roomList = GetNode<Panel>("%RoomList");
 		PlayerName = GetNode<Label>("%PlayerName");
 		PlayerMoney = GetNode<Label>("%PlayerMoney");
@@ -77,6 +79,7 @@ public partial class MainMenu : Control
 
 	public void OnArrowClicked(int direction)
 	{ // 0 - left; 1 - right
+		audioManager?.Play(clickSound, this);
 		if (direction == 0)
 		{
 			var currentTexture = BidTexture.Texture;
@@ -129,6 +132,7 @@ public partial class MainMenu : Control
 
 	public void OnStartGame()
 	{
+		audioManager?.Play(clickSound, this);
 		EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(betValue);
 	}
 
@@ -142,6 +146,7 @@ public partial class MainMenu : Control
 
 	public override void _ExitTree()
 	{
+		audioManager?.StopSound(this);
 		EventSubscriber.UnsubscribeFromEvent("PlayerConnected", PlayerConnected);
 		EventSubscriber.UnsubscribeFromEvent("ShowRoom", ShowRoom);
 		EventSubscriber.UnsubscribeFromEvent("SetWaitingQueue", SetWaitingQueue);

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.cs" type="Script" id=1]
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/3.webp" type="Texture" id=17]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=18]
 [ext_resource path="res://Scenes/loading_menu.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Resources/Sounds/click_hover.tres" type="Resource" id=20]
+[ext_resource path="res://Resources/Sounds/music.tres" type="Resource" id=21]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -66,6 +68,8 @@ anchor_bottom = 1.0
 theme = ExtResource( 2 )
 script = ExtResource( 1 )
 bidTextures = [ ExtResource( 16 ), ExtResource( 12 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 4 ), ExtResource( 14 ), ExtResource( 18 ), ExtResource( 13 ) ]
+clickSound = ExtResource( 20 )
+music = ExtResource( 21 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 anchor_right = 1.0
@@ -83,28 +87,28 @@ margin_right = -32.0
 margin_bottom = -32.0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 536.0
+margin_right = 603.0
 margin_bottom = 736.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
-margin_right = 536.0
+margin_right = 603.0
 margin_bottom = 736.0
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_right = 536.0
+margin_right = 603.0
 margin_bottom = 157.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_right = 266.0
+margin_right = 299.0
 margin_bottom = 157.0
 size_flags_horizontal = 3
 
 [node name="PlayerName" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 266.0
+margin_right = 299.0
 margin_bottom = 40.0
 theme_type_variation = "HemiLabel"
 text = "GuiGate"
@@ -112,7 +116,7 @@ valign = 3
 
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 margin_top = 44.0
-margin_right = 266.0
+margin_right = 299.0
 margin_bottom = 44.0
 
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer/Control"]
@@ -135,8 +139,8 @@ text = "R$993,82"
 valign = 3
 
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_left = 270.0
-margin_right = 536.0
+margin_left = 303.0
+margin_right = 603.0
 margin_bottom = 157.0
 size_flags_horizontal = 11
 
@@ -150,7 +154,7 @@ theme_type_variation = "SettingsButton"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_top = 161.0
-margin_right = 536.0
+margin_right = 603.0
 margin_bottom = 536.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.38
@@ -159,9 +163,9 @@ expand = true
 stretch_mode = 6
 
 [node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_left = 162.0
+margin_left = 196.0
 margin_top = 540.0
-margin_right = 373.0
+margin_right = 407.0
 margin_bottom = 735.0
 size_flags_horizontal = 4
 size_flags_stretch_ratio = 3.0

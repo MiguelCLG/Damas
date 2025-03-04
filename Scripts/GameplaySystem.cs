@@ -3,12 +3,19 @@ using Godot.Collections;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
+using System;
 
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
   [Export] private Texture[] playerPortraits;
   [Export] private Texture[] pieceCountTextures;
+  [Export] private AudioOptionsResource captureSound;
+  [Export] private AudioOptionsResource moveSound;
+  [Export] private AudioOptionsResource kingSound;
+  [Export] private AudioOptionsResource winningSound;
+  [Export] private AudioOptionsResource losingSound;
+  [Export] private AudioOptionsResource music;
   private TextureRect OpponentPieceCountTexture;
   private TextureRect PlayerPieceCountTexture;
   private Checker SelectedChecker = null;
@@ -28,12 +35,15 @@ public partial class GameplaySystem : Node2D
   private TextureRect OpponentPortrait;
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
+  private AudioManager audioManager;
 
   public override void _Ready()
   {
     GetTree().Paused = false;
     RegisterEvents();
     SubscribeToEvents();
+    audioManager = GetNode<AudioManager>("/root/AudioManager");
+    audioManager?.Play(music, this);
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
     OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
     OpponentPieceCountTexture = GetNode<TextureRect>("%OpponentPieceCountTexture");
@@ -87,12 +97,15 @@ public partial class GameplaySystem : Node2D
 
       if (data.is_capture)
       {
+        audioManager?.Play(captureSound, this);
         Tile captureTile = GetCheckerToBeCaptured(fromTile, toTile);
         OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
       }
+      else audioManager?.Play(moveSound, this);
 
       if (data.is_kinged)
       {
+        audioManager?.Play(kingSound, this);
         checker.SetKing();
       }
 
@@ -268,6 +281,7 @@ public partial class GameplaySystem : Node2D
       {
         if (SelectedChecker.MovementSpaces.Contains(tile))
         {
+          var thisMoveWasKinged = false;
           if (board.HasCaptureMove(SelectedChecker))
           {
             Tile startingTile = SelectedChecker.GetParent<Tile>();
@@ -278,11 +292,17 @@ public partial class GameplaySystem : Node2D
           if (CurrentTurn == BoardColors.Black)
           {
             if (tile.Name[0] == 'H')
+            {
               SelectedChecker.SetKing();
+              thisMoveWasKinged = true;
+            }
           }
           else if (CurrentTurn == BoardColors.White)
             if (tile.Name[0] == 'A')
+            {
               SelectedChecker.SetKing();
+              thisMoveWasKinged = true;
+            }
 
 
           MovePieceData movePieceData = new MovePieceData();
@@ -291,8 +311,21 @@ public partial class GameplaySystem : Node2D
           movePieceData.from = SelectedChecker.GetParent<Tile>().Name;
           movePieceData.to = tile.Name;
           movePieceData.is_capture = LastMoveWasCapture;
-          movePieceData.is_kinged = SelectedChecker.isKing;
+          movePieceData.is_kinged = thisMoveWasKinged;
 
+          if (LastMoveWasCapture)
+          {
+            audioManager?.Play(captureSound, this);
+          }
+          else
+          {
+            audioManager?.Play(moveSound, this);
+          }
+
+          if (thisMoveWasKinged)
+          {
+            audioManager?.Play(kingSound, this);
+          }
           SelectedChecker.Move(tile, tile.TilePosition);
 
           EventRegistry.GetEventPublisher("SendMessage").RaiseEvent(movePieceData);
@@ -389,6 +422,8 @@ public partial class GameplaySystem : Node2D
     if (BlackCheckers.Count == 0)
     {
       GD.Print("White wins!");
+      audioManager.StopSound(this);
+      audioManager.Play(currentGameColor == BoardColors.White ? winningSound : losingSound, this);
       gameOverMenu.SetWinnerName(BoardColors.White);
       gameOverMenu.Show();
       GetTree().Paused = true;
@@ -396,6 +431,8 @@ public partial class GameplaySystem : Node2D
     else if (WhiteCheckers.Count == 0)
     {
       GD.Print("Black wins!");
+      audioManager.StopSound(this);
+      audioManager.Play(currentGameColor == BoardColors.Black ? winningSound : losingSound, this);
       gameOverMenu.SetWinnerName(BoardColors.Black);
       gameOverMenu.Show();
       GetTree().Paused = true;
@@ -446,6 +483,7 @@ public partial class GameplaySystem : Node2D
   // We remove tiles or any event subscription, etc...
   public override void _ExitTree()
   {
+    audioManager.StopSound(this);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);
     EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);
