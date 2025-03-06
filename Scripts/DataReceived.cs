@@ -21,7 +21,8 @@ public enum Commands
   game_timer,
   balance_update,
   turn_switch,
-  game_over
+  game_over,
+  opponent_left_room
 }
 
 public enum MessageType
@@ -121,6 +122,14 @@ public class GameStartMessage
   public Hashtable Board;
   public string CurrentPlayerID;
   public List<GamePlayer> GamePlayers;
+}
+
+public class GameOver
+{
+  public string reason;
+  public GamePlayer winner;
+  public int turns;
+  public string game_time;
 }
 
 public class GameUpdatetMessage

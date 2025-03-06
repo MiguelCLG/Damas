@@ -419,26 +419,35 @@ public partial class GameplaySystem : Node2D
     checker.GetParent().RemoveChild(checker);
     checker.QueueFree();
 
-    if (BlackCheckers.Count == 0)
-    {
-      GD.Print("White wins!");
-      audioManager.StopSound(this);
-      audioManager.Play(currentGameColor == BoardColors.White ? winningSound : losingSound, this);
-      gameOverMenu.SetWinnerName(BoardColors.White);
-      gameOverMenu.Show();
-      GetTree().Paused = true;
-    }
-    else if (WhiteCheckers.Count == 0)
-    {
-      GD.Print("Black wins!");
-      audioManager.StopSound(this);
-      audioManager.Play(currentGameColor == BoardColors.Black ? winningSound : losingSound, this);
-      gameOverMenu.SetWinnerName(BoardColors.Black);
-      gameOverMenu.Show();
-      GetTree().Paused = true;
-    }
+
 
   }
+
+
+  private void OnGameOver(object sender, object args)
+  {
+    if (args is GameOver gameOverInfo)
+    {
+      GD.Print(player.id, gameOverInfo.winner.id);
+      if (gameOverInfo.winner.id == player.id)
+      {
+        audioManager.StopSound(this);
+        audioManager.Play(winningSound, this);
+        gameOverMenu.SetWinnerName(currentGameColor);
+        gameOverMenu.Show();
+        GetTree().Paused = true;
+      }
+      else
+      {
+        audioManager.StopSound(this);
+        audioManager.Play(losingSound, this);
+        gameOverMenu.SetWinnerName(currentGameColor == BoardColors.Black ? BoardColors.White : BoardColors.Black);
+        gameOverMenu.Show();
+        GetTree().Paused = true;
+      }
+    }
+  }
+
 
   public void OnTimerUpdate(object sender, object args)
   {
@@ -477,7 +486,9 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
     EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
+    EventSubscriber.SubscribeToEvent("OnGameOver", OnGameOver);
   }
+
   // In the case of a restart, this function will be called
   // So we do a cleanup here to free the memory no longer used
   // We remove tiles or any event subscription, etc...

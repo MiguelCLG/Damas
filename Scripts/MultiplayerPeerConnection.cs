@@ -85,8 +85,8 @@ public partial class MultiplayerPeerConnection : Node
 			{
 				if (parsedObject.command != Commands.game_timer)
 				{
-					GD.Print("COMMAND: " + parsedObject.command);
-					GD.Print("VALUE: " + parsedObject.value);
+					GD.Print("COMMAND RECEIVED: " + parsedObject.command);
+					GD.Print("VALUE RECEIVED: " + parsedObject.value);
 				}
 				switch (parsedObject.command)
 				{
@@ -117,6 +117,9 @@ public partial class MultiplayerPeerConnection : Node
 					case Commands.queue_confirmation:
 						// vem um boolean que diz se conseguiu entrar na fila
 						break;
+					case Commands.opponent_left_room:
+						EventRegistry.GetEventPublisher("SetWaitingContainerVisible").RaiseEvent(true);
+						break;
 					case Commands.message:
 						HandleServerMessage(parsedObject.value.ToObject<Message>());
 						break;
@@ -130,11 +133,13 @@ public partial class MultiplayerPeerConnection : Node
 						EventRegistry.GetEventPublisher("OnTimerUpdate").RaiseEvent(parsedObject.value.ToObject<GameTimer>());
 						break;
 					case Commands.balance_update:
+						playerInfo.money = (float)parsedObject.value;
 						break;
 					case Commands.turn_switch:
 						EventRegistry.GetEventPublisher("OnTurnSwitch").RaiseEvent(parsedObject.value.ToString());
 						break;
 					case Commands.game_over:
+						EventRegistry.GetEventPublisher("OnGameOver").RaiseEvent(parsedObject.value.ToObject<GameOver>());
 						break;
 				}
 			}
@@ -188,6 +193,7 @@ public partial class MultiplayerPeerConnection : Node
 		dict["command"] = Commands.leave_room.ToString();
 		string jsonString = JSON.Print(dict);
 		byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
+		GD.Print("Sending LEAVE_ROOM");
 
 		client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Binary);
 		client.GetPeer(1).PutPacket(encodedMessage);
@@ -202,7 +208,7 @@ public partial class MultiplayerPeerConnection : Node
 		dict["command"] = Commands.leave_queue.ToString();
 		string jsonString = JSON.Print(dict);
 		byte[] encodedMessage = Encoding.ASCII.GetBytes(jsonString);
-
+		GD.Print("Sending LEAVE_QUEUE");
 		client.GetPeer(1).SetWriteMode(WebSocketPeer.WriteMode.Binary);
 		client.GetPeer(1).PutPacket(encodedMessage);
 	}
@@ -263,6 +269,8 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("ShowRoom");
 		EventRegistry.RegisterEvent("SetWaitingQueue");
 		EventRegistry.RegisterEvent("PlayerConnected");
+		EventRegistry.RegisterEvent("OnGameOver");
+		EventRegistry.RegisterEvent("SetWaitingContainerVisible");
 	}
 
 	private void SubscribeToEvents()
@@ -282,6 +290,8 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
 
+		EventRegistry.UnregisterEvent("SetWaitingContainerVisible");
+		EventRegistry.UnregisterEvent("OnGameOver");
 		EventRegistry.UnregisterEvent("PlayerConnected");
 		EventRegistry.UnregisterEvent("SetWaitingQueue");
 		EventRegistry.UnregisterEvent("ShowRoom");
