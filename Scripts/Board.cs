@@ -222,6 +222,7 @@ public partial class Board : Control
               break;
 
             CaptureMoves.Add(c, tileBehind);
+            break;
           }
           else break;
         }
