@@ -59,6 +59,7 @@ public partial class MainMenu : Control
 		if (args is GameStartMessage message)
 		{
 			initialBoard = message.Board;
+			MaxTimer = message.max_timer;
 			foreach (var gamePlayer in message.GamePlayers)
 			{
 				GD.Print($"Message: {gamePlayer.name}, State: {playerName}");
@@ -121,6 +122,12 @@ public partial class MainMenu : Control
 		roomPopup.Visible = false;
 	}
 
+	public void SetWaitingContainerVisible(object sender, object args)
+	{
+		if (args is bool isVisible)
+			roomPopup.SetWaitingContainerVisible(isVisible);
+	}
+
 	public async void OnConnectionStart()
 	{
 		AnimationPlayer loadingAnimationPlayer = LoadingMenu.GetNode<AnimationPlayer>("%LoadingAnimationPlayer");
@@ -138,6 +145,7 @@ public partial class MainMenu : Control
 
 	private void SubscribeToEvents()
 	{
+		EventSubscriber.SubscribeToEvent("SetWaitingContainerVisible", SetWaitingContainerVisible);
 		EventSubscriber.SubscribeToEvent("OnGameStarting", OnGameStarting);
 		EventSubscriber.SubscribeToEvent("SetWaitingQueue", SetWaitingQueue);
 		EventSubscriber.SubscribeToEvent("ShowRoom", ShowRoom);
@@ -147,6 +155,7 @@ public partial class MainMenu : Control
 	public override void _ExitTree()
 	{
 		audioManager?.StopSound(this);
+		EventSubscriber.UnsubscribeFromEvent("SetWaitingContainerVisible", SetWaitingContainerVisible);
 		EventSubscriber.UnsubscribeFromEvent("PlayerConnected", PlayerConnected);
 		EventSubscriber.UnsubscribeFromEvent("ShowRoom", ShowRoom);
 		EventSubscriber.UnsubscribeFromEvent("SetWaitingQueue", SetWaitingQueue);

@@ -41,14 +41,28 @@ public class RoomPopup : Panel
 		RoomContainer.Visible = false;
 	}
 
+	public void SetWaitingContainerVisible(bool isVisible)
+	{
+		ChangeReadyButton(false);
+		OpponentReadyButton.AddStyleboxOverride("disabled", NotReadyButtonBackground);
+		ReadyButton.SetPressedNoSignal(false);
+		OpponentReadyButton.SetPressedNoSignal(false);
+		WaitingForDataContainer.Visible = isVisible;
+		RoomContainer.Visible = !isVisible;
+	}
 	public void OnReadyButtonPressed(bool buttonPressed)
 	{
-		ReadyButton.AddStyleboxOverride("normal", buttonPressed ? ReadyButtonBackground : NotReadyButtonBackground);
-		ReadyButton.AddStyleboxOverride("hover", buttonPressed ? ReadyButtonBackground : NotReadyButtonBackground);
-		ReadyButton.AddStyleboxOverride("pressed", buttonPressed ? ReadyButtonBackground : NotReadyButtonBackground);
+		ChangeReadyButton(buttonPressed);
 
 		EventRegistry.GetEventPublisher("OnReadyButtonPressed").RaiseEvent(buttonPressed);
 
+	}
+
+	public void ChangeReadyButton(bool isReady)
+	{
+		ReadyButton.AddStyleboxOverride("normal", isReady ? ReadyButtonBackground : NotReadyButtonBackground);
+		ReadyButton.AddStyleboxOverride("hover", isReady ? ReadyButtonBackground : NotReadyButtonBackground);
+		ReadyButton.AddStyleboxOverride("pressed", isReady ? ReadyButtonBackground : NotReadyButtonBackground);
 	}
 	public void SetPlayerName(string name)
 	{
@@ -117,13 +131,26 @@ public class RoomPopup : Panel
 	public void OnClose()
 	{
 		GetNode<AudioManager>("/root/AudioManager")?.Play(clickSound, this);
-		WaitingForDataContainer.Visible = true;
-		RoomContainer.Visible = false;
-		Visible = false;
+		OpponentReadyButton.AddStyleboxOverride("disabled", NotReadyButtonBackground);
+
 		if (WaitingForDataContainer.Visible == true || RoomContainer.Visible == false)
+		{
+			Visible = false;
+			ChangeReadyButton(false); // return ready button to false
 			EventRegistry.GetEventPublisher("OnDisconnectFromQueue").RaiseEvent(this);
+		}
 		else
+		{
+			ChangeReadyButton(false); // return ready button to false
+			WaitingForDataContainer.Visible = true;
+			RoomContainer.Visible = false;
+			Visible = false;
+			if (ReadyButton.Pressed)
+				EventRegistry.GetEventPublisher("OnReadyButtonPressed").RaiseEvent(false);
 			EventRegistry.GetEventPublisher("OnDisconnectFromLobby").RaiseEvent(this);
+		}
+		ReadyButton.SetPressedNoSignal(false);
+		OpponentReadyButton.SetPressedNoSignal(false);
 
 	}
 

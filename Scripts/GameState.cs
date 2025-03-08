@@ -7,6 +7,7 @@ public static class GameState
   public static GamePlayer player;
   public static PlayerInfo playerInfo;
   public static BoardColors currentGameColor;
+  public static int MaxTimer = 15;
   public static Hashtable initialBoard = new Hashtable
     {
         { "A1", "W_1" }, { "A2", null }, { "A3", "W_2" }, { "A4", null },{ "A5", "W_3" }, { "A6", null }, { "A7", "W_4" }, { "A8", null },
