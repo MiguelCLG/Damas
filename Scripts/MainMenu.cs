@@ -59,6 +59,7 @@ public partial class MainMenu : Control
 		if (args is GameStartMessage message)
 		{
 			initialBoard = message.Board;
+			MaxTimer = message.max_timer;
 			foreach (var gamePlayer in message.GamePlayers)
 			{
 				GD.Print($"Message: {gamePlayer.name}, State: {playerName}");

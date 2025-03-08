@@ -3,7 +3,6 @@ using Godot.Collections;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
-using System;
 
 public partial class GameplaySystem : Node2D
 {
@@ -51,6 +50,10 @@ public partial class GameplaySystem : Node2D
 
     OpponentTimer = GetNode<ProgressBar>("%OpponentTimer");
     PlayerTimer = GetNode<ProgressBar>("%PlayerTimer");
+    PlayerTimer.MaxValue = MaxTimer;
+    OpponentTimer.MaxValue = MaxTimer;
+    PlayerTimer.Value = MaxTimer;
+    OpponentTimer.Value = MaxTimer;
 
     OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
     PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
@@ -401,8 +404,6 @@ public partial class GameplaySystem : Node2D
     {
       checker.UnselectChecker();
     }
-    PlayerTimer.Value = 15;
-    OpponentTimer.Value = 15;
     OnTurnStart();
   }
 
@@ -433,18 +434,16 @@ public partial class GameplaySystem : Node2D
       {
         audioManager.StopSound(this);
         audioManager.Play(winningSound, this);
-        gameOverMenu.SetWinnerName(currentGameColor);
-        gameOverMenu.Show();
-        GetTree().Paused = true;
+        gameOverMenu?.SetWinnerName(currentGameColor);
       }
       else
       {
         audioManager.StopSound(this);
         audioManager.Play(losingSound, this);
-        gameOverMenu.SetWinnerName(currentGameColor == BoardColors.Black ? BoardColors.White : BoardColors.Black);
-        gameOverMenu.Show();
-        GetTree().Paused = true;
+        gameOverMenu?.SetWinnerName(currentGameColor == BoardColors.Black ? BoardColors.White : BoardColors.Black);
       }
+      gameOverMenu?.Show();
+      GetTree().Paused = true;
     }
   }
 
@@ -500,6 +499,7 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);
     EventSubscriber.UnsubscribeFromEvent("OnTimerUpdate", OnTimerUpdate);
     EventSubscriber.UnsubscribeFromEvent("OnTurnSwitch", OnTurnSwitch);
+    EventSubscriber.UnsubscribeFromEvent("OnGameOver", OnGameOver);
     EventRegistry.UnregisterEvent("TileClicked");
     EventRegistry.UnregisterEvent("CheckerClicked");
   }

@@ -83,11 +83,6 @@ public partial class MultiplayerPeerConnection : Node
 
 			try
 			{
-				if (parsedObject.command != Commands.game_timer)
-				{
-					GD.Print("COMMAND RECEIVED: " + parsedObject.command);
-					GD.Print("VALUE RECEIVED: " + parsedObject.value);
-				}
 				switch (parsedObject.command)
 				{
 					default: break;
@@ -290,22 +285,24 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
 
-		EventRegistry.UnregisterEvent("SetWaitingContainerVisible");
-		EventRegistry.UnregisterEvent("OnGameOver");
-		EventRegistry.UnregisterEvent("PlayerConnected");
-		EventRegistry.UnregisterEvent("SetWaitingQueue");
-		EventRegistry.UnregisterEvent("ShowRoom");
-		EventRegistry.UnregisterEvent("OnTurnSwitch");
-		EventRegistry.UnregisterEvent("OnTimerUpdate");
-		EventRegistry.UnregisterEvent("SendMessage");
-		EventRegistry.UnregisterEvent("OnGameStarting");
-		EventRegistry.UnregisterEvent("OnOpponentReadyReceived");
-		EventRegistry.UnregisterEvent("OnReadyButtonPressed");
-		EventRegistry.UnregisterEvent("OnPairedReceived");
+		EventRegistry.UnregisterEvent("OnJoinRoom");
 		EventRegistry.UnregisterEvent("OnRoomCheck");
 		EventRegistry.UnregisterEvent("OnDisconnectFromLobby");
 		EventRegistry.UnregisterEvent("OnDisconnectFromQueue");
 		EventRegistry.UnregisterEvent("OnDataReceived");
+		EventRegistry.UnregisterEvent("OnPairedReceived");
+		EventRegistry.UnregisterEvent("OnReadyButtonPressed");
+		EventRegistry.UnregisterEvent("OnOpponentReadyReceived");
+		EventRegistry.UnregisterEvent("OnGameStarting");
+		EventRegistry.UnregisterEvent("SendMessage");
+		EventRegistry.UnregisterEvent("OnMovePiece");
+		EventRegistry.UnregisterEvent("OnTimerUpdate");
+		EventRegistry.UnregisterEvent("OnTurnSwitch");
+		EventRegistry.UnregisterEvent("ShowRoom");
+		EventRegistry.UnregisterEvent("SetWaitingQueue");
+		EventRegistry.UnregisterEvent("PlayerConnected");
+		EventRegistry.UnregisterEvent("OnGameOver");
+		EventRegistry.UnregisterEvent("SetWaitingContainerVisible");
 	}
 }
 

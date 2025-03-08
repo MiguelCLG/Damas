@@ -122,6 +122,7 @@ public class GameStartMessage
   public Hashtable Board;
   public string CurrentPlayerID;
   public List<GamePlayer> GamePlayers;
+  public int max_timer;
 }
 
 public class GameOver
