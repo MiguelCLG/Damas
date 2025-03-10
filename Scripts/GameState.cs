@@ -7,6 +7,7 @@ public static class GameState
   public static GamePlayer player;
   public static PlayerInfo playerInfo;
   public static BoardColors currentGameColor;
+  public static BoardColors currentInGameTurn = BoardColors.Black;
   public static int MaxTimer = 15;
   public static Hashtable initialBoard = new Hashtable
     {

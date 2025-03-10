@@ -41,6 +41,11 @@ public partial class GameplaySystem : Node2D
     GetTree().Paused = false;
     RegisterEvents();
     SubscribeToEvents();
+    Initialize();
+  }
+
+  private void Initialize()
+  {
     audioManager = GetNode<AudioManager>("/root/AudioManager");
     audioManager?.Play(music, this);
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
@@ -54,6 +59,8 @@ public partial class GameplaySystem : Node2D
     OpponentTimer.MaxValue = MaxTimer;
     PlayerTimer.Value = MaxTimer;
     OpponentTimer.Value = MaxTimer;
+
+    CurrentTurn = currentInGameTurn;
 
     OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
     PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
@@ -452,14 +459,12 @@ public partial class GameplaySystem : Node2D
   {
     if (args is GameTimer timerData)
     {
-      /* if (player.id == timerData.current_player_id)
-      {
-        if (currentGameColor != CurrentTurn)
-        {
-          CurrentTurn = currentGameColor;
-          OnTurnStart();
-        }
-      } */
+      BoardColors opponentColor = currentGameColor == BoardColors.Black ? BoardColors.White : BoardColors.Black;
+
+      GD.Print(player.id.Equals(timerData.current_player_id));
+      CurrentTurn = player.id.Equals(timerData.current_player_id) ?
+        currentGameColor : opponentColor;
+
       if (currentGameColor == CurrentTurn)
       {
         PlayerTimer.Value = timerData.player_timer;
@@ -478,6 +483,8 @@ public partial class GameplaySystem : Node2D
     EventRegistry.RegisterEvent("TileClicked");
     EventRegistry.RegisterEvent("CheckerClicked");
   }
+
+  public void OnGameReconnect(object sender, object args) => Initialize();
   public void SubscribeToEvents()
   {
     EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
@@ -486,6 +493,8 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
     EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
     EventSubscriber.SubscribeToEvent("OnGameOver", OnGameOver);
+    EventSubscriber.SubscribeToEvent("OnGameReconnect", OnGameReconnect);
+
   }
 
   // In the case of a restart, this function will be called
@@ -494,6 +503,7 @@ public partial class GameplaySystem : Node2D
   public override void _ExitTree()
   {
     audioManager.StopSound(this);
+    EventSubscriber.UnsubscribeFromEvent("OnGameReconnect", OnGameReconnect);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);
     EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);

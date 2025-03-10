@@ -22,8 +22,11 @@ public enum Commands
   balance_update,
   turn_switch,
   game_over,
-  opponent_left_room
+  opponent_left_room,
+  opponent_disconnected_game,
+  game_reconnect,
 }
+
 
 public enum MessageType
 {
