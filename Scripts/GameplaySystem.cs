@@ -3,6 +3,7 @@ using Godot.Collections;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
+using System;
 
 public partial class GameplaySystem : Node2D
 {
@@ -17,6 +18,8 @@ public partial class GameplaySystem : Node2D
   [Export] private AudioOptionsResource music;
   private TextureRect OpponentPieceCountTexture;
   private TextureRect PlayerPieceCountTexture;
+  private TextureRect OpponentDisconnectIcon;
+  private Panel ConnectionPopup;
   private Checker SelectedChecker = null;
   private BoardColors CurrentTurn = BoardColors.Black;
   private Array<Checker> BlackCheckers = new Array<Checker>();
@@ -41,19 +44,28 @@ public partial class GameplaySystem : Node2D
     GetTree().Paused = false;
     RegisterEvents();
     SubscribeToEvents();
+    Initialize();
+  }
+
+  private void Initialize()
+  {
     audioManager = GetNode<AudioManager>("/root/AudioManager");
     audioManager?.Play(music, this);
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
     OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
     OpponentPieceCountTexture = GetNode<TextureRect>("%OpponentPieceCountTexture");
     PlayerPieceCountTexture = GetNode<TextureRect>("%PlayerPieceCountTexture");
-
+    OpponentDisconnectIcon = GetNode<TextureRect>("%OpponentDisconnectIcon");
+    ConnectionPopup = GetNode<Panel>("%ConnectionPopup");
+    OpponentDisconnectIcon.Visible = false;
     OpponentTimer = GetNode<ProgressBar>("%OpponentTimer");
     PlayerTimer = GetNode<ProgressBar>("%PlayerTimer");
     PlayerTimer.MaxValue = MaxTimer;
     OpponentTimer.MaxValue = MaxTimer;
     PlayerTimer.Value = MaxTimer;
     OpponentTimer.Value = MaxTimer;
+
+    CurrentTurn = currentInGameTurn;
 
     OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
     PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
@@ -69,6 +81,7 @@ public partial class GameplaySystem : Node2D
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
 
+    ConnectionPopup.Hide();
     PlayerPortrait.Texture = currentGameColor == BoardColors.Black ? playerPortraits[0] : playerPortraits[1];
     OpponentPortrait.Texture = currentGameColor == BoardColors.White ? playerPortraits[0] : playerPortraits[1];
 
@@ -419,11 +432,11 @@ public partial class GameplaySystem : Node2D
     AllCheckers.Remove(checker);
     checker.GetParent().RemoveChild(checker);
     checker.QueueFree();
-
-
-
   }
-
+  private void ToggleReconnectPopup(object sender, object args)
+  {
+    ConnectionPopup.Visible = args is bool isVisible && isVisible;
+  }
 
   private void OnGameOver(object sender, object args)
   {
@@ -452,14 +465,12 @@ public partial class GameplaySystem : Node2D
   {
     if (args is GameTimer timerData)
     {
-      /* if (player.id == timerData.current_player_id)
-      {
-        if (currentGameColor != CurrentTurn)
-        {
-          CurrentTurn = currentGameColor;
-          OnTurnStart();
-        }
-      } */
+      BoardColors opponentColor = currentGameColor == BoardColors.Black ? BoardColors.White : BoardColors.Black;
+
+      GD.Print(player.id.Equals(timerData.current_player_id));
+      CurrentTurn = player.id.Equals(timerData.current_player_id) ?
+        currentGameColor : opponentColor;
+
       if (currentGameColor == CurrentTurn)
       {
         PlayerTimer.Value = timerData.player_timer;
@@ -478,6 +489,8 @@ public partial class GameplaySystem : Node2D
     EventRegistry.RegisterEvent("TileClicked");
     EventRegistry.RegisterEvent("CheckerClicked");
   }
+
+  public void OnGameReconnect(object sender, object args) => Initialize();
   public void SubscribeToEvents()
   {
     EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
@@ -486,7 +499,29 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
     EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
     EventSubscriber.SubscribeToEvent("OnGameOver", OnGameOver);
+    EventSubscriber.SubscribeToEvent("OnGameReconnect", OnGameReconnect);
+    EventSubscriber.SubscribeToEvent("ToggleReconnectPopup", ToggleReconnectPopup);
+    EventSubscriber.SubscribeToEvent("OnOpponentDisconnectedGame", OnOpponentDisconnectedGame);
+
   }
+
+  private void OnOpponentDisconnectedGame(object sender, object args)
+  {
+    if (args is string status)
+    {
+      if (status == "disconnected")
+      {
+
+        OpponentDisconnectIcon.Visible = true;
+      }
+      else
+      {
+        OpponentDisconnectIcon.Visible = false;
+      }
+    }
+  }
+
+
 
   // In the case of a restart, this function will be called
   // So we do a cleanup here to free the memory no longer used
@@ -500,6 +535,9 @@ public partial class GameplaySystem : Node2D
     EventSubscriber.UnsubscribeFromEvent("OnTimerUpdate", OnTimerUpdate);
     EventSubscriber.UnsubscribeFromEvent("OnTurnSwitch", OnTurnSwitch);
     EventSubscriber.UnsubscribeFromEvent("OnGameOver", OnGameOver);
+    EventSubscriber.UnsubscribeFromEvent("OnGameReconnect", OnGameReconnect);
+    EventSubscriber.UnsubscribeFromEvent("ToggleReconnectPopup", ToggleReconnectPopup);
+    EventSubscriber.UnsubscribeFromEvent("OnOpponentDisconnectedGame", OnOpponentDisconnectedGame);
     EventRegistry.UnregisterEvent("TileClicked");
     EventRegistry.UnregisterEvent("CheckerClicked");
   }

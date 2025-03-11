@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Godot.Collections;
 using static GameState;
@@ -62,10 +63,14 @@ public partial class MainMenu : Control
 			MaxTimer = message.max_timer;
 			foreach (var gamePlayer in message.GamePlayers)
 			{
-				GD.Print($"Message: {gamePlayer.name}, State: {playerName}");
 				if (playerName == gamePlayer.name)
 				{
 					player = gamePlayer;
+					currentGameColor = gamePlayer.color == "b" ? BoardColors.Black : BoardColors.White;
+				}
+				else
+				{
+					opponentName = gamePlayer.name;
 				}
 			}
 		}
@@ -143,6 +148,7 @@ public partial class MainMenu : Control
 		EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(betValue);
 	}
 
+
 	private void SubscribeToEvents()
 	{
 		EventSubscriber.SubscribeToEvent("SetWaitingContainerVisible", SetWaitingContainerVisible);
@@ -150,11 +156,13 @@ public partial class MainMenu : Control
 		EventSubscriber.SubscribeToEvent("SetWaitingQueue", SetWaitingQueue);
 		EventSubscriber.SubscribeToEvent("ShowRoom", ShowRoom);
 		EventSubscriber.SubscribeToEvent("PlayerConnected", PlayerConnected);
+		EventSubscriber.SubscribeToEvent("OnGameReconnect", OnGameStarting);
 	}
 
 	public override void _ExitTree()
 	{
 		audioManager?.StopSound(this);
+		EventSubscriber.UnsubscribeFromEvent("OnGameReconnect", OnGameStarting);
 		EventSubscriber.UnsubscribeFromEvent("SetWaitingContainerVisible", SetWaitingContainerVisible);
 		EventSubscriber.UnsubscribeFromEvent("PlayerConnected", PlayerConnected);
 		EventSubscriber.UnsubscribeFromEvent("ShowRoom", ShowRoom);

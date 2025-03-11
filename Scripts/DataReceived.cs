@@ -22,8 +22,11 @@ public enum Commands
   balance_update,
   turn_switch,
   game_over,
-  opponent_left_room
+  opponent_left_room,
+  opponent_disconnected_game,
+  game_reconnect,
 }
+
 
 public enum MessageType
 {
@@ -71,7 +74,7 @@ public class RoomInfoList
 
 public class PairedValue
 {
-  public int color; // 0 - black | 1 - white
+  public int color; // 1 - black | 0 - white
   public string opponent;
   public string room_id;
 }

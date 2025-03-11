@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public class RoomPopup : Panel
@@ -33,9 +34,7 @@ public class RoomPopup : Panel
 		RoomContainer = GetNode<PanelContainer>("%RoomContainer");
 		WaitingForDataContainer = GetNode<PanelContainer>("%WaitingForDataContainer");
 
-		EventSubscriber.SubscribeToEvent("OnDataReceived", OnDataReceived);
-		EventSubscriber.SubscribeToEvent("OnPairedReceived", OnPairedReceived);
-		EventSubscriber.SubscribeToEvent("OnOpponentReadyReceived", OnOpponentReadyReceived);
+		SubscribeToEvents();
 
 		WaitingForDataContainer.Visible = true;
 		RoomContainer.Visible = false;
@@ -98,7 +97,7 @@ public class RoomPopup : Panel
 	{
 		if (args is PairedValue pairedValue)
 		{
-			GameState.currentGameColor = pairedValue.color == 0 ? BoardColors.Black : BoardColors.White;
+			GameState.currentGameColor = pairedValue.color == 0 ? BoardColors.White : BoardColors.Black;
 			GameState.opponentName = pairedValue.opponent;
 			GameState.room_id = pairedValue.room_id;
 
@@ -154,6 +153,12 @@ public class RoomPopup : Panel
 
 	}
 
+	private void SubscribeToEvents()
+	{
+		EventSubscriber.SubscribeToEvent("OnDataReceived", OnDataReceived);
+		EventSubscriber.SubscribeToEvent("OnPairedReceived", OnPairedReceived);
+		EventSubscriber.SubscribeToEvent("OnOpponentReadyReceived", OnOpponentReadyReceived);
+	}
 	public override void _ExitTree()
 	{
 		EventSubscriber.UnsubscribeFromEvent("OnDataReceived", OnDataReceived);
