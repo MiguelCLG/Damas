@@ -74,7 +74,7 @@ public class RoomInfoList
 
 public class PairedValue
 {
-  public int color; // 0 - black | 1 - white
+  public int color; // 1 - black | 0 - white
   public string opponent;
   public string room_id;
 }
