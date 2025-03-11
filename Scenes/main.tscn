@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/tile.tscn" type="PackedScene" id=2]
@@ -23,6 +23,8 @@
 [ext_resource path="res://Resources/Sounds/winning_sound.tres" type="Resource" id=21]
 [ext_resource path="res://Resources/Sounds/music.tres" type="Resource" id=22]
 [ext_resource path="res://Resources/Sounds/losing_sound.tres" type="Resource" id=23]
+[ext_resource path="res://Scenes/connection_popup.tscn" type="PackedScene" id=24]
+[ext_resource path="res://Assets/disconnect_icon.webp" type="Texture" id=25]
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
@@ -157,30 +159,44 @@ margin_right = 230.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 
-[node name="OpponentNameLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
+margin_right = 162.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="OpponentNameLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 margin_right = 162.0
 margin_bottom = 40.0
 custom_fonts/font = ExtResource( 7 )
 text = "BBesiktas"
 
+[node name="OpponentDisconnectIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 166.0
+margin_right = 190.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 24, 24 )
+texture = ExtResource( 25 )
+expand = true
+stretch_mode = 6
+
 [node name="Control" type="Control" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
 margin_top = 44.0
 margin_right = 162.0
 margin_bottom = 64.0
-size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="OpponentTimer" type="ProgressBar" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
 unique_name_in_owner = true
 anchor_top = 0.5
-anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = 10.0
-margin_top = -7.0
-margin_right = 3.0
-margin_bottom = 12.0
-size_flags_horizontal = 3
+margin_top = -9.5
+margin_right = 183.0
+margin_bottom = 9.5
 custom_styles/fg = SubResource( 2 )
 custom_styles/bg = SubResource( 3 )
 max_value = 15.0
@@ -190,10 +206,10 @@ percent_visible = false
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = -18.0
-margin_top = -31.0
-margin_right = 50.0
-margin_bottom = 41.0
+margin_left = -23.0
+margin_top = -33.0
+margin_right = 45.0
+margin_bottom = 39.0
 texture = ExtResource( 10 )
 expand = true
 stretch_mode = 6
@@ -435,7 +451,23 @@ margin_right = 121.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 
-[node name="PlayerNameLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
+margin_right = 121.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerDisconnectIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+margin_right = 24.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 24, 24 )
+texture = ExtResource( 25 )
+expand = true
+stretch_mode = 6
+
+[node name="PlayerNameLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 margin_right = 121.0
 margin_bottom = 40.0
@@ -503,4 +535,8 @@ texture = ExtResource( 17 )
 stretch_mode = 1
 
 [node name="GameOverMenu" parent="CanvasLayer" instance=ExtResource( 5 )]
+visible = false
+
+[node name="ConnectionPopup" parent="CanvasLayer" instance=ExtResource( 24 )]
+unique_name_in_owner = true
 visible = false

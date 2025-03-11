@@ -10,58 +10,6 @@ public partial class MultiplayerPeerConnection : Node
 {
 	WebSocketClient client;
 	Timer reconnectTimer;
-	/* public override void _Ready()
-	{
-		RegisterEvents();
-		client = new WebSocketClient();
-		client.Connect("connection_established", this, "OnConnect");
-		client.Connect("connection_closed", this, "OnConnectionClosed");
-		client.Connect("connection_error", this, "OnConnectionClosed");
-		client.Connect("data_received", this, "OnData");
-		SubscribeToEvents();
-
-		player = new GamePlayer();
-		player.token = "token123";
-		player.session_id = "session1";
-		// player = new GamePlayer();
-		// player.token = "token456";
-		// player.session_id = "session2";
-		WebUtils.PrintUrlParams();
-		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
-		var port = "";
-		var ip = "";
-		if (parameters.Prefix == "wss")
-		{
-			ip = "games.qlean.pt";
-		}
-		else
-		{
-			ip = "localhost";
-			port = ":80";
-		}
-		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
-		//var err = client.ConnectToUrl("ws://localhost:8080/ws?token=token456&sessionid=session2&currency=USD");
-		if (err != Error.Ok)
-		{
-			GD.Print("Unable To Connect: " + err);
-			SetProcess(false);
-		}
-	} */
-
-
-
-	private void SendMessageEvent(object sender, object args)
-	{
-		if (args is MovePieceData data)
-		{
-			SendMessageComplex(Commands.move_piece, data);
-		}
-	}
-
-	public override void _Process(float delta)
-	{
-		client.Poll();
-	}
 
 	public override void _Ready()
 	{
@@ -85,6 +33,19 @@ public partial class MultiplayerPeerConnection : Node
 		reconnectTimer.Connect("timeout", this, nameof(TryReconnect));
 
 		ConnectToServer();
+	}
+
+	private void SendMessageEvent(object sender, object args)
+	{
+		if (args is MovePieceData data)
+		{
+			SendMessageComplex(Commands.move_piece, data);
+		}
+	}
+
+	public override void _Process(float delta)
+	{
+		client.Poll();
 	}
 
 	private void ConnectToServer()
@@ -118,6 +79,7 @@ public partial class MultiplayerPeerConnection : Node
 		GD.Print("Connection Closed.", was_clean_close);
 		GD.Print("Attempting to reconnect in 5 seconds...");
 		//TODO: show reconnection popup
+		EventRegistry.GetEventPublisher("ToggleReconnectPopup").RaiseEvent(true);
 		reconnectTimer.Start();
 	}
 
@@ -135,6 +97,7 @@ public partial class MultiplayerPeerConnection : Node
 		GD.Print("Connection established: " + protocol);
 		// Stop the reconnection attempts if successfully connected
 		//TODO: hide reconnection popup
+		EventRegistry.GetEventPublisher("ToggleReconnectPopup").RaiseEvent(false);
 		reconnectTimer.Stop();
 	}
 	public void OnData()
@@ -173,7 +136,7 @@ public partial class MultiplayerPeerConnection : Node
 						EventRegistry.GetEventPublisher("SetWaitingQueue").RaiseEvent(parsedObject.value.ToObject<RoomInfoList>().players_waiting.ToString());
 						break;
 					case Commands.game_start:
-						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>()); //TODO: Send the game starting data and fill the GameState
+						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>());
 						break;
 					case Commands.queue_confirmation:
 						// vem um boolean que diz se conseguiu entrar na fila
@@ -203,7 +166,7 @@ public partial class MultiplayerPeerConnection : Node
 						EventRegistry.GetEventPublisher("OnGameOver").RaiseEvent(parsedObject.value.ToObject<GameOver>());
 						break;
 					case Commands.opponent_disconnected_game:
-						EventRegistry.GetEventPublisher("OnOpponentDisconnectedGame").RaiseEvent(this);
+						EventRegistry.GetEventPublisher("OnOpponentDisconnectedGame").RaiseEvent(parsedObject.value.ToString());
 						break;
 					case Commands.game_reconnect:
 						EventRegistry.GetEventPublisher("OnGameReconnect").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>());
@@ -340,6 +303,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("SetWaitingContainerVisible");
 		EventRegistry.RegisterEvent("OnOpponentDisconnectedGame");
 		EventRegistry.RegisterEvent("OnGameReconnect");
+		EventRegistry.RegisterEvent("ToggleReconnectPopup");
 	}
 
 	private void SubscribeToEvents()
@@ -379,6 +343,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.UnregisterEvent("SetWaitingContainerVisible");
 		EventRegistry.UnregisterEvent("OnOpponentDisconnectedGame");
 		EventRegistry.UnregisterEvent("OnGameReconnect");
+		EventRegistry.UnregisterEvent("ToggleReconnectPopup");
 	}
 }
 
