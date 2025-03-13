@@ -1,10 +1,11 @@
-[gd_resource type="Theme" load_steps=36 format=2]
+[gd_resource type="Theme" load_steps=41 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=4]
 [ext_resource path="res://Assets/ui_assets/Painel.webp" type="Texture" id=5]
+[ext_resource path="res://Assets/fonts/NexaH_dynamic_font.tres" type="DynamicFont" id=6]
 [ext_resource path="res://Assets/ui_assets/purple.webp" type="Texture" id=7]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with no Glow/50.webp" type="Texture" id=9]
@@ -13,6 +14,8 @@
 [ext_resource path="res://Assets/FirstScreens Assets/purpleBTN.webp" type="Texture" id=12]
 [ext_resource path="res://Assets/FirstScreens Assets/grennbtn.webp" type="Texture" id=13]
 [ext_resource path="res://Themes/NotReadyButtonStylebox.tres" type="StyleBox" id=14]
+[ext_resource path="res://Assets/slider_toggle.webp" type="Texture" id=15]
+[ext_resource path="res://Assets/in_game_assets/slider_toggle_highlight.webp" type="Texture" id=16]
 
 [sub_resource type="StyleBoxTexture" id=28]
 texture = ExtResource( 11 )
@@ -80,6 +83,12 @@ texture = ExtResource( 4 )
 region_rect = Rect2( 0, 0, 1080, 1920 )
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxFlat" id=33]
+bg_color = Color( 0.0705882, 0.0235294, 0.152941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=34]
+bg_color = Color( 0.454902, 0.247059, 0.752941, 1 )
 
 [sub_resource type="StyleBoxTexture" id=19]
 texture = ExtResource( 12 )
@@ -176,6 +185,9 @@ FlatContainer/base_type = "PanelContainer"
 FlatContainer/styles/panel = SubResource( 9 )
 GameOverContainer/base_type = "PanelContainer"
 GameOverContainer/styles/panel = SubResource( 29 )
+HSlider/icons/grabber = ExtResource( 15 )
+HSlider/icons/grabber_disabled = ExtResource( 15 )
+HSlider/icons/grabber_highlight = ExtResource( 16 )
 HeaderFont/base_type = "Label"
 HeaderFont/fonts/font = SubResource( 3 )
 HemiLabel/base_type = "Label"
@@ -188,6 +200,9 @@ Label/fonts/font = SubResource( 4 )
 NexaLabel/base_type = "Label"
 NexaLabel/fonts/font = SubResource( 14 )
 PanelContainer/styles/panel = SubResource( 15 )
+ProgressBar/fonts/font = ExtResource( 6 )
+ProgressBar/styles/bg = SubResource( 33 )
+ProgressBar/styles/fg = SubResource( 34 )
 ReadyButton/base_type = "Button"
 ReadyButton/styles/disabled = SubResource( 19 )
 ReadyButton/styles/hover = SubResource( 19 )

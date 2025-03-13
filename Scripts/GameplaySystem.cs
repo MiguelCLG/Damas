@@ -57,9 +57,12 @@ public partial class GameplaySystem : Node2D
     PlayerPieceCountTexture = GetNode<TextureRect>("%PlayerPieceCountTexture");
     OpponentDisconnectIcon = GetNode<TextureRect>("%OpponentDisconnectIcon");
     ConnectionPopup = GetNode<Panel>("%ConnectionPopup");
+
     OpponentDisconnectIcon.Visible = false;
+
     OpponentTimer = GetNode<ProgressBar>("%OpponentTimer");
     PlayerTimer = GetNode<ProgressBar>("%PlayerTimer");
+
     PlayerTimer.MaxValue = MaxTimer;
     OpponentTimer.MaxValue = MaxTimer;
     PlayerTimer.Value = MaxTimer;

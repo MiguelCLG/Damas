@@ -55,6 +55,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 2 )
-text = "Conexão perdida, aguarde a reconexão..."
+text = "_connection_lost_"
 align = 1
 valign = 1
