@@ -14,9 +14,9 @@ public class GameOverMenu : Control
     public void SetWinnerName(BoardColors name)
     {
         if (name == GameState.currentGameColor)
-            winnerNameLabel.Text = "You win!";
+            winnerNameLabel.Text = "_win_";
         else
-            winnerNameLabel.Text = "You lose!";
+            winnerNameLabel.Text = "_lose_";
         if (name == BoardColors.Black)
             winnerTextureRect.Texture = GD.Load<Texture>("res://Assets/In Game Assets/crowd1.webp");
         else

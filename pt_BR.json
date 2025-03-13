@@ -8,5 +8,7 @@
   "_bet_": "Aposta",
   "_connection_lost_": "Conexão perdida, aguarde a reconexão...",
   "_waiting_for_players_to_join_": "Aguardando por jogadores...",
-  "_waiting_for_players_ready_": "Aguardando que os jogadores estejam prontos..."
+  "_waiting_for_players_ready_": "Aguardando que os jogadores estejam prontos...",
+  "_lose_": "Voce perde",
+  "_win_": "Voce ganha"
 }
