@@ -10,5 +10,7 @@
   "_waiting_for_players_to_join_": "Waiting for players to join...",
   "_waiting_for_players_ready_": "Waiting for players to be ready...",
   "_lose_": "You lose",
-  "_win_": "You win"
+  "_win_": "You win",
+  "_restart_button_": "Main Menu",
+  "_players_in_queue_": "players in queue"
 }

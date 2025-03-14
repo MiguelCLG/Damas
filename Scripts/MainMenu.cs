@@ -119,7 +119,7 @@ public partial class MainMenu : Control
 	public void SetWaitingQueue(object sender, object args)
 	{
 		if (args is string numberOfPlayers)
-			WaitingQueueLabel.Text = $"{numberOfPlayers} jogadores na fila.";
+			WaitingQueueLabel.Text = $"{numberOfPlayers} {TranslationServer.Translate("_players_in_queue_")}";
 	}
 	public void ShowRoom(object sender, object args)
 	{

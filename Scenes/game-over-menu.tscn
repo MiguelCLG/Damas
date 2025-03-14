@@ -28,7 +28,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="FlatContainer" type="PanelContainer" parent="HBoxContainer"]
-margin_right = 88.0
+margin_right = 121.0
 margin_bottom = 800.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -37,8 +37,8 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 92.0
-margin_right = 508.0
+margin_left = 125.0
+margin_right = 541.0
 margin_bottom = 800.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -117,9 +117,9 @@ text = "White checkers wins!"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
-margin_left = 91.0
+margin_left = 22.0
 margin_top = 242.0
-margin_right = 255.0
+margin_right = 324.0
 margin_bottom = 314.0
 mouse_filter = 2
 size_flags_horizontal = 6
@@ -127,10 +127,10 @@ size_flags_vertical = 2
 
 [node name="InicioButton" type="Button" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer"]
 pause_mode = 2
-margin_right = 164.0
+margin_right = 302.0
 margin_bottom = 72.0
 theme_type_variation = "JogarButton"
-text = "Inicio"
+text = "_restart_button_"
 
 [node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 686.0
@@ -142,8 +142,8 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="FlatContainer_2" type="PanelContainer" parent="HBoxContainer"]
-margin_left = 512.0
-margin_right = 600.0
+margin_left = 545.0
+margin_right = 667.0
 margin_bottom = 800.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
