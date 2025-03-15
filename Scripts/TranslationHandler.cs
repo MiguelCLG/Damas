@@ -7,17 +7,13 @@ public partial class TranslationHandler : Node
     private HTTPRequest httpRequest;
     Dictionary<string, Translation> translations = new Dictionary<string, Translation>();
 
+    string localeActive = "";
+
     public override void _Ready()
     {
-        LoadTranslationLocally("en");
+        /* LoadTranslationLocally("en"); */
+        RequestTranslation("pt_BR");
 
-        /*
-        httpRequest = new HTTPRequest();
-        AddChild(httpRequest);
-        httpRequest.Connect("request_completed", this, nameof(OnRequestCompleted));
-
-        string url = "http://localhost:8080/en.json"; // Replace with your endpoint or local file server
-        httpRequest.Request(url);*/
     }
 
     public void LoadTranslationLocally(string locale)
@@ -38,6 +34,17 @@ public partial class TranslationHandler : Node
         SetServerLocale(language.Locale);
     }
 
+    public void RequestTranslation(string locale)
+    {
+
+        localeActive = locale;
+        httpRequest = new HTTPRequest();
+        AddChild(httpRequest);
+        httpRequest.Connect("request_completed", this, nameof(OnRequestCompleted));
+        string url = $"https://damaspvp1.s3.eu-central-1.amazonaws.com/translations/{locale}.json"; // Replace with your endpoint or local file server
+        httpRequest.Request(url);
+    }
+
     private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
     {
         if (responseCode == 200)  // OK
@@ -49,9 +56,10 @@ public partial class TranslationHandler : Node
             var translationData = DeserializeTranslationJson(jsonContent);
 
             // Create the translation resource and add the messages
-            Translation language = CreateTranslation("en", translationData);
+            Translation language = CreateTranslation(localeActive, translationData);
             AddTranslationToServer(language);
             SetServerLocale(language.Locale);
+            localeActive = "";
         }
         else
         {
