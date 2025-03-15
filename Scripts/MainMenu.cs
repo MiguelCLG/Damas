@@ -12,9 +12,10 @@ public partial class MainMenu : Control
 	private SceneLoaders sceneLoaders; // autoload to handle transitions and switching scenes
 	private Label PlayerName;
 	private Label PlayerMoney;
-	private RichTextLabel WaitingQueueLabel;
+	private Label WaitingQueueLabel;
 	private RoomPopup roomPopup;
 	private Panel LoadingMenu;
+	private Panel OptionsMenu;
 	private AudioManager audioManager;
 	// Panel roomList;
 
@@ -26,13 +27,16 @@ public partial class MainMenu : Control
 		ViewportBaseY = GetViewportRect().Size.y;
 		sceneLoaders = GetNode<SceneLoaders>("/root/SceneLoaders");
 		roomPopup = GetNode<RoomPopup>("%RoomPopup");
+
 		LoadingMenu = GetNode<Panel>("%LoadingMenu");
+		OptionsMenu = GetNode<Panel>("%OptionsMenu");
+
 		audioManager = GetNode<AudioManager>("/root/AudioManager");
 		audioManager?.Play(music, this);
 		//  roomList = GetNode<Panel>("%RoomList");
 		PlayerName = GetNode<Label>("%PlayerName");
 		PlayerMoney = GetNode<Label>("%PlayerMoney");
-		WaitingQueueLabel = GetNode<RichTextLabel>("%WaitingQueueLabel");
+		WaitingQueueLabel = GetNode<Label>("%WaitingQueueLabel");
 		BidTexture = GetNode<TextureRect>("%BidTexture");
 
 		SubscribeToEvents();
@@ -115,7 +119,7 @@ public partial class MainMenu : Control
 	public void SetWaitingQueue(object sender, object args)
 	{
 		if (args is string numberOfPlayers)
-			WaitingQueueLabel.Text = $"{numberOfPlayers} jogadores na fila.";
+			WaitingQueueLabel.Text = $"{numberOfPlayers} {TranslationServer.Translate("_players_in_queue_")}";
 	}
 	public void ShowRoom(object sender, object args)
 	{
@@ -148,6 +152,10 @@ public partial class MainMenu : Control
 		EventRegistry.GetEventPublisher("OnJoinRoom").RaiseEvent(betValue);
 	}
 
+	public void OnOptionsMenuButtonPressed()
+	{
+		OptionsMenu.Visible = true;
+	}
 
 	private void SubscribeToEvents()
 	{

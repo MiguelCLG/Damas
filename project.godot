@@ -19,6 +19,7 @@ config/icon="res://icon.png"
 MultiplayerPeerConnection="*res://Scripts/MultiplayerPeerConnection.cs"
 SceneLoaders="*res://Scripts/SceneLoaders.cs"
 AudioManager="*res://Scenes/audio_manager.tscn"
+TranslationHandler="*res://Scenes/translation_handler.tscn"
 
 [display]
 
