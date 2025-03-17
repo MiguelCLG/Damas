@@ -109,24 +109,24 @@ custom_constants/separation = 64
 
 [node name="TopContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
 margin_right = 635.0
-margin_bottom = 137.0
+margin_bottom = 132.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 4 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer"]
 margin_right = 635.0
-margin_bottom = 137.0
+margin_bottom = 132.0
 custom_constants/margin_bottom = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer"]
 margin_right = 635.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 
 [node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
-margin_top = 41.0
+margin_top = 36.0
 margin_right = 555.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 8
 
@@ -217,18 +217,18 @@ stretch_mode = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
 margin_left = 559.0
 margin_right = 635.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 custom_constants/separation = 10
 alignment = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer"]
 margin_right = 76.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 size_flags_horizontal = 3
 alignment = 2
 
 [node name="Control" type="Control" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_bottom = 105.0
+margin_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -263,12 +263,12 @@ valign = 1
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 4.0
 margin_right = 76.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 custom_styles/panel = SubResource( 7 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer"]
 margin_right = 72.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
@@ -278,27 +278,27 @@ custom_constants/margin_bottom = 4
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 68.0
-margin_bottom = 101.0
+margin_bottom = 96.0
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 64.0
-margin_bottom = 29.0
+margin_bottom = 24.0
 custom_fonts/font = ExtResource( 11 )
 text = "_bet_"
 align = 1
 
 [node name="OpponentBetTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 33.0
+margin_top = 28.0
 margin_right = 64.0
-margin_bottom = 97.0
+margin_bottom = 92.0
 texture = ExtResource( 15 )
 stretch_mode = 6
 
 [node name="CenterContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_top = 201.0
+margin_top = 196.0
 margin_right = 635.0
-margin_bottom = 599.0
+margin_bottom = 604.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 6.0
@@ -306,7 +306,7 @@ custom_styles/panel = SubResource( 5 )
 
 [node name="BoardContainer" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer"]
 margin_right = 635.0
-margin_bottom = 398.0
+margin_bottom = 408.0
 mouse_filter = 2
 
 [node name="Board" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
@@ -349,7 +349,7 @@ size_flags_vertical = 0
 theme_type_variation = "BoardContainer"
 
 [node name="BottomContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_top = 663.0
+margin_top = 668.0
 margin_right = 635.0
 margin_bottom = 768.0
 size_flags_horizontal = 3
@@ -358,27 +358,27 @@ custom_styles/panel = SubResource( 6 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer"]
 margin_right = 635.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 
 [node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer"]
 margin_right = 635.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 alignment = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
 margin_right = 442.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2"]
 margin_right = 72.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 custom_styles/panel = SubResource( 7 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer"]
 margin_right = 72.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
@@ -388,28 +388,28 @@ custom_constants/margin_bottom = 4
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 68.0
-margin_bottom = 101.0
+margin_bottom = 96.0
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 64.0
-margin_bottom = 29.0
+margin_bottom = 24.0
 custom_fonts/font = ExtResource( 11 )
 text = "_bet_"
 align = 1
 
 [node name="PlayerBetTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 33.0
+margin_top = 28.0
 margin_right = 64.0
-margin_bottom = 97.0
+margin_bottom = 92.0
 texture = ExtResource( 17 )
 stretch_mode = 6
 
 [node name="Control" type="Control" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2"]
 margin_left = 76.0
-margin_top = 105.0
+margin_top = 100.0
 margin_right = 76.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 size_flags_horizontal = 9
 size_flags_vertical = 12
 
@@ -441,9 +441,9 @@ valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
 margin_left = 446.0
-margin_top = 41.0
+margin_top = 36.0
 margin_right = 635.0
-margin_bottom = 105.0
+margin_bottom = 100.0
 size_flags_vertical = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer"]

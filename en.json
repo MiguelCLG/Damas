@@ -1,6 +1,9 @@
 {
   "_options_": "Options",
-  "_audio_": "Audio",
+  "_audio_": "All",
+  "_music_": "Music",
+  "_audio_effects_": "Sound Effects",
+  "_audio_ui_": "UI Sounds",
   "_language_": "Language",
   "_waiting_for_data_": "Waiting for data...",
   "_start_button_": "START",

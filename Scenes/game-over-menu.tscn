@@ -46,7 +46,7 @@ size_flags_stretch_ratio = 3.0
 
 [node name="FlatContainer2" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 margin_right = 416.0
-margin_bottom = 113.0
+margin_bottom = 204.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -54,13 +54,12 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="GameOverUI" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 117.0
+margin_top = 208.0
 margin_right = 416.0
-margin_bottom = 682.0
+margin_bottom = 592.0
 mouse_filter = 2
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 5.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource( 1 )
 theme_type_variation = "GameOverContainer"
 
@@ -68,7 +67,9 @@ theme_type_variation = "GameOverContainer"
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 413.0
-margin_bottom = 562.0
+margin_bottom = 381.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_constants/margin_right = 32
 custom_constants/margin_top = 32
 custom_constants/margin_left = 32
@@ -76,9 +77,9 @@ custom_constants/margin_bottom = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer"]
 margin_left = 32.0
-margin_top = 122.0
+margin_top = 32.0
 margin_right = 378.0
-margin_bottom = 436.0
+margin_bottom = 346.0
 mouse_filter = 2
 size_flags_vertical = 4
 custom_constants/separation = 20
@@ -133,7 +134,7 @@ theme_type_variation = "JogarButton"
 text = "_restart_button_"
 
 [node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 686.0
+margin_top = 596.0
 margin_right = 416.0
 margin_bottom = 800.0
 size_flags_horizontal = 3

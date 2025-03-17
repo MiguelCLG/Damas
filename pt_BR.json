@@ -1,6 +1,9 @@
 {
   "_options_": "Opções",
-  "_audio_": "Audio",
+  "_audio_": "Todos",
+  "_music_": "Musica",
+  "_audio_effects_": "Efeitos Sonoros",
+  "_audio_ui_": "Sons UI",
   "_language_": "Idioma",
   "_waiting_for_data_": "Aguardando Dados...",
   "_start_button_": "JOGAR",
@@ -9,7 +12,7 @@
   "_connection_lost_": "Conexão perdida, aguarde a reconexão...",
   "_waiting_for_players_to_join_": "Aguardando por jogadores...",
   "_waiting_for_players_ready_": "Aguardando por jogadores...",
-  "_lose_": "Voce perde",
+  "_lose_": "Voce perdeu",
   "_win_": "Voce ganha",
   "_restart_button_": "Inicio",
   "_players_in_queue_": "jogadores na fila"

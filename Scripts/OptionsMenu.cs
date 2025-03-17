@@ -3,10 +3,12 @@ using System;
 
 public class OptionsMenu : Panel
 {
-
     public override void _Ready()
     {
-        GetNode<HSlider>("%AudioSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Master"));
+        GetNode<HSlider>("%MusicVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Music"));
+        GetNode<HSlider>("%UIEffectsVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("UI_Effects"));
+        GetNode<HSlider>("%SoundEffectsVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Sound_Effects"));
+        GetNode<HSlider>("%MasterVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Master"));
     }
 
     public void OnClose()
@@ -19,14 +21,15 @@ public class OptionsMenu : Panel
         GetNode<TranslationHandler>("/root/TranslationHandler").RequestTranslation(locale);
     }
 
-    public void OnAudioSliderChanged(float value)
+    public void OnAudioSliderChanged(float value, string busName)
     {
-        if (value < -19f) AudioServer.SetBusMute(AudioServer.GetBusIndex("Master"), true);
+        if (value < -19f) AudioServer.SetBusMute(AudioServer.GetBusIndex(busName), true);
         else
         {
-            AudioServer.SetBusMute(AudioServer.GetBusIndex("Master"), false);
+            AudioServer.SetBusMute(AudioServer.GetBusIndex(busName), false);
         }
-        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), value);
+        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex(busName), value);
+
     }
 
 
