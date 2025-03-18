@@ -11,9 +11,19 @@ public partial class TranslationHandler : Node
 
     public override void _Ready()
     {
-        /* LoadTranslationLocally("en"); */
-        RequestTranslation("pt_BR");
+        ChangeTranslation("pt_BR");
+    }
 
+    public void ChangeTranslation(string locale)
+    {
+        if (translations.ContainsKey(locale))
+        {
+            SetServerLocale(locale);
+        }
+        else
+        {
+            RequestTranslation(locale);
+        }
     }
 
     public void LoadTranslationLocally(string locale)
@@ -57,7 +67,11 @@ public partial class TranslationHandler : Node
 
             // Create the translation resource and add the messages
             Translation language = CreateTranslation(localeActive, translationData);
-            AddTranslationToServer(language);
+            if (!translations.ContainsKey(language.Locale))
+            {
+                translations.Add(language.Locale, language);
+                AddTranslationToServer(language);
+            }
             SetServerLocale(language.Locale);
             localeActive = "";
         }

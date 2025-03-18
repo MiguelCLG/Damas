@@ -253,6 +253,9 @@ public partial class GameplaySystem : Node2D
       var checker = checkerScene.Instance<Checker>();
       checker.Name = piece.piece_id;
       checker.BoardPosition = new Vector2(tile.TilePosition.x, tile.TilePosition.y);
+      // TODO: Check if the piece is a king
+      // if (piece.is_king)
+      //    checker.SetKing();
       if (checkerColor == BoardColors.Black)
         BlackCheckers.Add(checker);
       else
@@ -354,20 +357,23 @@ public partial class GameplaySystem : Node2D
             OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
             LastMoveWasCapture = true;
           }
-          if (CurrentTurn == BoardColors.Black)
+          if (!SelectedChecker.isKing)
           {
-            if (tile.Name[0] == 'H')
+            if (CurrentTurn == BoardColors.Black)
             {
-              SelectedChecker.SetKing();
-              thisMoveWasKinged = true;
+              if (tile.Name[0] == 'H')
+              {
+                SelectedChecker.SetKing();
+                thisMoveWasKinged = true;
+              }
             }
+            else if (CurrentTurn == BoardColors.White)
+              if (tile.Name[0] == 'A')
+              {
+                SelectedChecker.SetKing();
+                thisMoveWasKinged = true;
+              }
           }
-          else if (CurrentTurn == BoardColors.White)
-            if (tile.Name[0] == 'A')
-            {
-              SelectedChecker.SetKing();
-              thisMoveWasKinged = true;
-            }
 
 
           MovePieceData movePieceData = new MovePieceData();

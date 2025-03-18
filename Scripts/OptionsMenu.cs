@@ -18,7 +18,7 @@ public class OptionsMenu : Panel
 
     public void FlagClicked(string locale)
     {
-        GetNode<TranslationHandler>("/root/TranslationHandler").RequestTranslation(locale);
+        GetNode<TranslationHandler>("/root/TranslationHandler").ChangeTranslation(locale);
     }
 
     public void OnAudioSliderChanged(float value, string busName)
