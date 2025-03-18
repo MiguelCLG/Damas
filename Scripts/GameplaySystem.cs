@@ -253,9 +253,6 @@ public partial class GameplaySystem : Node2D
       var checker = checkerScene.Instance<Checker>();
       checker.Name = piece.piece_id;
       checker.BoardPosition = new Vector2(tile.TilePosition.x, tile.TilePosition.y);
-      // TODO: Check if the piece is a king
-      // if (piece.is_king)
-      //    checker.SetKing();
       if (checkerColor == BoardColors.Black)
         BlackCheckers.Add(checker);
       else
@@ -264,6 +261,8 @@ public partial class GameplaySystem : Node2D
       checker.RectMinSize = tile.GetParent<GridContainer>().RectSize / 8;
       tile.AddChild(checker);
       checker.SetCheckerColor(checkerColor);
+      if (piece.is_kinged)
+        checker.SetKing();
     }
 
   }
