@@ -10,6 +10,7 @@ public partial class GameplaySystem : Node2D
   [Export] private PackedScene checkerScene;
   [Export] private Texture[] playerPortraits;
   [Export] private Texture[] pieceCountTextures;
+  [Export] private Texture[] bidTextures;
   [Export] private AudioOptionsResource captureSound;
   [Export] private AudioOptionsResource moveSound;
   [Export] private AudioOptionsResource kingSound;
@@ -19,6 +20,8 @@ public partial class GameplaySystem : Node2D
   private TextureRect OpponentPieceCountTexture;
   private TextureRect PlayerPieceCountTexture;
   private TextureRect OpponentDisconnectIcon;
+  private TextureRect PlayerBetTexture;
+  private TextureRect OpponentBetTexture;
   private Panel ConnectionPopup;
   private Checker SelectedChecker = null;
   private BoardColors CurrentTurn = BoardColors.Black;
@@ -80,6 +83,10 @@ public partial class GameplaySystem : Node2D
     PlayerNameLabel.Text = player.name;
     OpponentNameLabel.Text = opponentName;
 
+    PlayerBetTexture = GetNode<TextureRect>("%PlayerBetTexture");
+    OpponentBetTexture = GetNode<TextureRect>("%OpponentBetTexture");
+    SetBetTextures();
+
     board = GetNode<Board>("%Board");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
     gameOverMenu.Hide();
@@ -93,6 +100,45 @@ public partial class GameplaySystem : Node2D
     board.InitializeBoard();
     GenerateCheckers();
     OnTurnStart();
+  }
+
+  private void SetBetTextures()
+  {
+    switch (betValue)
+    {
+      case 0.5f:
+        PlayerBetTexture.Texture = bidTextures[0];
+        OpponentBetTexture.Texture = bidTextures[0];
+        break;
+      case 1f:
+        PlayerBetTexture.Texture = bidTextures[1];
+        OpponentBetTexture.Texture = bidTextures[1];
+        break;
+      case 3f:
+        PlayerBetTexture.Texture = bidTextures[2];
+        OpponentBetTexture.Texture = bidTextures[2];
+        break;
+      case 5f:
+        PlayerBetTexture.Texture = bidTextures[3];
+        OpponentBetTexture.Texture = bidTextures[3];
+        break;
+      case 10f:
+        PlayerBetTexture.Texture = bidTextures[4];
+        OpponentBetTexture.Texture = bidTextures[4];
+        break;
+      case 25f:
+        PlayerBetTexture.Texture = bidTextures[5];
+        OpponentBetTexture.Texture = bidTextures[5];
+        break;
+      case 50f:
+        PlayerBetTexture.Texture = bidTextures[6];
+        OpponentBetTexture.Texture = bidTextures[6];
+        break;
+      case 100f:
+        PlayerBetTexture.Texture = bidTextures[7];
+        OpponentBetTexture.Texture = bidTextures[7];
+        break;
+    }
   }
 
   private void OnTurnSwitch(object sender, object args)
