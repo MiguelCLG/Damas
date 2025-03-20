@@ -95,6 +95,7 @@ public class Piece
   public string type;
   public string player_id;
   public string piece_id;
+  public bool is_kinged;
 }
 
 public class BoardTile

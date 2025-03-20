@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.cs" type="Script" id=1]
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://Scenes/loading_menu.tscn" type="PackedScene" id=19]
 [ext_resource path="res://Resources/Sounds/click_hover.tres" type="Resource" id=20]
 [ext_resource path="res://Resources/Sounds/music.tres" type="Resource" id=21]
+[ext_resource path="res://Scenes/rule_book.tscn" type="PackedScene" id=22]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -134,18 +135,31 @@ theme_type_variation = "NexaLabel"
 text = "R$993,82"
 valign = 3
 
-[node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
+[node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
 margin_left = 303.0
 margin_right = 603.0
 margin_bottom = 228.0
 size_flags_horizontal = 11
+alignment = 2
 
 [node name="TextureButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -62.0
-margin_bottom = 59.0
+margin_left = 168.0
+margin_right = 232.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 mouse_default_cursor_shape = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_type_variation = "RulesButton"
+
+[node name="TextureButton2" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
+margin_left = 236.0
+margin_right = 300.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_type_variation = "SettingsButton"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
@@ -159,18 +173,18 @@ expand = true
 stretch_mode = 6
 
 [node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_left = 183.0
+margin_left = 153.0
 margin_top = 464.0
-margin_right = 420.0
+margin_right = 450.0
 margin_bottom = 736.0
 size_flags_horizontal = 4
-size_flags_vertical = 11
+size_flags_vertical = 8
 theme_type_variation = "ButtonsContainer"
 
 [node name="Control2" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 227.0
+margin_right = 287.0
 margin_bottom = 258.0
 size_flags_horizontal = 7
 size_flags_vertical = 3
@@ -179,14 +193,14 @@ custom_constants/separation = 32
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
-margin_right = 217.0
+margin_right = 277.0
 margin_bottom = 80.0
 size_flags_vertical = 3
 alignment = 1
 
 [node name="LeftArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
 margin_top = 13.0
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 67.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -201,8 +215,8 @@ align = 2
 
 [node name="BidTexture" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
 unique_name_in_owner = true
-margin_left = 68.0
-margin_right = 148.0
+margin_left = 93.0
+margin_right = 183.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 80, 80 )
 size_flags_horizontal = 3
@@ -211,9 +225,9 @@ expand = true
 stretch_mode = 6
 
 [node name="RightArrow" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer"]
-margin_left = 152.0
+margin_left = 187.0
 margin_top = 13.0
-margin_right = 217.0
+margin_right = 277.0
 margin_bottom = 67.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -227,15 +241,15 @@ enabled_focus_mode = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
 margin_top = 112.0
-margin_right = 217.0
+margin_right = 277.0
 margin_bottom = 144.0
 size_flags_vertical = 7
 custom_constants/separation = 12
 alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer2"]
-margin_left = 36.0
-margin_right = 68.0
+margin_left = 56.0
+margin_right = 88.0
 margin_bottom = 32.0
 size_flags_horizontal = 10
 size_flags_vertical = 5
@@ -244,9 +258,9 @@ stretch_mode = 6
 
 [node name="WaitingQueueLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer2"]
 unique_name_in_owner = true
-margin_left = 80.0
+margin_left = 100.0
 margin_top = 6.0
-margin_right = 217.0
+margin_right = 277.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
@@ -255,7 +269,7 @@ text = "_waiting_for_data_"
 
 [node name="StartButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
 margin_top = 176.0
-margin_right = 217.0
+margin_right = 277.0
 margin_bottom = 248.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -271,9 +285,14 @@ visible = false
 [node name="OptionsMenu" parent="." instance=ExtResource( 10 )]
 visible = false
 
+[node name="RuleBook" parent="." instance=ExtResource( 22 )]
+unique_name_in_owner = true
+visible = false
+
 [node name="LoadingMenu" parent="." instance=ExtResource( 19 )]
 
-[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Control/Control/TextureButton" to="." method="OnOptionsMenuButtonPressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Control/Control/TextureButton" to="." method="OnRuleBoxButtonPressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Control/Control/TextureButton2" to="." method="OnOptionsMenuButtonPressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/LeftArrow" to="." method="OnArrowClicked" binds= [ 0 ]]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/HBoxContainer/RightArrow" to="." method="OnArrowClicked" binds= [ 1 ]]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2/StartButton" to="." method="OnStartGame"]

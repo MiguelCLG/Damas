@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=41 format=2]
+[gd_resource type="Theme" load_steps=48 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
@@ -9,13 +9,14 @@
 [ext_resource path="res://Assets/ui_assets/purple.webp" type="Texture" id=7]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with no Glow/50.webp" type="Texture" id=9]
-[ext_resource path="res://Assets/ui_assets/settings.webp" type="Texture" id=10]
+[ext_resource path="res://Assets/FirstScreens Assets/Settings.webp" type="Texture" id=10]
 [ext_resource path="res://Assets/In Game Assets/Border of Board (Without Board).webp" type="Texture" id=11]
 [ext_resource path="res://Assets/FirstScreens Assets/purpleBTN.webp" type="Texture" id=12]
 [ext_resource path="res://Assets/FirstScreens Assets/grennbtn.webp" type="Texture" id=13]
 [ext_resource path="res://Themes/NotReadyButtonStylebox.tres" type="StyleBox" id=14]
 [ext_resource path="res://Assets/slider_toggle.webp" type="Texture" id=15]
 [ext_resource path="res://Assets/in_game_assets/slider_toggle_highlight.webp" type="Texture" id=16]
+[ext_resource path="res://Assets/FirstScreens Assets/rulebook_icon.webp" type="Texture" id=17]
 
 [sub_resource type="StyleBoxTexture" id=28]
 texture = ExtResource( 11 )
@@ -99,31 +100,61 @@ margin_top = 20.0
 margin_bottom = 20.0
 modulate_color = Color( 1, 1, 1, 0.784314 )
 
+[sub_resource type="StyleBoxFlat" id=35]
+bg_color = Color( 0.181714, 0.0601044, 0.394531, 1 )
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
+expand_margin_top = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=36]
+texture = ExtResource( 17 )
+region_rect = Rect2( 0, 0, 131, 111 )
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="StyleBoxTexture" id=37]
+texture = ExtResource( 17 )
+region_rect = Rect2( 0, 0, 131, 111 )
+
+[sub_resource type="StyleBoxTexture" id=38]
+texture = ExtResource( 17 )
+region_rect = Rect2( 0, 0, 131, 111 )
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="StyleBoxTexture" id=39]
+texture = ExtResource( 17 )
+region_rect = Rect2( 0, 0, 131, 111 )
+modulate_color = Color( 1, 1, 1, 0.784314 )
+
+[sub_resource type="DynamicFont" id=40]
+font_data = ExtResource( 3 )
+
 [sub_resource type="StyleBoxTexture" id=21]
 texture = ExtResource( 7 )
 region_rect = Rect2( 160, 100, 760, 230 )
-margin_left = 70.0
-margin_right = 70.0
-margin_top = 20.0
-margin_bottom = 20.0
+margin_left = 20.0
+margin_right = 20.0
+margin_top = 10.0
+margin_bottom = 10.0
 
 [sub_resource type="StyleBoxTexture" id=20]
 texture = ExtResource( 7 )
 region_rect = Rect2( 160, 100, 760, 230 )
-margin_left = 70.0
-margin_right = 70.0
-margin_top = 20.0
-margin_bottom = 20.0
+margin_left = 20.0
+margin_right = 20.0
+margin_top = 10.0
+margin_bottom = 10.0
 modulate_color = Color( 1, 1, 1, 0.784314 )
 
 [sub_resource type="StyleBoxTexture" id=24]
 texture = ExtResource( 10 )
-region_rect = Rect2( 0, 0, 131, 121 )
+region_rect = Rect2( 0, 0, 131, 111 )
 modulate_color = Color( 1, 1, 1, 0.784314 )
 
 [sub_resource type="StyleBoxTexture" id=25]
 texture = ExtResource( 10 )
-region_rect = Rect2( 0, 0, 131, 121 )
+region_rect = Rect2( 0, 0, 131, 111 )
 
 [sub_resource type="StyleBoxFlat" id=31]
 bg_color = Color( 0.454902, 0.247059, 0.752941, 1 )
@@ -209,7 +240,15 @@ ReadyButton/styles/disabled = SubResource( 19 )
 ReadyButton/styles/hover = SubResource( 19 )
 ReadyButton/styles/normal = ExtResource( 14 )
 ReadyButton/styles/pressed = SubResource( 19 )
+RuleSection/base_type = "PanelContainer"
+RuleSection/styles/panel = SubResource( 35 )
+RulesButton/base_type = "Button"
+RulesButton/styles/focus = SubResource( 36 )
+RulesButton/styles/hover = SubResource( 37 )
+RulesButton/styles/normal = SubResource( 38 )
+RulesButton/styles/pressed = SubResource( 39 )
 SalasButton/base_type = "Button"
+SalasButton/fonts/font = SubResource( 40 )
 SalasButton/styles/hover = SubResource( 21 )
 SalasButton/styles/normal = SubResource( 20 )
 SalasButton/styles/pressed = SubResource( 20 )
