@@ -156,6 +156,10 @@ public partial class MainMenu : Control
 	{
 		OptionsMenu.Visible = true;
 	}
+	public void OnRuleBoxButtonPressed()
+	{
+		GetNode<RuleBook>("%RuleBook").Visible = true;
+	}
 
 	private void SubscribeToEvents()
 	{

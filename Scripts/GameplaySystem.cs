@@ -559,6 +559,22 @@ public partial class GameplaySystem : Node2D
 
   }
 
+  public void OnConcedeClicked()
+  {
+    GetNode<Panel>("%ConcedeConfirmation").Visible = true;
+  }
+
+  public void OnConcedeConfirmed()
+  {
+    // TODO: send concede message to server
+    OnCancelConcede();
+  }
+
+  public void OnCancelConcede()
+  {
+    GetNode<Panel>("%ConcedeConfirmation").Visible = false;
+  }
+
   private void OnOpponentDisconnectedGame(object sender, object args)
   {
     if (args is string status)
