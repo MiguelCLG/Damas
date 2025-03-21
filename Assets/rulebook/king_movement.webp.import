@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/starting_board.png-f25b47f119610b5ccb591fbca9cbe907.stex"
+path="res://.import/king_movement.webp-4657fbd7637efe073a25e3df40928a4a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/rulebook/starting_board.png"
-dest_files=[ "res://.import/starting_board.png-f25b47f119610b5ccb591fbca9cbe907.stex" ]
+source_file="res://Assets/rulebook/king_movement.webp"
+dest_files=[ "res://.import/king_movement.webp-4657fbd7637efe073a25e3df40928a4a.stex" ]
 
 [params]
 

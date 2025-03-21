@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/tile.tscn" type="PackedScene" id=2]
@@ -54,6 +54,37 @@ region_rect = Rect2( 0, 0, 204, 49 )
 texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 250, 49 )
 
+[sub_resource type="Animation" id=16]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "time_30_seconds"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [sub_resource type="DynamicFont" id=8]
 size = 22
 font_data = ExtResource( 16 )
@@ -76,6 +107,37 @@ region_rect = Rect2( 0, 0, 204, 49 )
 [sub_resource type="StyleBoxTexture" id=10]
 texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 250, 49 )
+
+[sub_resource type="Animation" id=18]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "time_30_seconds"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [sub_resource type="StyleBoxEmpty" id=13]
 
@@ -230,6 +292,11 @@ margin_bottom = 39.0
 texture = ExtResource( 10 )
 expand = true
 stretch_mode = 6
+
+[node name="OpponentTimerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
+unique_name_in_owner = true
+anims/RESET = SubResource( 16 )
+anims/time_30_seconds = SubResource( 17 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
 margin_left = 573.0
@@ -532,6 +599,11 @@ margin_bottom = 41.0
 texture = ExtResource( 10 )
 expand = true
 stretch_mode = 6
+
+[node name="PlayerTimerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
+unique_name_in_owner = true
+anims/RESET = SubResource( 18 )
+anims/time_30_seconds = SubResource( 19 )
 
 [node name="Panel" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer"]
 margin_left = 125.0

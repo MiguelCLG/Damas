@@ -12,7 +12,8 @@ config_version=4
 
 config/name="Damas"
 run/main_scene="res://Scenes/main_menu.tscn"
-boot_splash/image="res://Assets/splash_art.webp"
+boot_splash/image="res://Assets/splash_art.png"
+boot_splash/fullsize=false
 config/icon="res://icon.png"
 
 [autoload]

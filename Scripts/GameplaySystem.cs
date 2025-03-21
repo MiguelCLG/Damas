@@ -40,7 +40,8 @@ public partial class GameplaySystem : Node2D
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
   private AudioManager audioManager;
-
+  AnimationPlayer PlayerTimerAnimationPlayer;
+  AnimationPlayer OpponentTimerAnimationPlayer;
   public override void _Ready()
   {
     GetTree().Paused = false;
@@ -59,6 +60,9 @@ public partial class GameplaySystem : Node2D
     PlayerPieceCountTexture = GetNode<TextureRect>("%PlayerPieceCountTexture");
     OpponentDisconnectIcon = GetNode<TextureRect>("%OpponentDisconnectIcon");
     ConnectionPopup = GetNode<Panel>("%ConnectionPopup");
+
+    PlayerTimerAnimationPlayer = GetNode<AnimationPlayer>("%PlayerTimerAnimationPlayer");
+    OpponentTimerAnimationPlayer = GetNode<AnimationPlayer>("%OpponentTimerAnimationPlayer");
 
     OpponentDisconnectIcon.Visible = false;
 
@@ -187,6 +191,8 @@ public partial class GameplaySystem : Node2D
 
   private void OnTurnStart()
   {
+    PlayerTimerAnimationPlayer.Stop();
+    OpponentTimerAnimationPlayer.Stop();
     if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
     {
       PlayerPortraitBackground.Visible = true;
@@ -537,10 +543,23 @@ public partial class GameplaySystem : Node2D
       if (currentGameColor == CurrentTurn)
       {
         PlayerTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 30)
+        {
+
+          if (PlayerTimerAnimationPlayer.CurrentAnimation != "time_30_seconds")
+          {
+            PlayerTimerAnimationPlayer.Play("time_30_seconds");
+          }
+        }
       }
       else
       {
         OpponentTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 30)
+        {
+          if (OpponentTimerAnimationPlayer.CurrentAnimation != "time_30_seconds")
+            OpponentTimerAnimationPlayer.Play("time_30_seconds");
+        }
       }
     }
   }
