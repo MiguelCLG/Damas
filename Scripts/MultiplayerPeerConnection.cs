@@ -153,6 +153,9 @@ public partial class MultiplayerPeerConnection : Node
 					case Commands.move_piece:
 						EventRegistry.GetEventPublisher("OnMovePiece").RaiseEvent(parsedObject.value.ToObject<MovePieceData>());
 						break;
+					case Commands.invalid_move:
+						EventRegistry.GetEventPublisher("OnInvalidMove").RaiseEvent(null);
+						break;
 					case Commands.game_timer:
 						EventRegistry.GetEventPublisher("OnTimerUpdate").RaiseEvent(parsedObject.value.ToObject<GameTimer>());
 						break;
@@ -304,6 +307,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("OnOpponentDisconnectedGame");
 		EventRegistry.RegisterEvent("OnGameReconnect");
 		EventRegistry.RegisterEvent("ToggleReconnectPopup");
+		EventRegistry.RegisterEvent("OnInvalidMove");
 	}
 
 	private void SubscribeToEvents()
@@ -344,6 +348,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.UnregisterEvent("OnOpponentDisconnectedGame");
 		EventRegistry.UnregisterEvent("OnGameReconnect");
 		EventRegistry.UnregisterEvent("ToggleReconnectPopup");
+		EventRegistry.UnregisterEvent("OnInvalidMove");
 	}
 }
 
