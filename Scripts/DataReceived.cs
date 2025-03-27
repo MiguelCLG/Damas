@@ -26,6 +26,7 @@ public enum Commands
   opponent_disconnected_game,
   game_reconnect,
   invalid_move,
+  leave_game,
 }
 
 

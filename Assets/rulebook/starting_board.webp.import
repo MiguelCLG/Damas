@@ -14,7 +14,7 @@ dest_files=[ "res://.import/starting_board.webp-2f32c766ddd0486744e2ee0892b2cc3d
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

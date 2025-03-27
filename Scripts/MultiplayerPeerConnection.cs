@@ -52,17 +52,9 @@ public partial class MultiplayerPeerConnection : Node
 	{
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
 		var port = "";
-		var ip = "";
-		if (parameters.Prefix == "wss")
-		{
-			ip = "games.qlean.pt";
-		}
-		else
-		{
-			ip = "localhost";
-			port = ":80";
-		}
-		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
+		var ip = "staging.retromindgames.pt";
+
+		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
 		if (err != Error.Ok)
 		{
 			GD.Print("Unable To Connect: " + err);
@@ -259,6 +251,10 @@ public partial class MultiplayerPeerConnection : Node
 		GetNode<AudioManager>("/root/AudioManager")?.Play(clickSound, this);
 		SendMessage(Commands.ready_queue, args);
 	}
+	private void OnConcede(object sender, object args)
+	{
+		SendMessage(Commands.leave_game, args);
+	}
 
 	private void SendMessage(Commands command, object args)
 	{
@@ -308,6 +304,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("OnGameReconnect");
 		EventRegistry.RegisterEvent("ToggleReconnectPopup");
 		EventRegistry.RegisterEvent("OnInvalidMove");
+		EventRegistry.RegisterEvent("OnConcede");
 	}
 
 	private void SubscribeToEvents()
@@ -317,6 +314,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.SubscribeToEvent("OnDisconnectFromQueue", OnDisconnectFromQueue);
 		EventSubscriber.SubscribeToEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.SubscribeToEvent("SendMessage", SendMessageEvent);
+		EventSubscriber.SubscribeToEvent("OnConcede", OnConcede);
 	}
 	public override void _ExitTree()
 	{
@@ -326,7 +324,9 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromQueue", OnDisconnectFromQueue);
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
+		EventSubscriber.UnsubscribeFromEvent("OnConcede", OnConcede);
 
+		EventRegistry.UnregisterEvent("OnConcede");
 		EventRegistry.UnregisterEvent("OnJoinRoom");
 		EventRegistry.UnregisterEvent("OnRoomCheck");
 		EventRegistry.UnregisterEvent("OnDisconnectFromLobby");

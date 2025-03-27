@@ -587,7 +587,8 @@ public partial class GameplaySystem : Node2D
   public void OnConcedeConfirmed()
   {
     // TODO: send concede message to server
-    OnCancelConcede();
+    EventRegistry.GetEventPublisher("OnConcede").RaiseEvent(null);
+    //OnCancelConcede();
   }
 
   public void OnCancelConcede()
@@ -642,7 +643,6 @@ public partial class GameplaySystem : Node2D
   public override void _ExitTree()
   {
     audioManager.StopSound(this);
-    lastCheckerCaptured?.QueueFree();
     EventSubscriber.UnsubscribeFromEvent("OnInvalidMove", OnInvalidMove);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);

@@ -14,7 +14,7 @@ dest_files=[ "res://.import/king_movement.webp-4657fbd7637efe073a25e3df40928a4a.
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
