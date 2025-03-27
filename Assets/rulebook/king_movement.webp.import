@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/SokkerLogo.webp-c5658ccb2e2a885fbe970938f6b6d822.stex"
+path="res://.import/king_movement.webp-4657fbd7637efe073a25e3df40928a4a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/FirstScreens Assets/SokkerLogo.webp"
-dest_files=[ "res://.import/SokkerLogo.webp-c5658ccb2e2a885fbe970938f6b6d822.stex" ]
+source_file="res://Assets/rulebook/king_movement.webp"
+dest_files=[ "res://.import/king_movement.webp-4657fbd7637efe073a25e3df40928a4a.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

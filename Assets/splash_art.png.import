@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bg2.webp-8f1f2efa92e788f4a9f127a7335b7bfb.stex"
+path="res://.import/splash_art.png-5b4e52de478c1f082f121bd0ecee794d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/In Game Assets/bg2.webp"
-dest_files=[ "res://.import/bg2.webp-8f1f2efa92e788f4a9f127a7335b7bfb.stex" ]
+source_file="res://Assets/splash_art.png"
+dest_files=[ "res://.import/splash_art.png-5b4e52de478c1f082f121bd0ecee794d.stex" ]
 
 [params]
 
@@ -31,5 +31,5 @@ process/invert_color=false
 process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

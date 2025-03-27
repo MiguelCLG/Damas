@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ffitycoin.webp-f0dfc4fa61769b97fdad5a786abb5547.stex"
+path="res://.import/capture_move.webp-14300119f2dec2fe3159cceacc4b2673.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ui_assets/ffitycoin.webp"
-dest_files=[ "res://.import/ffitycoin.webp-f0dfc4fa61769b97fdad5a786abb5547.stex" ]
+source_file="res://Assets/rulebook/capture_move.webp"
+dest_files=[ "res://.import/capture_move.webp-14300119f2dec2fe3159cceacc4b2673.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

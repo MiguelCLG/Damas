@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/retangle.webp-4638fd7c6779b49a311496deb7926dee.stex"
+path="res://.import/starting_board.webp-2f32c766ddd0486744e2ee0892b2cc3d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/In Game Assets/retangle.webp"
-dest_files=[ "res://.import/retangle.webp-4638fd7c6779b49a311496deb7926dee.stex" ]
+source_file="res://Assets/rulebook/starting_board.webp"
+dest_files=[ "res://.import/starting_board.webp-2f32c766ddd0486744e2ee0892b2cc3d.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

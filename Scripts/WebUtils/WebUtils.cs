@@ -83,7 +83,7 @@ public static class WebUtils
 			/* token = "token456";
 			sessionId = "session2"; */
 			currency = "USD";
-			return new UrlParamsModel(token, sessionId, currency, "ws");
+			return new UrlParamsModel(token, sessionId, currency, "wss");
 		}
 
 		// Use JavaScript to get the current protocol (http or https)

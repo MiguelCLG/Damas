@@ -3,7 +3,6 @@ using Godot.Collections;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
-using System;
 
 public partial class GameplaySystem : Node2D
 {
@@ -41,7 +40,8 @@ public partial class GameplaySystem : Node2D
   private Array<Checker> checkersWithCaptureMoves = new Array<Checker>();
   private bool LastMoveWasCapture = false;
   private AudioManager audioManager;
-
+  AnimationPlayer PlayerTimerAnimationPlayer;
+  AnimationPlayer OpponentTimerAnimationPlayer;
   public override void _Ready()
   {
     GetTree().Paused = false;
@@ -60,6 +60,9 @@ public partial class GameplaySystem : Node2D
     PlayerPieceCountTexture = GetNode<TextureRect>("%PlayerPieceCountTexture");
     OpponentDisconnectIcon = GetNode<TextureRect>("%OpponentDisconnectIcon");
     ConnectionPopup = GetNode<Panel>("%ConnectionPopup");
+
+    PlayerTimerAnimationPlayer = GetNode<AnimationPlayer>("%PlayerTimerAnimationPlayer");
+    OpponentTimerAnimationPlayer = GetNode<AnimationPlayer>("%OpponentTimerAnimationPlayer");
 
     OpponentDisconnectIcon.Visible = false;
 
@@ -188,6 +191,8 @@ public partial class GameplaySystem : Node2D
 
   private void OnTurnStart()
   {
+    PlayerTimerAnimationPlayer.Stop();
+    OpponentTimerAnimationPlayer.Stop();
     if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
     {
       PlayerPortraitBackground.Visible = true;
@@ -266,7 +271,6 @@ public partial class GameplaySystem : Node2D
     }
 
   }
-
 
   public void ClearCheckers()
   {
@@ -352,8 +356,9 @@ public partial class GameplaySystem : Node2D
           if (board.HasCaptureMove(SelectedChecker))
           {
             Tile startingTile = SelectedChecker.GetParent<Tile>();
-            Tile captureTile = GetCheckerToBeCaptured(startingTile, tile);
-            OnCheckerKilled(captureTile.GetChild<Checker>(captureTile.GetChildCount() - 1));
+            lastCheckerCaptureTile = GetCheckerToBeCaptured(startingTile, tile);
+            lastCheckerCaptured = lastCheckerCaptureTile.GetChild<Checker>(lastCheckerCaptureTile.GetChildCount() - 1);
+            OnCheckerKilled(lastCheckerCaptured);
             LastMoveWasCapture = true;
           }
           if (!SelectedChecker.isKing)
@@ -397,7 +402,7 @@ public partial class GameplaySystem : Node2D
             audioManager?.Play(kingSound, this);
           }
           SelectedChecker.Move(tile, tile.TilePosition);
-
+          lastMove = movePieceData;
           EventRegistry.GetEventPublisher("SendMessage").RaiseEvent(movePieceData);
 
           board.CleanUpFreeTiles(SelectedChecker);
@@ -449,6 +454,7 @@ public partial class GameplaySystem : Node2D
     GD.Print($"target: {tileName}");
     return board.FindTileByName(tileName);
   }
+
   private void NextTurn()
   {
     if (SelectedChecker != null)
@@ -487,6 +493,16 @@ public partial class GameplaySystem : Node2D
     checker.GetParent().RemoveChild(checker);
     checker.QueueFree();
   }
+
+  private void RevertCapture()
+  {
+    if (lastCheckerCaptured.Color == BoardColors.Black)
+      BlackCheckers.Add(lastCheckerCaptured);
+    else
+      WhiteCheckers.Add(lastCheckerCaptured);
+    AllCheckers.Add(lastCheckerCaptured);
+    lastCheckerCaptureTile.AddChild(lastCheckerCaptured);
+  }
   private void ToggleReconnectPopup(object sender, object args)
   {
     ConnectionPopup.Visible = args is bool isVisible && isVisible;
@@ -514,7 +530,6 @@ public partial class GameplaySystem : Node2D
     }
   }
 
-
   public void OnTimerUpdate(object sender, object args)
   {
     if (args is GameTimer timerData)
@@ -528,35 +543,40 @@ public partial class GameplaySystem : Node2D
       if (currentGameColor == CurrentTurn)
       {
         PlayerTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 30)
+        {
+
+          if (PlayerTimerAnimationPlayer.CurrentAnimation != "time_30_seconds")
+          {
+            PlayerTimerAnimationPlayer.Play("time_30_seconds");
+          }
+        }
       }
       else
       {
         OpponentTimer.Value = timerData.player_timer;
+        if (timerData.player_timer <= 30)
+        {
+          if (OpponentTimerAnimationPlayer.CurrentAnimation != "time_30_seconds")
+            OpponentTimerAnimationPlayer.Play("time_30_seconds");
+        }
       }
     }
   }
-
-  public void RegisterEvents()
+  private void OnInvalidMove(object sender, object args)
   {
-    // Registering events and subscribing to them, since this is the system that will handle them.
-    // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
-    EventRegistry.RegisterEvent("TileClicked");
-    EventRegistry.RegisterEvent("CheckerClicked");
-  }
+    //revert checker last move
 
-  public void OnGameReconnect(object sender, object args) => Initialize();
-  public void SubscribeToEvents()
-  {
-    EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
-    EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
-    EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
-    EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
-    EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
-    EventSubscriber.SubscribeToEvent("OnGameOver", OnGameOver);
-    EventSubscriber.SubscribeToEvent("OnGameReconnect", OnGameReconnect);
-    EventSubscriber.SubscribeToEvent("ToggleReconnectPopup", ToggleReconnectPopup);
-    EventSubscriber.SubscribeToEvent("OnOpponentDisconnectedGame", OnOpponentDisconnectedGame);
+    Tile toTile = board.FindTileByName(lastMove.to);
+    Tile fromTile = board.FindTileByName(lastMove.from);
+    Checker checkerToRevert = toTile.GetNode<Checker>(lastMove.piece_id);
+    toTile.RemoveChild(checkerToRevert);
+    fromTile.AddChild(checkerToRevert);
 
+    if (lastMove.is_kinged)
+      checkerToRevert.RevertKing();
+    if (lastMove.is_capture)
+      RevertCapture();
   }
 
   public void OnConcedeClicked()
@@ -567,7 +587,8 @@ public partial class GameplaySystem : Node2D
   public void OnConcedeConfirmed()
   {
     // TODO: send concede message to server
-    OnCancelConcede();
+    EventRegistry.GetEventPublisher("OnConcede").RaiseEvent(null);
+    //OnCancelConcede();
   }
 
   public void OnCancelConcede()
@@ -591,7 +612,30 @@ public partial class GameplaySystem : Node2D
     }
   }
 
+  public void OnGameReconnect(object sender, object args) => Initialize();
 
+  public void SubscribeToEvents()
+  {
+    EventSubscriber.SubscribeToEvent("TileClicked", OnTileClicked);
+    EventSubscriber.SubscribeToEvent("CheckerClicked", OnCheckerClicked);
+    EventSubscriber.SubscribeToEvent("OnMovePiece", OnMovePiece);
+    EventSubscriber.SubscribeToEvent("OnTimerUpdate", OnTimerUpdate);
+    EventSubscriber.SubscribeToEvent("OnTurnSwitch", OnTurnSwitch);
+    EventSubscriber.SubscribeToEvent("OnGameOver", OnGameOver);
+    EventSubscriber.SubscribeToEvent("OnGameReconnect", OnGameReconnect);
+    EventSubscriber.SubscribeToEvent("ToggleReconnectPopup", ToggleReconnectPopup);
+    EventSubscriber.SubscribeToEvent("OnOpponentDisconnectedGame", OnOpponentDisconnectedGame);
+    EventSubscriber.SubscribeToEvent("OnInvalidMove", OnInvalidMove);
+
+  }
+
+  public void RegisterEvents()
+  {
+    // Registering events and subscribing to them, since this is the system that will handle them.
+    // To Turn this multiplayer, I believe this will need to be server side since it is what keeps track all the checkers in play
+    EventRegistry.RegisterEvent("TileClicked");
+    EventRegistry.RegisterEvent("CheckerClicked");
+  }
 
   // In the case of a restart, this function will be called
   // So we do a cleanup here to free the memory no longer used
@@ -599,6 +643,7 @@ public partial class GameplaySystem : Node2D
   public override void _ExitTree()
   {
     audioManager.StopSound(this);
+    EventSubscriber.UnsubscribeFromEvent("OnInvalidMove", OnInvalidMove);
     EventSubscriber.UnsubscribeFromEvent("TileClicked", OnTileClicked);
     EventSubscriber.UnsubscribeFromEvent("CheckerClicked", OnCheckerClicked);
     EventSubscriber.UnsubscribeFromEvent("OnMovePiece", OnMovePiece);

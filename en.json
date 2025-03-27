@@ -19,6 +19,7 @@
   "_concede_confirmation_": "Are you sure you want to concede?",
   "_concede_button_": "Concede",
   "_cancel_button_": "Cancel",
+  "_rules_title_": "Rules",
   "_rulebook_setup_": "Setup \n\n The game is played on an 8x8 board with alternating dark and light squares. Only the dark squares are used for movement. \n\n Each player starts with 12 pieces placed on the three rows closest to them.",
   "_rulebook_piece_movement_": "Piece Movement:\n\nPieces move diagonally forward to an adjacent dark square.\n\nA piece captures an opponent’s piece by jumping over it diagonally to an empty square directly behind it. Multiple jumps are allowed in one turn.\n\nIf a jump is available, you must take it.",
   "_rulebook_king_movement_": "King Movement:\n\nWhen a piece reaches the last row on the opposite side of the board, it becomes a King.\n\n Kings can move diagonally forward or backward.\n\nKings capture like regular pieces but can jump in any diagonal direction."
