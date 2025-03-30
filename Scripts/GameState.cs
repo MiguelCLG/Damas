@@ -1,5 +1,4 @@
 using System.Collections;
-using Godot;
 using Godot.Collections;
 
 public static class GameState
@@ -29,10 +28,14 @@ public static class GameState
     };
 
   public static string playerName;
+  public static Utils.Currency Currency;
   public static string opponentName;
   public static float betValue = 1f;
   public static string room_id;
   public static Array<float> availableBidValues = new Array<float>() { 0.5f, 1f, 3f, 5f, 10f, 25f, 50f, 100f };
+  public static MovePieceData lastMove;
+  public static Tile lastCheckerCaptureTile;
+  public static Checker lastCheckerCaptured;
   public static Hashtable RotateBoard(Hashtable board)
   {
     // Define the tile positions for a 180-degree rotation
@@ -74,5 +77,26 @@ public static class GameState
       }
     }
     return rotatedBoard;
+  }
+
+  public static Dictionary<float, int> playerCountPerBet = new Dictionary<float, int>();
+  public static void AddPlayerCountPerBet(PlayerBetCount[] playerBetCounts)
+  {
+    foreach (PlayerBetCount playerBetCount in playerBetCounts)
+    {
+      if (!playerCountPerBet.ContainsKey(playerBetCount.bet_value))
+      {
+        playerCountPerBet.Add(playerBetCount.bet_value, playerBetCount.player_count);
+      }
+      else
+      {
+        playerCountPerBet[playerBetCount.bet_value] = playerBetCount.player_count;
+      }
+
+    }
+  }
+  public static int GetPlayerCountForBet(float betValue)
+  {
+    return playerCountPerBet.ContainsKey(betValue) ? playerCountPerBet[betValue] : 0;
   }
 }

@@ -15,7 +15,7 @@ texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 250, 49 )
 
 [node name="PlayerOneUI" type="HBoxContainer"]
-margin_right = 1024.0
+anchor_right = 1.0
 margin_bottom = 64.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]

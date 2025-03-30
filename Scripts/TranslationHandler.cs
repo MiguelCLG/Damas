@@ -51,7 +51,7 @@ public partial class TranslationHandler : Node
         httpRequest = new HTTPRequest();
         AddChild(httpRequest);
         httpRequest.Connect("request_completed", this, nameof(OnRequestCompleted));
-        string url = $"https://damaspvp1.s3.eu-central-1.amazonaws.com/translations/{locale}.json"; // Replace with your endpoint or local file server
+        string url = $"https://s3.eu-central-1.amazonaws.com/play.retromindgames.pt/assets/translations/{locale}.json"; // Replace with your endpoint or local file server
         httpRequest.Request(url);
     }
 

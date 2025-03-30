@@ -51,18 +51,14 @@ public partial class MultiplayerPeerConnection : Node
 	private void ConnectToServer()
 	{
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
+		if (Enum.TryParse(parameters.Currency, out Utils.Currency currency))
+			Currency = currency;
 		var port = "";
-		var ip = "";
-		if (parameters.Prefix == "wss")
-		{
-			ip = "games.qlean.pt";
-		}
-		else
-		{
-			ip = "localhost";
-			port = ":80";
-		}
-		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency=USD");
+		var ip = "staging.retromindgames.pt";
+
+		//var err = client.ConnectToUrl($"wss://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
+		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
+		//var err = client.ConnectToUrl($"wss://localhost:80/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
 		if (err != Error.Ok)
 		{
 			GD.Print("Unable To Connect: " + err);
@@ -133,13 +129,17 @@ public partial class MultiplayerPeerConnection : Node
 					case Commands.ready_queue:
 						break;
 					case Commands.game_info:
-						EventRegistry.GetEventPublisher("SetWaitingQueue").RaiseEvent(parsedObject.value.ToObject<RoomInfoList>().players_waiting.ToString());
+						GameInfo gameInfo = parsedObject.value.ToObject<GameInfo>();
+						AddPlayerCountPerBet(gameInfo.player_count_per_bet_value);
+						var playerCountForThisBet = GetPlayerCountForBet(betValue);
+						EventRegistry.GetEventPublisher("SetWaitingQueue").RaiseEvent(playerCountForThisBet);
 						break;
 					case Commands.game_start:
 						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>());
 						break;
 					case Commands.queue_confirmation:
 						// vem um boolean que diz se conseguiu entrar na fila
+						EventRegistry.GetEventPublisher("OnQueueConfirmation").RaiseEvent(parsedObject.value.ToObject<bool>());
 						break;
 					case Commands.opponent_left_room:
 						EventRegistry.GetEventPublisher("SetWaitingContainerVisible").RaiseEvent(true);
@@ -152,6 +152,9 @@ public partial class MultiplayerPeerConnection : Node
 						break;
 					case Commands.move_piece:
 						EventRegistry.GetEventPublisher("OnMovePiece").RaiseEvent(parsedObject.value.ToObject<MovePieceData>());
+						break;
+					case Commands.invalid_move:
+						EventRegistry.GetEventPublisher("OnInvalidMove").RaiseEvent(null);
 						break;
 					case Commands.game_timer:
 						EventRegistry.GetEventPublisher("OnTimerUpdate").RaiseEvent(parsedObject.value.ToObject<GameTimer>());
@@ -256,6 +259,10 @@ public partial class MultiplayerPeerConnection : Node
 		GetNode<AudioManager>("/root/AudioManager")?.Play(clickSound, this);
 		SendMessage(Commands.ready_queue, args);
 	}
+	private void OnConcede(object sender, object args)
+	{
+		SendMessage(Commands.leave_game, args);
+	}
 
 	private void SendMessage(Commands command, object args)
 	{
@@ -304,6 +311,9 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("OnOpponentDisconnectedGame");
 		EventRegistry.RegisterEvent("OnGameReconnect");
 		EventRegistry.RegisterEvent("ToggleReconnectPopup");
+		EventRegistry.RegisterEvent("OnInvalidMove");
+		EventRegistry.RegisterEvent("OnConcede");
+		EventRegistry.RegisterEvent("OnQueueConfirmation");
 	}
 
 	private void SubscribeToEvents()
@@ -313,6 +323,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.SubscribeToEvent("OnDisconnectFromQueue", OnDisconnectFromQueue);
 		EventSubscriber.SubscribeToEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.SubscribeToEvent("SendMessage", SendMessageEvent);
+		EventSubscriber.SubscribeToEvent("OnConcede", OnConcede);
 	}
 	public override void _ExitTree()
 	{
@@ -322,7 +333,9 @@ public partial class MultiplayerPeerConnection : Node
 		EventSubscriber.UnsubscribeFromEvent("OnDisconnectFromQueue", OnDisconnectFromQueue);
 		EventSubscriber.UnsubscribeFromEvent("OnReadyButtonPressed", OnReadyButtonPressed);
 		EventSubscriber.UnsubscribeFromEvent("SendMessage", SendMessageEvent);
+		EventSubscriber.UnsubscribeFromEvent("OnConcede", OnConcede);
 
+		EventRegistry.UnregisterEvent("OnConcede");
 		EventRegistry.UnregisterEvent("OnJoinRoom");
 		EventRegistry.UnregisterEvent("OnRoomCheck");
 		EventRegistry.UnregisterEvent("OnDisconnectFromLobby");
@@ -344,6 +357,8 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.UnregisterEvent("OnOpponentDisconnectedGame");
 		EventRegistry.UnregisterEvent("OnGameReconnect");
 		EventRegistry.UnregisterEvent("ToggleReconnectPopup");
+		EventRegistry.UnregisterEvent("OnInvalidMove");
+		EventRegistry.UnregisterEvent("OnQueueConfirmation");
 	}
 }
 

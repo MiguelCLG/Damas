@@ -70,6 +70,11 @@ public partial class Checker : Control
     isKing = true;
     texture.TextureNormal = Color == BoardColors.White ? WhiteKingTexture : BlackKingTexture;
   }
+  public void RevertKing()
+  {
+    isKing = false;
+    texture.TextureNormal = Color == BoardColors.White ? WhiteCheckerTexture : BlackCheckerTexture;
+  }
 
   // There are no animations for movement as of now, so we just change the position
   public void Move(Tile newParentTile, Vector2 newBoardPosition)

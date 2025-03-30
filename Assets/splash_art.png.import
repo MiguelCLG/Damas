@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/flag_br.webp-a0b86ac4e9494ff1a25e236ad1cd817a.stex"
+path="res://.import/splash_art.png-5b4e52de478c1f082f121bd0ecee794d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/flag_br.webp"
-dest_files=[ "res://.import/flag_br.webp-a0b86ac4e9494ff1a25e236ad1cd817a.stex" ]
+source_file="res://Assets/splash_art.png"
+dest_files=[ "res://.import/splash_art.png-5b4e52de478c1f082f121bd0ecee794d.stex" ]
 
 [params]
 
