@@ -88,8 +88,8 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="FlatContainer" type="PanelContainer" parent="HBoxContainer"]
-margin_right = 71.0
-margin_bottom = 800.0
+margin_right = 38.0
+margin_bottom = 1066.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -97,16 +97,16 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 75.0
-margin_right = 591.0
-margin_bottom = 800.0
+margin_left = 42.0
+margin_right = 558.0
+margin_bottom = 1066.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
 [node name="FlatContainer2" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 margin_right = 516.0
-margin_bottom = 193.0
+margin_bottom = 326.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -115,9 +115,9 @@ theme_type_variation = "FlatContainer"
 
 [node name="RoomContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 197.0
+margin_top = 330.0
 margin_right = 516.0
-margin_bottom = 603.0
+margin_bottom = 736.0
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -444,18 +444,18 @@ align = 1
 valign = 1
 
 [node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 607.0
+margin_top = 740.0
 margin_right = 516.0
-margin_bottom = 800.0
+margin_bottom = 1066.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="FlatContainer_2" type="PanelContainer" parent="HBoxContainer"]
-margin_left = 595.0
-margin_right = 667.0
-margin_bottom = 800.0
+margin_left = 562.0
+margin_right = 600.0
+margin_bottom = 1066.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 1 )

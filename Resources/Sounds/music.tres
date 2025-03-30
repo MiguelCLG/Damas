@@ -1,11 +1,9 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://Sounds/game-music-puzzle-strategy-arcade-technology-301226.mp3" type="AudioStream" id=1]
 [ext_resource path="res://Scripts/Sound/AudioOptionsResource.cs" type="Script" id=2]
 
 [resource]
 script = ExtResource( 2 )
-AudioStream = ExtResource( 1 )
 BusName = "Music"
 VolumeDb = -20.0
 PitchScale = 1.0

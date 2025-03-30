@@ -26,7 +26,7 @@ TranslationHandler="*res://Scenes/translation_handler.tscn"
 
 [display]
 
-window/size/width=667
+window/size/width=600
 window/size/height=800
 window/dpi/allow_hidpi=true
 window/handheld/orientation="sensor"

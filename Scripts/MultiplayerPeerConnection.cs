@@ -51,10 +51,14 @@ public partial class MultiplayerPeerConnection : Node
 	private void ConnectToServer()
 	{
 		UrlParamsModel parameters = WebUtils.GetUrlParamsModel();
+		if (Enum.TryParse(parameters.Currency, out Utils.Currency currency))
+			Currency = currency;
 		var port = "";
 		var ip = "staging.retromindgames.pt";
 
+		//var err = client.ConnectToUrl($"wss://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
 		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
+		//var err = client.ConnectToUrl($"wss://localhost:80/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
 		if (err != Error.Ok)
 		{
 			GD.Print("Unable To Connect: " + err);
@@ -125,13 +129,17 @@ public partial class MultiplayerPeerConnection : Node
 					case Commands.ready_queue:
 						break;
 					case Commands.game_info:
-						EventRegistry.GetEventPublisher("SetWaitingQueue").RaiseEvent(parsedObject.value.ToObject<RoomInfoList>().players_waiting.ToString());
+						GameInfo gameInfo = parsedObject.value.ToObject<GameInfo>();
+						AddPlayerCountPerBet(gameInfo.player_count_per_bet_value);
+						var playerCountForThisBet = GetPlayerCountForBet(betValue);
+						EventRegistry.GetEventPublisher("SetWaitingQueue").RaiseEvent(playerCountForThisBet);
 						break;
 					case Commands.game_start:
 						EventRegistry.GetEventPublisher("OnGameStarting").RaiseEvent(parsedObject.value.ToObject<GameStartMessage>());
 						break;
 					case Commands.queue_confirmation:
 						// vem um boolean que diz se conseguiu entrar na fila
+						EventRegistry.GetEventPublisher("OnQueueConfirmation").RaiseEvent(parsedObject.value.ToObject<bool>());
 						break;
 					case Commands.opponent_left_room:
 						EventRegistry.GetEventPublisher("SetWaitingContainerVisible").RaiseEvent(true);
@@ -305,6 +313,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.RegisterEvent("ToggleReconnectPopup");
 		EventRegistry.RegisterEvent("OnInvalidMove");
 		EventRegistry.RegisterEvent("OnConcede");
+		EventRegistry.RegisterEvent("OnQueueConfirmation");
 	}
 
 	private void SubscribeToEvents()
@@ -349,6 +358,7 @@ public partial class MultiplayerPeerConnection : Node
 		EventRegistry.UnregisterEvent("OnGameReconnect");
 		EventRegistry.UnregisterEvent("ToggleReconnectPopup");
 		EventRegistry.UnregisterEvent("OnInvalidMove");
+		EventRegistry.UnregisterEvent("OnQueueConfirmation");
 	}
 }
 

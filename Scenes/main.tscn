@@ -21,7 +21,6 @@
 [ext_resource path="res://Resources/Sounds/capture_piece.tres" type="Resource" id=19]
 [ext_resource path="res://Resources/Sounds/king.tres" type="Resource" id=20]
 [ext_resource path="res://Resources/Sounds/winning_sound.tres" type="Resource" id=21]
-[ext_resource path="res://Resources/Sounds/music.tres" type="Resource" id=22]
 [ext_resource path="res://Resources/Sounds/losing_sound.tres" type="Resource" id=23]
 [ext_resource path="res://Scenes/connection_popup.tscn" type="PackedScene" id=24]
 [ext_resource path="res://Assets/disconnect_icon.webp" type="Texture" id=25]
@@ -34,6 +33,7 @@
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/3.webp" type="Texture" id=32]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/5.webp" type="Texture" id=33]
 [ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=34]
+[ext_resource path="res://Scenes/turn_pass.tscn" type="PackedScene" id=35]
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
@@ -159,7 +159,6 @@ moveSound = ExtResource( 18 )
 kingSound = ExtResource( 20 )
 winningSound = ExtResource( 21 )
 losingSound = ExtResource( 23 )
-music = ExtResource( 22 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
@@ -180,31 +179,31 @@ margin_right = -16.0
 margin_bottom = -16.0
 
 [node name="Sections" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 768.0
 mouse_filter = 2
 theme = ExtResource( 1 )
-custom_constants/separation = 64
+custom_constants/separation = 32
 
 [node name="TopContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 118.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 4 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer"]
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 118.0
 custom_constants/margin_bottom = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer"]
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 86.0
 
 [node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
 margin_top = 22.0
-margin_right = 569.0
+margin_right = 502.0
 margin_bottom = 86.0
 size_flags_horizontal = 3
 size_flags_vertical = 8
@@ -299,8 +298,8 @@ anims/RESET = SubResource( 16 )
 anims/time_30_seconds = SubResource( 17 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
-margin_left = 573.0
-margin_right = 635.0
+margin_left = 506.0
+margin_right = 568.0
 margin_bottom = 86.0
 custom_constants/separation = 10
 alignment = 2
@@ -382,77 +381,103 @@ expand = true
 stretch_mode = 6
 
 [node name="CenterContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_top = 182.0
-margin_right = 635.0
-margin_bottom = 618.0
+margin_top = 150.0
+margin_right = 568.0
+margin_bottom = 650.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 6.0
 custom_styles/panel = SubResource( 5 )
 
 [node name="BoardContainer" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer"]
-margin_right = 635.0
-margin_bottom = 436.0
+margin_right = 568.0
+margin_bottom = 500.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Board" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
-unique_name_in_owner = true
+[node name="ConcedeButton" type="Button" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -217.0
-margin_top = -235.0
-margin_right = 213.0
-margin_bottom = 195.0
+margin_left = 133.0
+margin_top = 242.0
+margin_right = 267.0
+margin_bottom = 283.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = "SalasButton"
+text = "_concede_button_"
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -331.0
+margin_top = -309.0
+margin_right = 338.0
+margin_bottom = 307.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+ratio = 0.85
+
+[node name="Board" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/AspectRatioContainer"]
+unique_name_in_owner = true
+margin_left = 72.7
+margin_right = 596.3
+margin_bottom = 616.0
 rect_pivot_offset = Vector2( -0.5, 0.5 )
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 6 )
 tileScene = ExtResource( 2 )
 
-[node name="BoardContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/Board"]
+[node name="BoardContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/AspectRatioContainer/Board"]
 unique_name_in_owner = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 17.0
+margin_top = 39.0
+margin_right = -20.6001
+margin_bottom = -91.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/vseparation = -1
 custom_constants/hseparation = -1
 columns = 8
 
-[node name="Border" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -230.0
-margin_top = -270.0
-margin_right = 230.0
-margin_bottom = 270.0
+[node name="Border" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/AspectRatioContainer"]
+margin_left = 72.7
+margin_right = 596.3
+margin_bottom = 616.0
 mouse_filter = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = "BoardContainer"
 
 [node name="BottomContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
 margin_top = 682.0
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 6 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer"]
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 86.0
 
 [node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer"]
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 86.0
 alignment = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
-margin_right = 442.0
+margin_right = 375.0
 margin_bottom = 86.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -528,9 +553,9 @@ align = 1
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
-margin_left = 446.0
+margin_left = 379.0
 margin_top = 22.0
-margin_right = 635.0
+margin_right = 568.0
 margin_bottom = 86.0
 size_flags_vertical = 8
 
@@ -627,16 +652,6 @@ size_flags_vertical = 3
 texture = ExtResource( 17 )
 stretch_mode = 1
 
-[node name="ConcedeButton" type="Button" parent="CanvasLayer/MarginContainer/Sections/BottomContainer"]
-margin_left = 225.0
-margin_top = 22.0
-margin_right = 410.0
-margin_bottom = 63.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_type_variation = "SalasButton"
-text = "_concede_button_"
-
 [node name="GameOverMenu" parent="CanvasLayer" instance=ExtResource( 5 )]
 visible = false
 
@@ -655,7 +670,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="FlatContainer" type="PanelContainer" parent="CanvasLayer/ConcedeConfirmation/HBoxContainer"]
-margin_right = 98.0
+margin_right = 64.0
 margin_bottom = 800.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -664,8 +679,8 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ConcedeConfirmation/HBoxContainer"]
-margin_left = 102.0
-margin_right = 565.0
+margin_left = 68.0
+margin_right = 531.0
 margin_bottom = 800.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -710,6 +725,7 @@ margin_bottom = 146.0
 mouse_filter = 2
 size_flags_vertical = 4
 custom_constants/separation = 20
+alignment = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/ConcedeConfirmation/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
 margin_right = 393.0
@@ -725,13 +741,14 @@ align = 1
 margin_top = 50.0
 margin_right = 393.0
 margin_bottom = 114.0
+alignment = 1
 
 [node name="ConcedeConfirmButton" type="Button" parent="CanvasLayer/ConcedeConfirmation/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer"]
 pause_mode = 2
 margin_right = 203.0
 margin_bottom = 64.0
-size_flags_horizontal = 4
-size_flags_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = "ReadyButton"
 text = "_concede_button_"
 
@@ -740,8 +757,8 @@ pause_mode = 2
 margin_left = 207.0
 margin_right = 393.0
 margin_bottom = 64.0
-size_flags_horizontal = 4
-size_flags_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_type_variation = "ReadyButton"
 text = "_cancel_button_"
 
@@ -755,8 +772,8 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="FlatContainer_2" type="PanelContainer" parent="CanvasLayer/ConcedeConfirmation/HBoxContainer"]
-margin_left = 569.0
-margin_right = 667.0
+margin_left = 535.0
+margin_right = 600.0
 margin_bottom = 800.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -767,6 +784,10 @@ theme_type_variation = "FlatContainer"
 unique_name_in_owner = true
 visible = false
 
-[connection signal="pressed" from="CanvasLayer/MarginContainer/Sections/BottomContainer/ConcedeButton" to="." method="OnConcedeClicked"]
+[node name="TurnPass" parent="CanvasLayer" instance=ExtResource( 35 )]
+unique_name_in_owner = true
+visible = false
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/ConcedeButton" to="." method="OnConcedeClicked"]
 [connection signal="pressed" from="CanvasLayer/ConcedeConfirmation/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer/ConcedeConfirmButton" to="." method="OnConcedeConfirmed"]
 [connection signal="pressed" from="CanvasLayer/ConcedeConfirmation/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer/DeclineButton" to="." method="OnCancelConcede"]

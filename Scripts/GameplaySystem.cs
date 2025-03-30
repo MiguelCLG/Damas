@@ -15,7 +15,6 @@ public partial class GameplaySystem : Node2D
   [Export] private AudioOptionsResource kingSound;
   [Export] private AudioOptionsResource winningSound;
   [Export] private AudioOptionsResource losingSound;
-  [Export] private AudioOptionsResource music;
   private TextureRect OpponentPieceCountTexture;
   private TextureRect PlayerPieceCountTexture;
   private TextureRect OpponentDisconnectIcon;
@@ -42,6 +41,7 @@ public partial class GameplaySystem : Node2D
   private AudioManager audioManager;
   AnimationPlayer PlayerTimerAnimationPlayer;
   AnimationPlayer OpponentTimerAnimationPlayer;
+  TurnPass turnPass;
   public override void _Ready()
   {
     GetTree().Paused = false;
@@ -53,7 +53,6 @@ public partial class GameplaySystem : Node2D
   private void Initialize()
   {
     audioManager = GetNode<AudioManager>("/root/AudioManager");
-    audioManager?.Play(music, this);
     PlayerPortrait = GetNode<TextureRect>("%PlayerPortrait");
     OpponentPortrait = GetNode<TextureRect>("%OpponentPortrait");
     OpponentPieceCountTexture = GetNode<TextureRect>("%OpponentPieceCountTexture");
@@ -68,6 +67,7 @@ public partial class GameplaySystem : Node2D
 
     OpponentTimer = GetNode<ProgressBar>("%OpponentTimer");
     PlayerTimer = GetNode<ProgressBar>("%PlayerTimer");
+    turnPass = GetNode<TurnPass>("%TurnPass");
 
     PlayerTimer.MaxValue = MaxTimer;
     OpponentTimer.MaxValue = MaxTimer;
@@ -148,6 +148,11 @@ public partial class GameplaySystem : Node2D
   {
     if (args is string)
     {
+      turnPass.Visible = true;
+      if (CurrentTurn != currentGameColor) // it is the current player's turn (notice we have not switched turns yet)
+        turnPass.Animate("_your_turn_");
+      else
+        turnPass.Animate("_opponent_turn_");
       NextTurn();
     }
   }
@@ -517,7 +522,7 @@ public partial class GameplaySystem : Node2D
       {
         audioManager.StopSound(this);
         audioManager.Play(winningSound, this);
-        gameOverMenu?.SetWinnerName(currentGameColor);
+        gameOverMenu?.SetWinnerName(currentGameColor, gameOverInfo.winnings);
       }
       else
       {
@@ -525,6 +530,7 @@ public partial class GameplaySystem : Node2D
         audioManager.Play(losingSound, this);
         gameOverMenu?.SetWinnerName(currentGameColor == BoardColors.Black ? BoardColors.White : BoardColors.Black);
       }
+      GetNode<Panel>("%ConcedeConfirmation").Visible = false;
       gameOverMenu?.Show();
       GetTree().Paused = true;
     }
@@ -588,7 +594,7 @@ public partial class GameplaySystem : Node2D
   {
     // TODO: send concede message to server
     EventRegistry.GetEventPublisher("OnConcede").RaiseEvent(null);
-    //OnCancelConcede();
+    OnCancelConcede();
   }
 
   public void OnCancelConcede()

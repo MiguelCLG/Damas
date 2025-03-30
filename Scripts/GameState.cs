@@ -28,6 +28,7 @@ public static class GameState
     };
 
   public static string playerName;
+  public static Utils.Currency Currency;
   public static string opponentName;
   public static float betValue = 1f;
   public static string room_id;
@@ -76,5 +77,26 @@ public static class GameState
       }
     }
     return rotatedBoard;
+  }
+
+  public static Dictionary<float, int> playerCountPerBet = new Dictionary<float, int>();
+  public static void AddPlayerCountPerBet(PlayerBetCount[] playerBetCounts)
+  {
+    foreach (PlayerBetCount playerBetCount in playerBetCounts)
+    {
+      if (!playerCountPerBet.ContainsKey(playerBetCount.bet_value))
+      {
+        playerCountPerBet.Add(playerBetCount.bet_value, playerBetCount.player_count);
+      }
+      else
+      {
+        playerCountPerBet[playerBetCount.bet_value] = playerBetCount.player_count;
+      }
+
+    }
+  }
+  public static int GetPlayerCountForBet(float betValue)
+  {
+    return playerCountPerBet.ContainsKey(betValue) ? playerCountPerBet[betValue] : 0;
   }
 }

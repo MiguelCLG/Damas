@@ -1,11 +1,9 @@
 using Godot;
-using System;
 
 public class OptionsMenu : Panel
 {
     public override void _Ready()
     {
-        GetNode<HSlider>("%MusicVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Music"));
         GetNode<HSlider>("%UIEffectsVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("UI_Effects"));
         GetNode<HSlider>("%SoundEffectsVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Sound_Effects"));
         GetNode<HSlider>("%MasterVolumeSlider").Value = AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Master"));

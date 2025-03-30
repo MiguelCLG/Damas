@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.cs" type="Script" id=1]
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=2]
@@ -20,7 +20,6 @@
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=18]
 [ext_resource path="res://Scenes/loading_menu.tscn" type="PackedScene" id=19]
 [ext_resource path="res://Resources/Sounds/click_hover.tres" type="Resource" id=20]
-[ext_resource path="res://Resources/Sounds/music.tres" type="Resource" id=21]
 [ext_resource path="res://Scenes/rule_book.tscn" type="PackedScene" id=22]
 
 [sub_resource type="StyleBoxEmpty" id=1]
@@ -66,7 +65,6 @@ theme = ExtResource( 2 )
 script = ExtResource( 1 )
 bidTextures = [ ExtResource( 16 ), ExtResource( 12 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 4 ), ExtResource( 14 ), ExtResource( 18 ), ExtResource( 13 ) ]
 clickSound = ExtResource( 20 )
-music = ExtResource( 21 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 anchor_right = 1.0
@@ -84,28 +82,28 @@ margin_right = -32.0
 margin_bottom = -32.0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 603.0
+margin_right = 536.0
 margin_bottom = 736.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
-margin_right = 603.0
+margin_right = 536.0
 margin_bottom = 736.0
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_right = 603.0
+margin_right = 536.0
 margin_bottom = 228.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_right = 299.0
+margin_right = 266.0
 margin_bottom = 228.0
 size_flags_horizontal = 3
 
 [node name="PlayerName" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 299.0
+margin_right = 266.0
 margin_bottom = 40.0
 theme_type_variation = "HemiLabel"
 text = "GuiGate"
@@ -113,7 +111,7 @@ valign = 3
 
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 margin_top = 44.0
-margin_right = 299.0
+margin_right = 266.0
 margin_bottom = 44.0
 
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer/Control"]
@@ -136,15 +134,15 @@ text = "R$993,82"
 valign = 3
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_left = 303.0
-margin_right = 603.0
+margin_left = 270.0
+margin_right = 536.0
 margin_bottom = 228.0
 size_flags_horizontal = 11
 alignment = 2
 
 [node name="TextureButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
-margin_left = 168.0
-margin_right = 232.0
+margin_left = 134.0
+margin_right = 198.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 mouse_default_cursor_shape = 2
@@ -153,8 +151,8 @@ size_flags_vertical = 0
 theme_type_variation = "RulesButton"
 
 [node name="TextureButton2" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
-margin_left = 236.0
-margin_right = 300.0
+margin_left = 202.0
+margin_right = 266.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 mouse_default_cursor_shape = 2
@@ -164,7 +162,7 @@ theme_type_variation = "SettingsButton"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
 margin_top = 232.0
-margin_right = 603.0
+margin_right = 536.0
 margin_bottom = 460.0
 size_flags_horizontal = 7
 size_flags_vertical = 3
@@ -173,9 +171,9 @@ expand = true
 stretch_mode = 6
 
 [node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_left = 153.0
+margin_left = 119.0
 margin_top = 464.0
-margin_right = 450.0
+margin_right = 416.0
 margin_bottom = 736.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -266,6 +264,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 theme_type_variation = "TextFont"
 text = "_waiting_for_data_"
+autowrap = true
 
 [node name="StartButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/ButtonsContainer/Control2"]
 margin_top = 176.0

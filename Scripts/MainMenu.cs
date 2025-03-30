@@ -7,7 +7,6 @@ public partial class MainMenu : Control
 {
 	[Export] Array<Texture> bidTextures;
 	[Export] AudioOptionsResource clickSound;
-	[Export] AudioOptionsResource music;
 	TextureRect BidTexture;
 	private SceneLoaders sceneLoaders; // autoload to handle transitions and switching scenes
 	private Label PlayerName;
@@ -32,7 +31,6 @@ public partial class MainMenu : Control
 		OptionsMenu = GetNode<Panel>("%OptionsMenu");
 
 		audioManager = GetNode<AudioManager>("/root/AudioManager");
-		audioManager?.Play(music, this);
 		//  roomList = GetNode<Panel>("%RoomList");
 		PlayerName = GetNode<Label>("%PlayerName");
 		PlayerMoney = GetNode<Label>("%PlayerMoney");
@@ -106,6 +104,8 @@ public partial class MainMenu : Control
 			BidTexture.Texture = bidTextures[index + 1];
 			betValue = availableBidValues[index + 1];
 		}
+		int playerCountForBet = GetPlayerCountForBet(betValue);
+		EventRegistry.GetEventPublisher("SetWaitingQueue").RaiseEvent(playerCountForBet);
 	}
 	public void SetPlayerName(string newPlayerName)
 	{
@@ -113,18 +113,30 @@ public partial class MainMenu : Control
 	}
 	public void SetPlayerMoney(string newPlayerMoney)
 	{
+		var currencyInfo = GetCurrencySymbol(GameState.Currency);
+		if (currencyInfo.Position == SymbolPosition.Left)
+			newPlayerMoney = $"{currencyInfo.Symbol}{newPlayerMoney}";
+		else
+			newPlayerMoney = $"{newPlayerMoney}{currencyInfo.Symbol}";
+
 		PlayerMoney.Text = newPlayerMoney;
 	}
 
 	public void SetWaitingQueue(object sender, object args)
 	{
-		if (args is string numberOfPlayers)
+		if (args is int numberOfPlayers)
 			WaitingQueueLabel.Text = $"{numberOfPlayers} {TranslationServer.Translate("_players_in_queue_")}";
 	}
 	public void ShowRoom(object sender, object args)
 	{
 		roomPopup.SetBidTexture(BidTexture.Texture);
 		roomPopup.Visible = true;
+	}
+	public void OnQueueConfirmation(object sender, object args)
+	{
+		if (args is bool isVisible && !isVisible)
+			HideRoom();
+		// TODO: Maybe show error popup
 	}
 	public void HideRoom()
 	{
@@ -169,11 +181,13 @@ public partial class MainMenu : Control
 		EventSubscriber.SubscribeToEvent("ShowRoom", ShowRoom);
 		EventSubscriber.SubscribeToEvent("PlayerConnected", PlayerConnected);
 		EventSubscriber.SubscribeToEvent("OnGameReconnect", OnGameStarting);
+		EventSubscriber.SubscribeToEvent("OnQueueConfirmation", OnQueueConfirmation);
 	}
 
 	public override void _ExitTree()
 	{
 		audioManager?.StopSound(this);
+		EventSubscriber.UnsubscribeFromEvent("OnQueueConfirmation", OnQueueConfirmation);
 		EventSubscriber.UnsubscribeFromEvent("OnGameReconnect", OnGameStarting);
 		EventSubscriber.UnsubscribeFromEvent("SetWaitingContainerVisible", SetWaitingContainerVisible);
 		EventSubscriber.UnsubscribeFromEvent("PlayerConnected", PlayerConnected);

@@ -37,6 +37,15 @@ public enum MessageType
   error
 }
 
+public class PlayerBetCount
+{
+  public float bet_value;
+  public int player_count;
+}
+public class GameInfo
+{
+  public PlayerBetCount[] player_count_per_bet_value;
+}
 public class TurnSwitch
 {
   public string player_id;
@@ -137,6 +146,7 @@ public class GameOver
   public GamePlayer winner;
   public int turns;
   public string game_time;
+  public float winnings;
 }
 
 public class GameUpdatetMessage

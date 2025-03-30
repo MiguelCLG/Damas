@@ -78,11 +78,11 @@ public static class WebUtils
 		}
 		else
 		{
-			token = "token123";
-			sessionId = "session1";
+			token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEzLCJ1c2VybmFtZSI6IkhFTlJSMSIsImlhdCI6MTc0MzI4MDU3OSwiZXhwIjoxNzQzMzAyMTc5fQ.vtHY85V-6BLVTtd-CvacwPGfYnhBSOcXtnFRxXK0SJU";
+			sessionId = "d1d950bb-fab8-4183-9647-1920648e4f25&";
 			/* token = "token456";
 			sessionId = "session2"; */
-			currency = "USD";
+			currency = "BRL";
 			return new UrlParamsModel(token, sessionId, currency, "wss");
 		}
 
@@ -93,7 +93,7 @@ public static class WebUtils
 
 		// Determine the WebSocket prefix based on the protocol
 		GD.Print($"[ URL PARAMS ] :: Determined WebSocket Protocol: {protocol}");
-		string prefix = protocol == "https:" ? "wss" : "ws";
+		string prefix = "wss";
 		GD.Print($"[ URL PARAMS ] :: Determined WebSocket Prefix: {prefix}");
 
 		return new UrlParamsModel(token, sessionId, currency, prefix);
