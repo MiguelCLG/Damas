@@ -3,7 +3,7 @@
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scripts/GameOverMenu.cs" type="Script" id=2]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Assets/In Game Assets/crowd2.webp" type="Texture" id=4]
+[ext_resource path="res://Assets/in_game_assets/crowd2.webp" type="Texture" id=4]
 [ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=5]
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -28,8 +28,8 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="FlatContainer" type="PanelContainer" parent="HBoxContainer"]
-margin_right = 88.0
-margin_bottom = 800.0
+margin_right = 38.0
+margin_bottom = 888.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -37,16 +37,16 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 92.0
-margin_right = 508.0
-margin_bottom = 800.0
+margin_left = 42.0
+margin_right = 458.0
+margin_bottom = 888.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
 [node name="FlatContainer2" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
 margin_right = 416.0
-margin_bottom = 204.0
+margin_bottom = 239.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -54,9 +54,9 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="GameOverUI" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 208.0
+margin_top = 243.0
 margin_right = 416.0
-margin_bottom = 592.0
+margin_bottom = 644.0
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -67,7 +67,7 @@ theme_type_variation = "GameOverContainer"
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 413.0
-margin_bottom = 381.0
+margin_bottom = 398.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_constants/margin_right = 32
@@ -79,14 +79,14 @@ custom_constants/margin_bottom = 32
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 378.0
-margin_bottom = 346.0
+margin_bottom = 363.0
 mouse_filter = 2
 size_flags_vertical = 4
 custom_constants/separation = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
 margin_right = 346.0
-margin_bottom = 162.0
+margin_bottom = 179.0
 
 [node name="Title" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -103,15 +103,15 @@ align = 1
 unique_name_in_owner = true
 margin_top = 44.0
 margin_right = 346.0
-margin_bottom = 162.0
+margin_bottom = 179.0
 texture = ExtResource( 4 )
 stretch_mode = 6
 
 [node name="WinnerName" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 182.0
+margin_top = 199.0
 margin_right = 346.0
-margin_bottom = 222.0
+margin_bottom = 239.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 3 )
@@ -120,9 +120,9 @@ align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
 margin_left = 22.0
-margin_top = 242.0
+margin_top = 259.0
 margin_right = 324.0
-margin_bottom = 314.0
+margin_bottom = 331.0
 mouse_filter = 2
 size_flags_horizontal = 6
 size_flags_vertical = 2
@@ -135,18 +135,18 @@ theme_type_variation = "JogarButton"
 text = "_restart_button_"
 
 [node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 596.0
+margin_top = 648.0
 margin_right = 416.0
-margin_bottom = 800.0
+margin_bottom = 888.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="FlatContainer_2" type="PanelContainer" parent="HBoxContainer"]
-margin_left = 512.0
-margin_right = 600.0
-margin_bottom = 800.0
+margin_left = 462.0
+margin_right = 500.0
+margin_bottom = 888.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 1 )

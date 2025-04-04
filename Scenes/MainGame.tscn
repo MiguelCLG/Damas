@@ -1,6 +1,6 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
-[ext_resource path="res://Assets/In Game Assets/piece_placeholder.webp" type="Texture" id=1]
+[ext_resource path="res://Assets/in_game_assets/crowd2.webp" type="Texture" id=1]
 [ext_resource path="res://Assets/in_game_assets/retangle.webp" type="Texture" id=2]
 [ext_resource path="res://Assets/disconnect_icon.webp" type="Texture" id=3]
 [ext_resource path="res://Assets/In Game Assets/piecescountblack.webp" type="Texture" id=4]
@@ -15,6 +15,7 @@
 [ext_resource path="res://Scripts/Board.cs" type="Script" id=13]
 [ext_resource path="res://Assets/fonts/Nexa-ExtraLight.ttf" type="DynamicFontData" id=14]
 [ext_resource path="res://Scripts/ResizeAspectRatio.cs" type="Script" id=15]
+[ext_resource path="res://Assets/in_game_assets/crowd1.webp" type="Texture" id=16]
 
 [sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0.0901961, 0.027451, 0.160784, 0.501961 )
@@ -314,7 +315,8 @@ margin_bottom = 96.0
 rect_min_size = Vector2( 96, 96 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = ExtResource( 1 )
+texture = ExtResource( 16 )
+expand = true
 stretch_mode = 6
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer"]
@@ -387,6 +389,7 @@ rect_min_size = Vector2( 96, 96 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
 texture = ExtResource( 1 )
+expand = true
 stretch_mode = 6
 
 [node name="Player" type="VBoxContainer" parent="VBoxContainer/PlayerContainer"]
