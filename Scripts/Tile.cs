@@ -4,38 +4,74 @@ public partial class Tile : Control
 {
   [Export] public Vector2 TilePosition { get; set; }
   [Export] private BoardColors TileColor { get; set; }
-  [Export] private Texture WhiteTileTexture { get; set; }
-  [Export] private Texture BlackTileTexture { get; set; }
 
-  TextureButton texture;
+  [Export] StyleBoxFlat yellowBackground;
+  [Export] StyleBoxFlat whiteBackground;
+  [Export] StyleBoxFlat purpleBackground;
+  [Export] StyleBoxFlat blackBackground;
+  [Export] StyleBoxFlat redBackground;
+  [Export] StyleBoxFlat greenBackground;
+  Button DefaultTileButton;
+  Button PreviousMovementTileButton;
+  Button CanMoveTileButton;
+  Button MovementTileButton;
+  Button CaptureTileButton;
 
   public override void _Ready()
   {
-    texture = GetNode<TextureButton>("%Texture");
+    DefaultTileButton = GetNode<Button>("%DefaultTile");
+    PreviousMovementTileButton = GetNode<Button>("%PreviousMovementTile");
+    CanMoveTileButton = GetNode<Button>("%CanMoveTile");
+    MovementTileButton = GetNode<Button>("%MovementTile");
+    CaptureTileButton = GetNode<Button>("%CaptureTile");
   }
 
-  public void SetTileColor(BoardColors color)
+  public void SetTileColor(Button button, BoardColors color)
   {
     TileColor = color;
-    texture.TextureNormal = color == BoardColors.White ? WhiteTileTexture : BlackTileTexture;
+    MultipleStyleBox(button, color == BoardColors.White ? whiteBackground : blackBackground);
   }
 
+  public void MultipleStyleBox(Button button, StyleBoxFlat background)
+  {
+    button.AddStyleboxOverride("normal", background);
+    button.AddStyleboxOverride("hover", background);
+    button.AddStyleboxOverride("pressed", background);
+    button.AddStyleboxOverride("disabled", background);
+
+  }
   public void Select(bool isCapture)
   {
     if (isCapture)
-      texture.TextureNormal = GD.Load<Texture>("res://Assets/capture-tile.png");
+    {
+      MultipleStyleBox(CaptureTileButton, redBackground);
+    }
     else
-      texture.TextureNormal = GD.Load<Texture>("res://Assets/available-tile.png");
+    {
+      MultipleStyleBox(MovementTileButton, yellowBackground);
+    }
   }
   public void Unselect()
   {
-    SetTileColor(TileColor);
+    SetTileColor(DefaultTileButton, TileColor);
   }
 
   public void SelectAsMovement()
   {
-    texture.TextureNormal = GD.Load<Texture>("res://Assets/movement-tile.webp");
+    MultipleStyleBox(PreviousMovementTileButton, purpleBackground);
+    GetTree().CreateTimer(2f).Connect("timeout", this, nameof(Unselect)); // leave it for 2 seconds and return to the proper thingy
   }
+
+  public void SelectAsCanMove()
+  {
+    MultipleStyleBox(CanMoveTileButton, greenBackground);
+  }
+
+  public void SelectAsCanCapture()
+  {
+    MultipleStyleBox(CaptureTileButton, redBackground);
+  }
+
 
   // Event sent so that the turn base system knows which tile was clicked
   public void OnTileClicked()

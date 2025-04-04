@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=48 format=2]
+[gd_resource type="Theme" load_steps=49 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
@@ -17,6 +17,14 @@
 [ext_resource path="res://Assets/slider_toggle.webp" type="Texture" id=15]
 [ext_resource path="res://Assets/in_game_assets/slider_toggle_highlight.webp" type="Texture" id=16]
 [ext_resource path="res://Assets/FirstScreens Assets/rulebook_icon.webp" type="Texture" id=17]
+
+[sub_resource type="StyleBoxTexture" id=41]
+texture = ExtResource( 11 )
+region_rect = Rect2( 41, 33, 1035, 1245 )
+margin_left = 16.0
+margin_right = 14.0
+margin_top = 17.0
+margin_bottom = 272.0
 
 [sub_resource type="StyleBoxTexture" id=28]
 texture = ExtResource( 11 )
@@ -201,6 +209,8 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [resource]
+BoardBorderContainer/base_type = "PanelContainer"
+BoardBorderContainer/styles/panel = SubResource( 41 )
 BoardContainer/base_type = "PanelContainer"
 BoardContainer/styles/panel = SubResource( 28 )
 Button/colors/font_color = Color( 0.996078, 0.913725, 0.0705882, 1 )

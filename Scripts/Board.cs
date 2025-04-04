@@ -73,7 +73,7 @@ public partial class Board : Control
   // Since we want to prioritize capture moves, we first check for them
   // then we if there aren't any, we check for regular moves
   // this way we can highlight and diferentiate a capture from a regular move
-  public void OnCheckerClicked(Checker checker, Array<Checker> checkersInPlay)
+  public void OnCheckerClicked(Checker checker)
   {
     if (checker.isKing)
     {

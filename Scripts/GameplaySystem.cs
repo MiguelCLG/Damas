@@ -3,13 +3,14 @@ using Godot.Collections;
 using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
+using Microsoft.VisualBasic;
 
 public partial class GameplaySystem : Node2D
 {
   [Export] private PackedScene checkerScene;
   [Export] private Texture[] playerPortraits;
   [Export] private Texture[] pieceCountTextures;
-  [Export] private Texture[] bidTextures;
+  /*  [Export] private Texture[] bidTextures; */
   [Export] private AudioOptionsResource captureSound;
   [Export] private AudioOptionsResource moveSound;
   [Export] private AudioOptionsResource kingSound;
@@ -18,8 +19,6 @@ public partial class GameplaySystem : Node2D
   private TextureRect OpponentPieceCountTexture;
   private TextureRect PlayerPieceCountTexture;
   private TextureRect OpponentDisconnectIcon;
-  private TextureRect PlayerBetTexture;
-  private TextureRect OpponentBetTexture;
   private Panel ConnectionPopup;
   private Checker SelectedChecker = null;
   private BoardColors CurrentTurn = BoardColors.Black;
@@ -30,8 +29,8 @@ public partial class GameplaySystem : Node2D
   private GameOverMenu gameOverMenu;
   private ProgressBar OpponentTimer;
   private ProgressBar PlayerTimer;
-  private Panel OpponentPortraitBackground;
-  private Panel PlayerPortraitBackground;
+  private VBoxContainer PlayerTurnBox;
+  private VBoxContainer OpponentTurnBox;
   private Label OpponentNameLabel;
   private Label PlayerNameLabel;
   private TextureRect PlayerPortrait;
@@ -41,7 +40,6 @@ public partial class GameplaySystem : Node2D
   private AudioManager audioManager;
   AnimationPlayer PlayerTimerAnimationPlayer;
   AnimationPlayer OpponentTimerAnimationPlayer;
-  TurnPass turnPass;
   public override void _Ready()
   {
     GetTree().Paused = false;
@@ -67,7 +65,6 @@ public partial class GameplaySystem : Node2D
 
     OpponentTimer = GetNode<ProgressBar>("%OpponentTimer");
     PlayerTimer = GetNode<ProgressBar>("%PlayerTimer");
-    turnPass = GetNode<TurnPass>("%TurnPass");
 
     PlayerTimer.MaxValue = MaxTimer;
     OpponentTimer.MaxValue = MaxTimer;
@@ -75,20 +72,16 @@ public partial class GameplaySystem : Node2D
     OpponentTimer.Value = MaxTimer;
 
     CurrentTurn = currentInGameTurn;
-
-    OpponentPortraitBackground = GetNode<Panel>("%OpponentPortraitBackground");
-    PlayerPortraitBackground = GetNode<Panel>("%PlayerPortraitBackground");
-    PlayerPortraitBackground.Visible = CurrentTurn == currentGameColor;
-    OpponentPortraitBackground.Visible = CurrentTurn != currentGameColor;
+    PlayerTurnBox = GetNode<VBoxContainer>("%PlayerTurn");
+    OpponentTurnBox = GetNode<VBoxContainer>("%OpponentTurn");
+    bool isPlayerBoxVisible = CurrentTurn == currentGameColor;
+    PlayerTurnBox.Modulate = isPlayerBoxVisible ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0); // using modulate because Visible removes the container virtually and it allows the other containers to stretch
+    OpponentTurnBox.Modulate = !isPlayerBoxVisible ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0);
 
     PlayerNameLabel = GetNode<Label>("%PlayerNameLabel");
     OpponentNameLabel = GetNode<Label>("%OpponentNameLabel");
     PlayerNameLabel.Text = player.name;
     OpponentNameLabel.Text = opponentName;
-
-    PlayerBetTexture = GetNode<TextureRect>("%PlayerBetTexture");
-    OpponentBetTexture = GetNode<TextureRect>("%OpponentBetTexture");
-    SetBetTextures();
 
     board = GetNode<Board>("%Board");
     gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");
@@ -105,54 +98,10 @@ public partial class GameplaySystem : Node2D
     OnTurnStart();
   }
 
-  private void SetBetTextures()
-  {
-    switch (betValue)
-    {
-      case 0.5f:
-        PlayerBetTexture.Texture = bidTextures[0];
-        OpponentBetTexture.Texture = bidTextures[0];
-        break;
-      case 1f:
-        PlayerBetTexture.Texture = bidTextures[1];
-        OpponentBetTexture.Texture = bidTextures[1];
-        break;
-      case 3f:
-        PlayerBetTexture.Texture = bidTextures[2];
-        OpponentBetTexture.Texture = bidTextures[2];
-        break;
-      case 5f:
-        PlayerBetTexture.Texture = bidTextures[3];
-        OpponentBetTexture.Texture = bidTextures[3];
-        break;
-      case 10f:
-        PlayerBetTexture.Texture = bidTextures[4];
-        OpponentBetTexture.Texture = bidTextures[4];
-        break;
-      case 25f:
-        PlayerBetTexture.Texture = bidTextures[5];
-        OpponentBetTexture.Texture = bidTextures[5];
-        break;
-      case 50f:
-        PlayerBetTexture.Texture = bidTextures[6];
-        OpponentBetTexture.Texture = bidTextures[6];
-        break;
-      case 100f:
-        PlayerBetTexture.Texture = bidTextures[7];
-        OpponentBetTexture.Texture = bidTextures[7];
-        break;
-    }
-  }
-
   private void OnTurnSwitch(object sender, object args)
   {
     if (args is string)
     {
-      turnPass.Visible = true;
-      if (CurrentTurn != currentGameColor) // it is the current player's turn (notice we have not switched turns yet)
-        turnPass.Animate("_your_turn_");
-      else
-        turnPass.Animate("_opponent_turn_");
       NextTurn();
     }
   }
@@ -161,8 +110,6 @@ public partial class GameplaySystem : Node2D
   {
     if (args is MovePieceData data)
     {
-
-
       Tile toTile = board.FindTileByName(data.to);
       Tile fromTile = board.FindTileByName(data.from);
       Checker checker = fromTile.GetNode<Checker>(data.piece_id);
@@ -200,13 +147,13 @@ public partial class GameplaySystem : Node2D
     OpponentTimerAnimationPlayer.Stop();
     if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
     {
-      PlayerPortraitBackground.Visible = true;
-      OpponentPortraitBackground.Visible = false;
+      PlayerTurnBox.Modulate = new Color(1, 1, 1, 1);
+      OpponentTurnBox.Modulate = new Color(1, 1, 1, 0);
     }
     else
     {
-      PlayerPortraitBackground.Visible = false;
-      OpponentPortraitBackground.Visible = true;
+      PlayerTurnBox.Modulate = new Color(1, 1, 1, 0);
+      OpponentTurnBox.Modulate = new Color(1, 1, 1, 1);
     }
     GetNode<Label>("%OpponentPieceCountLabel").Text = $"{(currentGameColor == BoardColors.Black ? WhiteCheckers.Count : BlackCheckers.Count)}";
     GetNode<Label>("%PlayerPieceCountLabel").Text = $"{(currentGameColor == BoardColors.White ? WhiteCheckers.Count : BlackCheckers.Count)}";
@@ -216,8 +163,8 @@ public partial class GameplaySystem : Node2D
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
     foreach (var checker in checkersWithCaptureMoves)
     {
-      GD.Print($"selecting checker with id {checker.Name} on tile {checker.GetParent().Name}");
       checker.SelectCapture();
+      checker.GetParent<Tile>().SelectAsCanCapture();
     }
   }
 
@@ -285,7 +232,6 @@ public partial class GameplaySystem : Node2D
     }
   }
 
-  // Event OnCheckerClicked will execute this function
   private void OnCheckerClicked(object sender, object args)
   {
     if (currentGameColor != CurrentTurn) return;
@@ -308,6 +254,7 @@ public partial class GameplaySystem : Node2D
           board.CleanUpFreeTiles(SelectedChecker);
           SelectedChecker = checker;
           checker.SelectChecker();
+          checker.GetParent<Tile>().Select(false);
 
           // Getting info about the checkers so that the board can get the available tiles
           var allCheckers = new Array<Checker>();
@@ -317,7 +264,7 @@ public partial class GameplaySystem : Node2D
           foreach (Checker c in WhiteCheckers)
             allCheckers.Add(c);
 
-          board.OnCheckerClicked(checker, allCheckers);
+          board.OnCheckerClicked(checker);
         }
       }
     }
@@ -342,13 +289,13 @@ public partial class GameplaySystem : Node2D
             allCheckers.Add(c);
           SelectedChecker = checker;
           checker.SelectChecker();
-          board.OnCheckerClicked(checker, allCheckers);
+          checker.GetParent<Tile>().Select(false);
+          board.OnCheckerClicked(checker);
         }
       }
     }
   }
 
-  // Event OnTileClicked will execute this function
   private void OnTileClicked(object sender, object args)
   {
     if (currentGameColor != CurrentTurn) return;
@@ -420,6 +367,9 @@ public partial class GameplaySystem : Node2D
           }
           if (LastMoveWasCapture && board.HasCaptureMove(SelectedChecker))
           {
+            SelectedChecker.SelectCapture();
+            SelectedChecker.OnCheckerClicked();
+
             OnTurnStart();
           }
         }
