@@ -4,6 +4,7 @@ using static GameState;
 using System.Collections;
 using Newtonsoft.Json;
 using Microsoft.VisualBasic;
+using System;
 
 public partial class GameplaySystem : Node2D
 {
@@ -134,15 +135,15 @@ public partial class GameplaySystem : Node2D
       {
         c.UnselectChecker();
       }
-      board.CleanUpPreviousMovement();
-      fromTile.SelectAsMovement();
-      toTile.SelectAsMovement();
+      fromTile.SelectAsPreviousMovement();
+      toTile.SelectAsPreviousMovement();
       OnTurnStart();
     }
   }
 
   private void OnTurnStart()
   {
+    RaiseCheckersOpacity();
     PlayerTimerAnimationPlayer.Stop();
     OpponentTimerAnimationPlayer.Stop();
     if ((CurrentTurn == BoardColors.Black && currentGameColor == BoardColors.Black) || (CurrentTurn == BoardColors.White && currentGameColor == BoardColors.White))
@@ -158,19 +159,61 @@ public partial class GameplaySystem : Node2D
     GetNode<Label>("%OpponentPieceCountLabel").Text = $"{(currentGameColor == BoardColors.Black ? WhiteCheckers.Count : BlackCheckers.Count)}";
     GetNode<Label>("%PlayerPieceCountLabel").Text = $"{(currentGameColor == BoardColors.White ? WhiteCheckers.Count : BlackCheckers.Count)}";
     if (CurrentTurn != currentGameColor) return;
+
     LastMoveWasCapture = false;
     checkersWithCaptureMoves = new Array<Checker>();
     checkersWithCaptureMoves = FindCheckersWithCaptureMoves();
-    foreach (var checker in checkersWithCaptureMoves)
+
+
+    foreach (var checker in AllCheckers)
     {
-      checker.SelectCapture();
-      checker.GetParent<Tile>().SelectAsCanCapture();
+      if (checker.Color == CurrentTurn)
+      {
+        if (checkersWithCaptureMoves.Count == 0)
+        {
+          if (board.CanMove(checker))
+            checker.GetParent<Tile>().SelectAsCanMove();
+          else
+            LowerCheckerOpacity(checker); // if it cant move, then turn opacity to 0.8
+
+        }
+        else
+        {
+          if (board.HasCaptureMove(checker))
+          {
+            checker.SelectCapture();
+            checker.GetParent<Tile>().SelectAsCanCapture();
+          }
+          else
+            LowerCheckerOpacity(checker);
+        }
+      }
+      else
+      {
+
+        LowerCheckerOpacity(checker);// if it is not its turn, then turn opacity to 0.8
+      }
     }
   }
 
+  private void RaiseCheckersOpacity()
+  {
+    foreach (var checker in AllCheckers)
+    {
+      checker.Modulate = new Color(1, 1, 1, 1);
+      checker.GetParent<Tile>().Unselect();
+    }
+  }
+  private void LowerCheckerOpacity(Checker checker)
+  {
+    checker.Modulate = new Color(1, 1, 1, 0.8f);
+
+  }
+
+
   private Array<Checker> FindCheckersWithCaptureMoves()
   {
-    var checkers = new Array<Checker>();
+    var checkersWithCaptureMove = new Array<Checker>();
     AllCheckers = new Array<Checker>();
     var currentTurnCheckers = new Array<Checker>();
 
@@ -186,14 +229,18 @@ public partial class GameplaySystem : Node2D
         currentTurnCheckers.Add(c);
       AllCheckers.Add(c);
     }
+
+
     foreach (var checker in currentTurnCheckers)
     {
       if (board.HasCaptureMove(checker))
       {
-        checkers.Add(checker);
+        checkersWithCaptureMove.Add(checker);
+        checker.Modulate = new Color(1, 1, 1, 1);
       }
+
     }
-    return checkers;
+    return checkersWithCaptureMove;
   }
 
   private void GenerateCheckers()
@@ -251,10 +298,10 @@ public partial class GameplaySystem : Node2D
         if (CurrentTurn == checker.Color)
         {
           SelectedChecker.UnselectChecker();
-          board.CleanUpFreeTiles(SelectedChecker);
+          board.CleanUpMovementTiles();
+          board.CleanUpCaptureTiles(); //TODO: Make another button texture for obligatory catching (like the green but for capture)
           SelectedChecker = checker;
           checker.SelectChecker();
-          checker.GetParent<Tile>().Select(false);
 
           // Getting info about the checkers so that the board can get the available tiles
           var allCheckers = new Array<Checker>();
@@ -289,7 +336,6 @@ public partial class GameplaySystem : Node2D
             allCheckers.Add(c);
           SelectedChecker = checker;
           checker.SelectChecker();
-          checker.GetParent<Tile>().Select(false);
           board.OnCheckerClicked(checker);
         }
       }
@@ -357,8 +403,7 @@ public partial class GameplaySystem : Node2D
           lastMove = movePieceData;
           EventRegistry.GetEventPublisher("SendMessage").RaiseEvent(movePieceData);
 
-          board.CleanUpFreeTiles(SelectedChecker);
-          board.CleanUpPreviousMovement();
+          board.CleanUpFreeTiles();
 
           SelectedChecker.UnselectChecker();
           foreach (var c in checkersWithCaptureMoves)
@@ -390,7 +435,6 @@ public partial class GameplaySystem : Node2D
     else
     {
       letter = (char)(toTileName[0] - 1);
-
     }
 
     int toTileNumber = int.Parse(toTileName[1].ToString());
@@ -414,7 +458,7 @@ public partial class GameplaySystem : Node2D
   {
     if (SelectedChecker != null)
     {
-      board.CleanUpFreeTiles(SelectedChecker);
+      board.CleanUpFreeTiles();
       SelectedChecker.UnselectChecker();
     }
 

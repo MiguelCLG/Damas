@@ -24,12 +24,25 @@ public partial class Tile : Control
     CanMoveTileButton = GetNode<Button>("%CanMoveTile");
     MovementTileButton = GetNode<Button>("%MovementTile");
     CaptureTileButton = GetNode<Button>("%CaptureTile");
+
+
+    DefaultTileButton.Visible = true;
+    PreviousMovementTileButton.Visible = false;
+    CanMoveTileButton.Visible = false;
+    MovementTileButton.Visible = false;
+    CaptureTileButton.Visible = false;
+
+    SetTileColor(TileColor);
+    MultipleStyleBox(CanMoveTileButton, greenBackground);
+    MultipleStyleBox(MovementTileButton, yellowBackground);
+    MultipleStyleBox(CaptureTileButton, redBackground);
+    MultipleStyleBox(PreviousMovementTileButton, purpleBackground);
   }
 
-  public void SetTileColor(Button button, BoardColors color)
+  public void SetTileColor(BoardColors color)
   {
     TileColor = color;
-    MultipleStyleBox(button, color == BoardColors.White ? whiteBackground : blackBackground);
+    MultipleStyleBox(DefaultTileButton, color == BoardColors.White ? whiteBackground : blackBackground);
   }
 
   public void MultipleStyleBox(Button button, StyleBoxFlat background)
@@ -37,6 +50,7 @@ public partial class Tile : Control
     button.AddStyleboxOverride("normal", background);
     button.AddStyleboxOverride("hover", background);
     button.AddStyleboxOverride("pressed", background);
+    button.AddStyleboxOverride("focus", background);
     button.AddStyleboxOverride("disabled", background);
 
   }
@@ -44,34 +58,53 @@ public partial class Tile : Control
   {
     if (isCapture)
     {
-      MultipleStyleBox(CaptureTileButton, redBackground);
+      CaptureTileButton.Visible = true;
     }
     else
     {
-      MultipleStyleBox(MovementTileButton, yellowBackground);
+      MovementTileButton.Visible = true;
     }
   }
+
   public void Unselect()
   {
-    SetTileColor(DefaultTileButton, TileColor);
+    UnselectAsCanMove();
+    UnselectAsCanCapture();
+    UnselectMovement();
   }
 
-  public void SelectAsMovement()
+  public void SelectAsPreviousMovement()
   {
-    MultipleStyleBox(PreviousMovementTileButton, purpleBackground);
-    GetTree().CreateTimer(2f).Connect("timeout", this, nameof(Unselect)); // leave it for 2 seconds and return to the proper thingy
+    PreviousMovementTileButton.Visible = true;
+    GetTree().CreateTimer(2f).Connect("timeout", this, nameof(UnselectPreviousMovement)); // leave it for 2 seconds and return to the proper thingy
   }
 
   public void SelectAsCanMove()
   {
-    MultipleStyleBox(CanMoveTileButton, greenBackground);
+    CanMoveTileButton.Visible = true;
   }
 
   public void SelectAsCanCapture()
   {
-    MultipleStyleBox(CaptureTileButton, redBackground);
+    CaptureTileButton.Visible = true;
   }
 
+  public void UnselectAsCanMove()
+  {
+    CanMoveTileButton.Visible = false;
+  }
+  public void UnselectAsCanCapture()
+  {
+    CaptureTileButton.Visible = false;
+  }
+  public void UnselectMovement()
+  {
+    MovementTileButton.Visible = false;
+  }
+  public void UnselectPreviousMovement()
+  {
+    PreviousMovementTileButton.Visible = false;
+  }
 
   // Event sent so that the turn base system knows which tile was clicked
   public void OnTileClicked()
