@@ -78,12 +78,12 @@ public static class WebUtils
 		}
 		else
 		{
-			token = "b";
-			sessionId = "f7c441fa-d910-4573-8537-53a14a4142d6";
+			token = "<editable>";
+			sessionId = "<editable>";
 			/* token = "token456";
 			sessionId = "session2"; */
 			currency = "BRL";
-			return new UrlParamsModel(token, sessionId, currency, "ws");
+			return new UrlParamsModel(token, sessionId, currency, "wss");
 		}
 
 		// Use JavaScript to get the current protocol (http or https)
