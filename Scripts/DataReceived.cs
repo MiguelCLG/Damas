@@ -134,10 +134,12 @@ public class GamePlayer
 }
 public class GameStartMessage
 {
+  public string GameID;
   public Hashtable Board;
   public string CurrentPlayerID;
   public List<GamePlayer> GamePlayers;
   public int max_timer;
+  public float WinFactor;
 }
 
 public class GameOver
