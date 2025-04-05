@@ -303,6 +303,7 @@ align = 2
 valign = 1
 
 [node name="WinningsLabel2" type="Label" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
 margin_left = 254.0
 margin_right = 504.0
 margin_bottom = 28.0

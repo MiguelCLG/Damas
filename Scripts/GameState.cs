@@ -31,7 +31,9 @@ public static class GameState
   public static Utils.Currency Currency;
   public static string opponentName;
   public static float betValue = 1f;
+  public static float possibleWinnings = 1f;
   public static string room_id;
+  public static string game_id;
   public static Array<float> availableBidValues = new Array<float>() { 0.5f, 1f, 3f, 5f, 10f, 25f, 50f, 100f };
   public static MovePieceData lastMove;
   public static Tile lastCheckerCaptureTile;

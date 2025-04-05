@@ -64,4 +64,12 @@ public static class Utils
     }
   }
 
+  public static string FormatMoneyText(string money, Currency currency)
+  {
+      var currencyInfo = GetCurrencySymbol(currency);
+      if (currencyInfo.Position == SymbolPosition.Left)
+        return $"{currencyInfo.Symbol}{money}";
+      else
+        return $"{money}{currencyInfo.Symbol}";
+  }
 }
