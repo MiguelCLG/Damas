@@ -60,11 +60,11 @@ public partial class MainMenu : Control
 	private void OnGameStarting(object sender, object args)
 	{
 		if (args is GameStartMessage message)
-		{
+		{	
 			initialBoard = message.Board;
 			MaxTimer = message.max_timer;
-			game_id = message.GameID;
-			possibleWinnings = message.WinFactor * (betValue * 2);
+			game_id = message.game_id;
+			possibleWinnings = message.win_factor * (betValue * 2);
 			foreach (var gamePlayer in message.GamePlayers)
 			{
 				if (playerName == gamePlayer.name)
