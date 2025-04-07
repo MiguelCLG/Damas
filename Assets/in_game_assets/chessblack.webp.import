@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/chessblack.webp-ff7be6cd413b393c7ad510675fe3aaec.stex"
+path="res://.import/chessblack.webp-2ae84d81f9d5379beeb4f4bc91d917ef.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/In Game Assets/chessblack.webp"
-dest_files=[ "res://.import/chessblack.webp-ff7be6cd413b393c7ad510675fe3aaec.stex" ]
+source_file="res://Assets/in_game_assets/chessblack.webp"
+dest_files=[ "res://.import/chessblack.webp-2ae84d81f9d5379beeb4f4bc91d917ef.stex" ]
 
 [params]
 

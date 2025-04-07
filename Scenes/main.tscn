@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/tile.tscn" type="PackedScene" id=2]
@@ -6,112 +6,58 @@
 [ext_resource path="res://Scenes/checker.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/game-over-menu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scripts/Board.cs" type="Script" id=6]
-[ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Scripts/ResizeAspectRatio.cs" type="Script" id=7]
 [ext_resource path="res://Assets/in_game_assets/retangle.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/in_game_assets/timerentagle.webp" type="Texture" id=9]
 [ext_resource path="res://Assets/in_game_assets/clock.webp" type="Texture" id=10]
 [ext_resource path="res://Assets/fonts/NexaH_dynamic_font.tres" type="DynamicFont" id=11]
 [ext_resource path="res://Assets/In Game Assets/piecescountwhite.webp" type="Texture" id=12]
-[ext_resource path="res://Assets/FirstScreens Assets/Background2.webp" type="Texture" id=13]
+[ext_resource path="res://Assets/fonts/Nexa-ExtraLight.ttf" type="DynamicFontData" id=13]
 [ext_resource path="res://Assets/In Game Assets/piecescountblack.webp" type="Texture" id=14]
-[ext_resource path="res://Assets/In Game Assets/piece_placeholder.webp" type="Texture" id=15]
 [ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=16]
-[ext_resource path="res://Assets/In Game Assets/white_piece_placeholder.webp" type="Texture" id=17]
 [ext_resource path="res://Resources/Sounds/move_piece.tres" type="Resource" id=18]
 [ext_resource path="res://Resources/Sounds/capture_piece.tres" type="Resource" id=19]
 [ext_resource path="res://Resources/Sounds/king.tres" type="Resource" id=20]
 [ext_resource path="res://Resources/Sounds/winning_sound.tres" type="Resource" id=21]
+[ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=22]
 [ext_resource path="res://Resources/Sounds/losing_sound.tres" type="Resource" id=23]
 [ext_resource path="res://Scenes/connection_popup.tscn" type="PackedScene" id=24]
 [ext_resource path="res://Assets/disconnect_icon.webp" type="Texture" id=25]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/10.webp" type="Texture" id=26]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/100.webp" type="Texture" id=27]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/50.webp" type="Texture" id=28]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/1.webp" type="Texture" id=29]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/25.webp" type="Texture" id=30]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/05.webp" type="Texture" id=31]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/3.webp" type="Texture" id=32]
-[ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/5.webp" type="Texture" id=33]
+[ext_resource path="res://Assets/in_game_assets/crowd2.webp" type="Texture" id=27]
+[ext_resource path="res://Assets/in_game_assets/crowd1.webp" type="Texture" id=28]
+[ext_resource path="res://Assets/arrow_up.webp" type="Texture" id=29]
+[ext_resource path="res://Assets/arrow_down.webp" type="Texture" id=30]
 [ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=34]
-[ext_resource path="res://Scenes/turn_pass.tscn" type="PackedScene" id=35]
-
-[sub_resource type="StyleBoxEmpty" id=4]
-
-[sub_resource type="StyleBoxEmpty" id=11]
 
 [sub_resource type="StyleBoxFlat" id=12]
-bg_color = Color( 1, 0.984314, 0, 1 )
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
+bg_color = Color( 0.0901961, 0.027451, 0.160784, 0.501961 )
 
-[sub_resource type="StyleBoxTexture" id=2]
-texture = ExtResource( 9 )
-region_rect = Rect2( 0, 0, 204, 49 )
+[sub_resource type="DynamicFont" id=10]
+font_data = ExtResource( 13 )
 
-[sub_resource type="StyleBoxTexture" id=3]
-texture = ExtResource( 8 )
-region_rect = Rect2( 0, 0, 250, 49 )
+[sub_resource type="DynamicFont" id=11]
+font_data = ExtResource( 16 )
 
-[sub_resource type="Animation" id=16]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath("TextureRect:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
-}
-
-[sub_resource type="Animation" id=17]
-resource_name = "time_30_seconds"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("TextureRect:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
-}
-
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=1]
 size = 22
 font_data = ExtResource( 16 )
 
-[sub_resource type="StyleBoxFlat" id=7]
-bg_color = Color( 0.0666667, 0.0666667, 0.0666667, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+[sub_resource type="DynamicFont" id=2]
+size = 29
+font_data = ExtResource( 34 )
 
-[sub_resource type="StyleBoxEmpty" id=5]
-
-[sub_resource type="StyleBoxEmpty" id=6]
-
-[sub_resource type="StyleBoxTexture" id=9]
+[sub_resource type="StyleBoxTexture" id=3]
 texture = ExtResource( 9 )
 region_rect = Rect2( 0, 0, 204, 49 )
 
-[sub_resource type="StyleBoxTexture" id=10]
+[sub_resource type="StyleBoxTexture" id=4]
 texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 250, 49 )
 
-[sub_resource type="Animation" id=18]
+[sub_resource type="Animation" id=5]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/path = NodePath("OpponentTimer/TextureRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -123,11 +69,11 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=6]
 resource_name = "time_30_seconds"
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/path = NodePath("OpponentTimer/TextureRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -139,7 +85,152 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="StyleBoxEmpty" id=13]
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="Animation" id=31]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("OpponentTurnArrow:anchor_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("OpponentTurnLabel:anchor_bottom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=32]
+resource_name = "arrow_down"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("OpponentTurnArrow:anchor_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.45, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("OpponentTurnLabel:anchor_bottom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.45, 0.0 ]
+}
+
+[sub_resource type="Animation" id=33]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerTurnArrow:anchor_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PlayerTurnLabel:anchor_bottom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=34]
+resource_name = "arrow_down"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerTurnArrow:anchor_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.45, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PlayerTurnLabel:anchor_bottom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.45, 0.0 ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerTimer/TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "time_30_seconds"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerTimer/TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="DynamicFont" id=35]
+size = 12
+font_data = ExtResource( 16 )
 
 [sub_resource type="StyleBoxFlat" id=14]
 bg_color = Color( 0, 0, 0, 0.392157 )
@@ -151,9 +242,8 @@ font_data = ExtResource( 34 )
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 checkerScene = ExtResource( 4 )
-playerPortraits = [ ExtResource( 15 ), ExtResource( 17 ) ]
+playerPortraits = [ ExtResource( 28 ), ExtResource( 27 ) ]
 pieceCountTextures = [ ExtResource( 14 ), ExtResource( 12 ) ]
-bidTextures = [ ExtResource( 31 ), ExtResource( 29 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 26 ), ExtResource( 30 ), ExtResource( 28 ), ExtResource( 27 ) ]
 captureSound = ExtResource( 19 )
 moveSound = ExtResource( 18 )
 kingSound = ExtResource( 20 )
@@ -163,94 +253,165 @@ losingSound = ExtResource( 23 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
 
-[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 13 )
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 16.0
-margin_top = 16.0
-margin_right = -16.0
-margin_bottom = -16.0
-
-[node name="Sections" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
-margin_right = 568.0
-margin_bottom = 768.0
+margin_right = -3.0
 mouse_filter = 2
 theme = ExtResource( 1 )
-custom_constants/separation = 32
 
-[node name="TopContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_right = 568.0
-margin_bottom = 118.0
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 22 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="WinningContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
+margin_right = 504.0
+margin_bottom = 175.0
+mouse_filter = 2
+size_flags_horizontal = 11
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer"]
+margin_right = 504.0
+margin_bottom = 28.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 4 )
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer"]
-margin_right = 568.0
-margin_bottom = 118.0
-custom_constants/margin_bottom = 32
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer"]
-margin_right = 568.0
-margin_bottom = 86.0
-
-[node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
-margin_top = 22.0
-margin_right = 502.0
-margin_bottom = 86.0
-size_flags_horizontal = 3
-size_flags_vertical = 8
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI"]
-margin_right = 230.0
-margin_bottom = 64.0
-
-[node name="Panel" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer"]
-margin_right = 64.0
-margin_bottom = 64.0
-custom_styles/panel = SubResource( 11 )
-
-[node name="OpponentPortraitBackground" type="Panel" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
-unique_name_in_owner = true
-margin_right = 64.0
-margin_bottom = 64.0
+size_flags_stretch_ratio = 0.87
 custom_styles/panel = SubResource( 12 )
 
-[node name="OpponentPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/PanelContainer"]
+margin_right = 504.0
+margin_bottom = 28.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="WinningsLabel" type="Label" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/PanelContainer/HBoxContainer"]
+margin_right = 250.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 10 )
+text = "_possible_gain_"
+align = 2
+valign = 1
+
+[node name="WinningsLabel2" type="Label" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/PanelContainer/HBoxContainer"]
 unique_name_in_owner = true
-margin_right = 64.0
-margin_bottom = 64.0
+margin_left = 254.0
+margin_right = 504.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
-texture = ExtResource( 15 )
-stretch_mode = 6
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
+custom_fonts/font = SubResource( 11 )
+text = "_possible_gain_value_"
+valign = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer"]
-margin_left = 68.0
-margin_right = 230.0
-margin_bottom = 64.0
+[node name="OpponentContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer"]
+margin_top = 32.0
+margin_right = 504.0
+margin_bottom = 175.0
+mouse_filter = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.6
+custom_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
-margin_right = 162.0
-margin_bottom = 40.0
+[node name="Container" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer"]
+margin_right = 128.0
+margin_bottom = 143.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="CheckersRemainingContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer"]
+margin_left = 140.0
+margin_right = 234.0
+margin_bottom = 143.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="OpponentNameLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_right = 162.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 7 )
-text = "BBesiktas"
+[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/CheckersRemainingContainer"]
+margin_top = 45.0
+margin_right = 94.0
+margin_bottom = 69.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+custom_fonts/font = ExtResource( 11 )
+text = "Remaining"
+align = 1
+valign = 1
 
-[node name="OpponentDisconnectIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="OpponentPieceCountTexture" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/CheckersRemainingContainer"]
+unique_name_in_owner = true
+margin_top = 73.0
+margin_right = 94.0
+margin_bottom = 143.0
+grow_horizontal = 0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 6
+
+[node name="OpponentPieceCountLabel" type="Label" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/CheckersRemainingContainer/OpponentPieceCountTexture"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 4.0
+margin_top = -19.0
+margin_right = 44.0
+margin_bottom = 19.0
+custom_fonts/font = SubResource( 1 )
+text = "12"
+align = 1
+valign = 1
+
+[node name="Opponent" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer"]
+margin_left = 246.0
+margin_right = 396.0
+margin_bottom = 143.0
+rect_min_size = Vector2( 150, 0 )
+rect_pivot_offset = Vector2( -845, 81 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Opponent"]
+margin_top = 33.0
+margin_right = 150.0
+margin_bottom = 69.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+
+[node name="OpponentNameLabel" type="Label" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Opponent/HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 150.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "BBesiktas"
+valign = 2
+clip_text = true
+
+[node name="OpponentDisconnectIcon" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Opponent/HBoxContainer"]
 unique_name_in_owner = true
 visible = false
 modulate = Color( 1, 0, 0, 1 )
@@ -258,399 +419,389 @@ margin_left = 166.0
 margin_right = 190.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 24, 24 )
+mouse_filter = 2
 texture = ExtResource( 25 )
 expand = true
 stretch_mode = 6
 
-[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
-margin_top = 44.0
-margin_right = 162.0
-margin_bottom = 64.0
+[node name="Control" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Opponent"]
+margin_top = 73.0
+margin_right = 150.0
+margin_bottom = 143.0
+mouse_filter = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="OpponentTimer" type="ProgressBar" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
+[node name="OpponentTimer" type="ProgressBar" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Opponent/Control"]
 unique_name_in_owner = true
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_top = -9.5
-margin_right = 183.0
-margin_bottom = 9.5
-custom_styles/fg = SubResource( 2 )
-custom_styles/bg = SubResource( 3 )
+margin_top = 18.0
+margin_right = 150.0
+margin_bottom = 51.0
+rect_min_size = Vector2( 0, 33 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
 max_value = 15.0
 value = 15.0
 percent_visible = false
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = -23.0
-margin_top = -33.0
-margin_right = 45.0
-margin_bottom = 39.0
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Opponent/Control/OpponentTimer"]
+margin_left = -38.0
+margin_top = -36.0
+margin_right = 77.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 56, 56 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource( 10 )
 expand = true
 stretch_mode = 6
 
-[node name="OpponentTimerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
+[node name="OpponentTimerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Opponent/Control"]
 unique_name_in_owner = true
-anims/RESET = SubResource( 16 )
-anims/time_30_seconds = SubResource( 17 )
+anims/RESET = SubResource( 5 )
+anims/time_30_seconds = SubResource( 6 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer"]
-margin_left = 506.0
-margin_right = 568.0
-margin_bottom = 86.0
-custom_constants/separation = 10
-alignment = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer"]
-margin_right = 62.0
-margin_bottom = 86.0
+[node name="Panel" type="PanelContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer"]
+margin_left = 408.0
+margin_right = 504.0
+margin_bottom = 143.0
+mouse_filter = 2
 size_flags_horizontal = 3
-alignment = 2
+size_flags_vertical = 4
+custom_styles/panel = SubResource( 7 )
 
-[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_bottom = 86.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Panel"]
+margin_right = 96.0
+margin_bottom = 143.0
+mouse_filter = 2
 
-[node name="OpponentPieceCountTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Control"]
+[node name="OpponentPortrait" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Panel/VBoxContainer"]
 unique_name_in_owner = true
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -80.0
-margin_top = -44.0
-grow_horizontal = 0
-size_flags_horizontal = 3
-texture = ExtResource( 14 )
+margin_right = 96.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource( 28 )
 expand = true
 stretch_mode = 6
 
-[node name="OpponentPieceCountLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Control/OpponentPieceCountTexture"]
+[node name="OpponentTurn" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Panel/VBoxContainer"]
 unique_name_in_owner = true
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -40.0
-margin_top = -19.0
-margin_bottom = 19.0
-custom_fonts/font = SubResource( 8 )
-text = "12"
+margin_left = 18.0
+margin_top = 100.0
+margin_right = 77.0
+margin_bottom = 143.0
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+alignment = 1
+
+[node name="OpponentTurnArrow" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Panel/VBoxContainer/OpponentTurn"]
+margin_left = 22.0
+margin_right = 37.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource( 29 )
+expand = true
+stretch_mode = 6
+
+[node name="OpponentTurnLabel" type="Label" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Panel/VBoxContainer/OpponentTurn"]
+margin_top = 19.0
+margin_right = 59.0
+margin_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+custom_colors/font_color = Color( 0.756863, 1, 0, 1 )
+custom_fonts/font = ExtResource( 11 )
+text = "Vez de"
 align = 1
 valign = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 4.0
-margin_right = 62.0
-margin_bottom = 86.0
-custom_styles/panel = SubResource( 7 )
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Control/VBoxContainer/WinningContainer/OpponentContainer/Panel/VBoxContainer/OpponentTurn"]
+autoplay = "arrow_down"
+anims/RESET = SubResource( 31 )
+anims/arrow_down = SubResource( 32 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer"]
-margin_right = 58.0
-margin_bottom = 86.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer/MarginContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 54.0
-margin_bottom = 82.0
-
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 50.0
-margin_bottom = 24.0
-custom_fonts/font = ExtResource( 11 )
-text = "_bet_"
-align = 1
-
-[node name="OpponentBetTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/TopContainer/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-margin_top = 28.0
-margin_right = 50.0
-margin_bottom = 78.0
-rect_min_size = Vector2( 50, 50 )
-texture = ExtResource( 15 )
-expand = true
-stretch_mode = 6
-
-[node name="CenterContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_top = 150.0
-margin_right = 568.0
-margin_bottom = 650.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 6.0
-custom_styles/panel = SubResource( 5 )
-
-[node name="BoardContainer" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer"]
-margin_right = 568.0
-margin_bottom = 500.0
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/Control/VBoxContainer"]
+margin_top = 179.0
+margin_right = 504.0
+margin_bottom = 741.0
+rect_min_size = Vector2( 500, 500 )
+rect_pivot_offset = Vector2( 250, 250 )
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="ConcedeButton" type="Button" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 133.0
-margin_top = 242.0
-margin_right = 267.0
-margin_bottom = 283.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_type_variation = "SalasButton"
-text = "_concede_button_"
-
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -331.0
-margin_top = -309.0
-margin_right = 338.0
-margin_bottom = 307.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_stretch_ratio = 6.4
 ratio = 0.85
+script = ExtResource( 7 )
 
-[node name="Board" type="Control" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/AspectRatioContainer"]
+[node name="Board" type="Control" parent="CanvasLayer/Control/VBoxContainer/AspectRatioContainer"]
 unique_name_in_owner = true
-margin_left = 72.7
-margin_right = 596.3
-margin_bottom = 616.0
+margin_left = 13.15
+margin_right = 490.85
+margin_bottom = 562.0
 rect_pivot_offset = Vector2( -0.5, 0.5 )
 mouse_filter = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 6 )
 tileScene = ExtResource( 2 )
 
-[node name="BoardContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/AspectRatioContainer/Board"]
+[node name="BoardContainer" type="GridContainer" parent="CanvasLayer/Control/VBoxContainer/AspectRatioContainer/Board"]
 unique_name_in_owner = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 17.0
-margin_top = 39.0
-margin_right = -20.6001
-margin_bottom = -91.0
+anchor_left = 0.023
+anchor_top = 0.023
+anchor_right = 0.98
+anchor_bottom = 0.789
+margin_left = -0.00665188
+margin_top = 0.0509987
+margin_right = 0.0209351
+margin_bottom = -0.207031
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/vseparation = -1
 custom_constants/hseparation = -1
 columns = 8
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
-[node name="Border" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/AspectRatioContainer"]
-margin_left = 72.7
-margin_right = 596.3
-margin_bottom = 616.0
+[node name="BoardBorder" type="PanelContainer" parent="CanvasLayer/Control/VBoxContainer/AspectRatioContainer"]
+margin_left = 13.15
+margin_right = 490.85
+margin_bottom = 562.0
+mouse_filter = 2
+size_flags_horizontal = 3
+theme_type_variation = "BoardBorderContainer"
+
+[node name="PlayerContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
+margin_top = 745.0
+margin_right = 504.0
+margin_bottom = 888.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_type_variation = "BoardContainer"
+size_flags_stretch_ratio = 1.6
+custom_constants/separation = 12
 
-[node name="BottomContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections"]
-margin_top = 682.0
-margin_right = 568.0
-margin_bottom = 768.0
+[node name="Panel" type="PanelContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer"]
+margin_right = 96.0
+margin_bottom = 143.0
+mouse_filter = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 6 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer"]
-margin_right = 568.0
-margin_bottom = 86.0
-
-[node name="PlayerOneUI" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer"]
-margin_right = 568.0
-margin_bottom = 86.0
-alignment = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
-margin_right = 375.0
-margin_bottom = 86.0
-size_flags_horizontal = 3
-size_flags_vertical = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2"]
-margin_right = 58.0
-margin_bottom = 86.0
+size_flags_stretch_ratio = 0.7
 custom_styles/panel = SubResource( 7 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer"]
-margin_right = 58.0
-margin_bottom = 86.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Panel"]
+margin_right = 96.0
+margin_bottom = 143.0
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer/MarginContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 54.0
-margin_bottom = 82.0
+[node name="PlayerTurn" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Panel/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 96.0
+margin_bottom = 43.0
+mouse_filter = 2
+alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 50.0
+[node name="PlayerTurnLabel" type="Label" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Panel/VBoxContainer/PlayerTurn"]
+margin_right = 96.0
 margin_bottom = 24.0
-custom_fonts/font = ExtResource( 11 )
-text = "_bet_"
-align = 1
-
-[node name="PlayerBetTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-margin_top = 28.0
-margin_right = 50.0
-margin_bottom = 78.0
-rect_min_size = Vector2( 50, 50 )
-texture = ExtResource( 17 )
-expand = true
-stretch_mode = 6
-
-[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2"]
-margin_left = 62.0
-margin_top = 86.0
-margin_right = 62.0
-margin_bottom = 86.0
-size_flags_horizontal = 9
-size_flags_vertical = 12
-
-[node name="PlayerPieceCountTexture" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/Control"]
-unique_name_in_owner = true
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -44.0
-margin_right = 80.0
-grow_horizontal = 0
 size_flags_horizontal = 3
-texture = ExtResource( 12 )
-expand = true
-stretch_mode = 6
-
-[node name="PlayerPieceCountLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer2/Control/PlayerPieceCountTexture"]
-unique_name_in_owner = true
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -40.0
-margin_top = -19.0
-margin_bottom = 19.0
-custom_fonts/font = SubResource( 8 )
-text = "12"
+size_flags_vertical = 10
+custom_colors/font_color = Color( 0.756863, 1, 0, 1 )
+custom_fonts/font = ExtResource( 11 )
+text = "Vez de"
 align = 1
 valign = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI"]
-margin_left = 379.0
-margin_top = 22.0
-margin_right = 568.0
-margin_bottom = 86.0
-size_flags_vertical = 8
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer"]
-margin_right = 121.0
-margin_bottom = 64.0
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
-margin_right = 121.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="PlayerDisconnectIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
-visible = false
-modulate = Color( 1, 0, 0, 1 )
-margin_right = 24.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 24, 24 )
-texture = ExtResource( 25 )
+[node name="PlayerTurnArrow" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Panel/VBoxContainer/PlayerTurn"]
+margin_left = 40.0
+margin_top = 28.0
+margin_right = 55.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 15, 15 )
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource( 30 )
 expand = true
 stretch_mode = 6
 
-[node name="PlayerNameLabel" type="Label" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_right = 121.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 7 )
-text = "GuiGate"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Panel/VBoxContainer/PlayerTurn"]
+autoplay = "arrow_down"
+anims/RESET = SubResource( 33 )
+anims/arrow_down = SubResource( 34 )
 
-[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer"]
-margin_top = 44.0
-margin_right = 121.0
-margin_bottom = 64.0
+[node name="PlayerPortrait" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Panel/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 47.0
+margin_right = 96.0
+margin_bottom = 143.0
+rect_min_size = Vector2( 96, 96 )
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 27 )
+expand = true
+stretch_mode = 6
+
+[node name="Player" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer"]
+margin_left = 108.0
+margin_right = 258.0
+margin_bottom = 143.0
+rect_min_size = Vector2( 150, 0 )
+rect_pivot_offset = Vector2( -845, 81 )
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PlayerTimer" type="ProgressBar" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
-unique_name_in_owner = true
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = 12.0
-margin_right = 147.0
-margin_bottom = 31.0
-rect_rotation = -180.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Player"]
+margin_top = 33.0
+margin_right = 150.0
+margin_bottom = 69.0
+mouse_filter = 2
 size_flags_horizontal = 3
-custom_styles/fg = SubResource( 9 )
-custom_styles/bg = SubResource( 10 )
+size_flags_vertical = 10
+
+[node name="PlayerNameLabel" type="Label" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Player/HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 150.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "BBesiktas"
+valign = 2
+clip_text = true
+
+[node name="Control" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Player"]
+margin_top = 73.0
+margin_right = 150.0
+margin_bottom = 143.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerTimer" type="ProgressBar" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Player/Control"]
+unique_name_in_owner = true
+margin_top = 18.0
+margin_right = 150.0
+margin_bottom = 51.0
+rect_min_size = Vector2( 0, 33 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
 max_value = 15.0
 value = 15.0
 percent_visible = false
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -42.0
-margin_top = -31.0
-margin_right = 26.0
-margin_bottom = 41.0
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Player/Control/PlayerTimer"]
+margin_left = -38.0
+margin_top = -36.0
+margin_right = 77.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 56, 56 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource( 10 )
 expand = true
 stretch_mode = 6
 
-[node name="PlayerTimerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/VBoxContainer/Control"]
+[node name="PlayerTimerAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Player/Control"]
 unique_name_in_owner = true
-anims/RESET = SubResource( 18 )
-anims/time_30_seconds = SubResource( 19 )
+anims/RESET = SubResource( 8 )
+anims/time_30_seconds = SubResource( 9 )
 
-[node name="Panel" type="PanelContainer" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer"]
-margin_left = 125.0
-margin_right = 189.0
-margin_bottom = 64.0
-rect_pivot_offset = Vector2( -639, 351 )
-custom_styles/panel = SubResource( 13 )
-
-[node name="PlayerPortraitBackground" type="Panel" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
-unique_name_in_owner = true
-margin_right = 64.0
-margin_bottom = 64.0
-custom_styles/panel = SubResource( 12 )
-
-[node name="PlayerPortrait" type="TextureRect" parent="CanvasLayer/MarginContainer/Sections/BottomContainer/VBoxContainer/PlayerOneUI/HBoxContainer/Panel"]
-unique_name_in_owner = true
-margin_right = 64.0
-margin_bottom = 64.0
+[node name="CheckersRemainingContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer"]
+margin_left = 270.0
+margin_right = 364.0
+margin_bottom = 143.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 17 )
-stretch_mode = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/CheckersRemainingContainer"]
+margin_top = 45.0
+margin_right = 94.0
+margin_bottom = 69.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+custom_fonts/font = ExtResource( 11 )
+text = "Remaining"
+align = 1
+valign = 1
+
+[node name="PlayerPieceCountTexture" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/CheckersRemainingContainer"]
+unique_name_in_owner = true
+margin_top = 73.0
+margin_right = 94.0
+margin_bottom = 143.0
+grow_horizontal = 0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+
+[node name="PlayerPieceCountLabel" type="Label" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/CheckersRemainingContainer/PlayerPieceCountTexture"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 4.0
+margin_top = -19.0
+margin_right = 44.0
+margin_bottom = 19.0
+custom_fonts/font = SubResource( 1 )
+text = "12"
+align = 1
+valign = 1
+
+[node name="Container" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer"]
+margin_left = 376.0
+margin_right = 504.0
+margin_bottom = 143.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+alignment = 1
+
+[node name="ConcedeButton" type="Button" parent="CanvasLayer/Control/VBoxContainer/PlayerContainer/Container"]
+margin_top = 51.0
+margin_right = 128.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 128, 32 )
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_type_variation = "SalasButton"
+text = "_concede_button_"
+clip_text = true
+
+[node name="GameIdLabel" type="Label" parent="CanvasLayer/Control"]
+unique_name_in_owner = true
+margin_left = 6.0
+margin_top = 8.0
+margin_right = 106.0
+margin_bottom = 169.0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 35 )
+text = "GameId: "
+autowrap = true
 
 [node name="GameOverMenu" parent="CanvasLayer" instance=ExtResource( 5 )]
 visible = false
@@ -784,10 +935,6 @@ theme_type_variation = "FlatContainer"
 unique_name_in_owner = true
 visible = false
 
-[node name="TurnPass" parent="CanvasLayer" instance=ExtResource( 35 )]
-unique_name_in_owner = true
-visible = false
-
-[connection signal="pressed" from="CanvasLayer/MarginContainer/Sections/CenterContainer/BoardContainer/ConcedeButton" to="." method="OnConcedeClicked"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/PlayerContainer/Container/ConcedeButton" to="." method="OnConcedeClicked"]
 [connection signal="pressed" from="CanvasLayer/ConcedeConfirmation/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer/ConcedeConfirmButton" to="." method="OnConcedeConfirmed"]
 [connection signal="pressed" from="CanvasLayer/ConcedeConfirmation/HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer/DeclineButton" to="." method="OnCancelConcede"]

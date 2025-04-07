@@ -55,6 +55,7 @@ public partial class MultiplayerPeerConnection : Node
 			Currency = currency;
 		var port = "";
 		var ip = "staging.retromindgames.pt";
+		//var ip = "localhost";
 
 		//var err = client.ConnectToUrl($"wss://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
 		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");

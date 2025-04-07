@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/white_piece_placeholder.webp-738774d47d848e3aa897a9ec96c37670.stex"
+path="res://.import/arrow_up.webp-e53c17d9d49edc2ecaeeef940e7396fd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/In Game Assets/white_piece_placeholder.webp"
-dest_files=[ "res://.import/white_piece_placeholder.webp-738774d47d848e3aa897a9ec96c37670.stex" ]
+source_file="res://Assets/arrow_up.webp"
+dest_files=[ "res://.import/arrow_up.webp-e53c17d9d49edc2ecaeeef940e7396fd.stex" ]
 
 [params]
 

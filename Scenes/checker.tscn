@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Checker.cs" type="Script" id=1]
-[ext_resource path="res://Assets/In Game Assets/chessblack.webp" type="Texture" id=2]
-[ext_resource path="res://Assets/in_game_assets/checker2.webp" type="Texture" id=3]
-[ext_resource path="res://Assets/In Game Assets/chesswhite.webp" type="Texture" id=4]
-[ext_resource path="res://Assets/In Game Assets/crowd1.webp" type="Texture" id=5]
-[ext_resource path="res://Assets/In Game Assets/crowd2.webp" type="Texture" id=6]
+[ext_resource path="res://Assets/in_game_assets/chessblack.webp" type="Texture" id=2]
+[ext_resource path="res://Assets/in_game_assets/crowd2.webp" type="Texture" id=4]
+[ext_resource path="res://Assets/in_game_assets/chesswhite.webp" type="Texture" id=5]
+[ext_resource path="res://Assets/in_game_assets/crowd1.webp" type="Texture" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 0.984314, 0, 1 )
@@ -85,10 +84,10 @@ margin_right = 32.0
 margin_bottom = 32.0
 mouse_filter = 2
 script = ExtResource( 1 )
-WhiteCheckerTexture = ExtResource( 4 )
-WhiteKingTexture = ExtResource( 6 )
+WhiteCheckerTexture = ExtResource( 5 )
+WhiteKingTexture = ExtResource( 4 )
 BlackCheckerTexture = ExtResource( 2 )
-BlackKingTexture = ExtResource( 5 )
+BlackKingTexture = ExtResource( 6 )
 
 [node name="Selected" type="Panel" parent="."]
 unique_name_in_owner = true
@@ -121,7 +120,7 @@ unique_name_in_owner = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_default_cursor_shape = 3
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 5 )
 expand = true
 stretch_mode = 5
 

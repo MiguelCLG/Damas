@@ -2,20 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Background2.webp-284342234df5052ed4c32617047520a3.stex"
+path="res://.import/arrow_down.webp-b9e3552444b31ef13b4f443011a44cde.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/FirstScreens Assets/Background2.webp"
-dest_files=[ "res://.import/Background2.webp-284342234df5052ed4c32617047520a3.stex" ]
+source_file="res://Assets/arrow_down.webp"
+dest_files=[ "res://.import/arrow_down.webp-b9e3552444b31ef13b4f443011a44cde.stex" ]
 
 [params]
 
 compress/mode=0
-compress/lossy_quality=0.6
+compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0

@@ -76,6 +76,10 @@ public partial class Checker : Control
     texture.TextureNormal = Color == BoardColors.White ? WhiteCheckerTexture : BlackCheckerTexture;
   }
 
+  public void SetOpacity(float opacity)
+  {
+    texture.Modulate = new Color(1, 1, 1, opacity);
+  }
   // There are no animations for movement as of now, so we just change the position
   public void Move(Tile newParentTile, Vector2 newBoardPosition)
   {

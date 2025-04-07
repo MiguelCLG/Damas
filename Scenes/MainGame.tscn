@@ -1,0 +1,513 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://Assets/in_game_assets/crowd2.webp" type="Texture" id=1]
+[ext_resource path="res://Assets/in_game_assets/retangle.webp" type="Texture" id=2]
+[ext_resource path="res://Assets/disconnect_icon.webp" type="Texture" id=3]
+[ext_resource path="res://Assets/In Game Assets/piecescountblack.webp" type="Texture" id=4]
+[ext_resource path="res://Assets/in_game_assets/clock.webp" type="Texture" id=5]
+[ext_resource path="res://Assets/in_game_assets/timerentagle.webp" type="Texture" id=6]
+[ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=7]
+[ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Themes/UI.tres" type="Theme" id=9]
+[ext_resource path="res://Assets/fonts/NexaH_dynamic_font.tres" type="DynamicFont" id=10]
+[ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=11]
+[ext_resource path="res://Scenes/tile.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scripts/Board.cs" type="Script" id=13]
+[ext_resource path="res://Assets/fonts/Nexa-ExtraLight.ttf" type="DynamicFontData" id=14]
+[ext_resource path="res://Scripts/ResizeAspectRatio.cs" type="Script" id=15]
+[ext_resource path="res://Assets/in_game_assets/crowd1.webp" type="Texture" id=16]
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.0901961, 0.027451, 0.160784, 0.501961 )
+
+[sub_resource type="DynamicFont" id=10]
+font_data = ExtResource( 14 )
+
+[sub_resource type="DynamicFont" id=11]
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 22
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 29
+font_data = ExtResource( 7 )
+
+[sub_resource type="StyleBoxTexture" id=3]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 204, 49 )
+
+[sub_resource type="StyleBoxTexture" id=4]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 250, 49 )
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("OpponentTimer/TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "time_30_seconds"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("OpponentTimer/TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerTimer/TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "time_30_seconds"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerTimer/TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -3.0
+theme = ExtResource( 9 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="WinningContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_right = 500.0
+margin_bottom = 176.0
+size_flags_horizontal = 11
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/WinningContainer"]
+margin_right = 500.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.87
+custom_styles/panel = SubResource( 12 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/WinningContainer/PanelContainer"]
+margin_right = 500.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="WinningsLabel" type="Label" parent="VBoxContainer/WinningContainer/PanelContainer/HBoxContainer"]
+margin_right = 248.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 10 )
+text = "Possivel Ganho:"
+align = 2
+valign = 1
+
+[node name="WinningsLabel2" type="Label" parent="VBoxContainer/WinningContainer/PanelContainer/HBoxContainer"]
+margin_left = 252.0
+margin_right = 500.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
+custom_fonts/font = SubResource( 11 )
+text = "R$5.4"
+valign = 1
+
+[node name="OpponentContainer" type="HBoxContainer" parent="VBoxContainer/WinningContainer"]
+margin_top = 64.0
+margin_right = 500.0
+margin_bottom = 176.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.6
+custom_constants/separation = 12
+
+[node name="Container" type="VBoxContainer" parent="VBoxContainer/WinningContainer/OpponentContainer"]
+margin_right = 128.0
+margin_bottom = 112.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="CheckersRemainingContainer" type="VBoxContainer" parent="VBoxContainer/WinningContainer/OpponentContainer"]
+margin_left = 140.0
+margin_right = 234.0
+margin_bottom = 112.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/WinningContainer/OpponentContainer/CheckersRemainingContainer"]
+margin_top = 30.0
+margin_right = 94.0
+margin_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+custom_fonts/font = ExtResource( 10 )
+text = "Remaining"
+align = 1
+valign = 1
+
+[node name="OpponentPieceCountTexture" type="TextureRect" parent="VBoxContainer/WinningContainer/OpponentContainer/CheckersRemainingContainer"]
+unique_name_in_owner = true
+margin_top = 58.0
+margin_right = 94.0
+margin_bottom = 112.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="OpponentPieceCountLabel" type="Label" parent="VBoxContainer/WinningContainer/OpponentContainer/CheckersRemainingContainer/OpponentPieceCountTexture"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 4.0
+margin_top = -19.0
+margin_right = 44.0
+margin_bottom = 19.0
+custom_fonts/font = SubResource( 1 )
+text = "12"
+align = 1
+valign = 1
+
+[node name="Opponent" type="VBoxContainer" parent="VBoxContainer/WinningContainer/OpponentContainer"]
+margin_left = 246.0
+margin_right = 392.0
+margin_bottom = 112.0
+rect_pivot_offset = Vector2( -845, 81 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/WinningContainer/OpponentContainer/Opponent"]
+margin_top = 18.0
+margin_right = 146.0
+margin_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+
+[node name="OpponentNameLabel" type="Label" parent="VBoxContainer/WinningContainer/OpponentContainer/Opponent/HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 146.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 2 )
+text = "BBesiktas"
+valign = 2
+
+[node name="OpponentDisconnectIcon" type="TextureRect" parent="VBoxContainer/WinningContainer/OpponentContainer/Opponent/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 166.0
+margin_right = 190.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 24, 24 )
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="Control" type="HBoxContainer" parent="VBoxContainer/WinningContainer/OpponentContainer/Opponent"]
+margin_top = 58.0
+margin_right = 146.0
+margin_bottom = 112.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="OpponentTimer" type="ProgressBar" parent="VBoxContainer/WinningContainer/OpponentContainer/Opponent/Control"]
+unique_name_in_owner = true
+margin_top = 10.0
+margin_right = 146.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 0, 33 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+max_value = 15.0
+value = 15.0
+percent_visible = false
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/WinningContainer/OpponentContainer/Opponent/Control/OpponentTimer"]
+margin_left = -38.0
+margin_top = -36.0
+margin_right = 77.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 56, 56 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+
+[node name="OpponentTimerAnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/WinningContainer/OpponentContainer/Opponent/Control"]
+unique_name_in_owner = true
+anims/RESET = SubResource( 5 )
+anims/time_30_seconds = SubResource( 6 )
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/WinningContainer/OpponentContainer"]
+margin_left = 404.0
+margin_top = 8.0
+margin_right = 500.0
+margin_bottom = 104.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_styles/panel = SubResource( 7 )
+
+[node name="OpponentPortrait" type="TextureRect" parent="VBoxContainer/WinningContainer/OpponentContainer/Panel"]
+unique_name_in_owner = true
+margin_right = 96.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 16 )
+expand = true
+stretch_mode = 6
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer"]
+margin_top = 180.0
+margin_right = 500.0
+margin_bottom = 743.0
+rect_min_size = Vector2( 500, 500 )
+rect_pivot_offset = Vector2( 250, 250 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 6.4
+ratio = 0.85
+script = ExtResource( 15 )
+
+[node name="Board" type="Control" parent="VBoxContainer/AspectRatioContainer"]
+unique_name_in_owner = true
+margin_left = 10.725
+margin_right = 489.275
+margin_bottom = 563.0
+rect_pivot_offset = Vector2( -0.5, 0.5 )
+mouse_filter = 2
+size_flags_vertical = 3
+script = ExtResource( 13 )
+tileScene = ExtResource( 12 )
+
+[node name="BoardContainer" type="GridContainer" parent="VBoxContainer/AspectRatioContainer/Board"]
+unique_name_in_owner = true
+anchor_left = 0.023
+anchor_top = 0.023
+anchor_right = 0.98
+anchor_bottom = 0.789
+margin_left = -0.00665188
+margin_top = 0.0509987
+margin_right = 0.0209351
+margin_bottom = -0.207031
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = -1
+custom_constants/hseparation = -1
+columns = 8
+
+[node name="BoardContainer" type="PanelContainer" parent="VBoxContainer/AspectRatioContainer"]
+margin_left = 10.725
+margin_right = 489.275
+margin_bottom = 563.0
+size_flags_horizontal = 3
+theme_type_variation = "BoardBorderContainer"
+
+[node name="PlayerContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 747.0
+margin_right = 500.0
+margin_bottom = 888.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.6
+custom_constants/separation = 12
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/PlayerContainer"]
+margin_right = 96.0
+margin_bottom = 141.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+custom_styles/panel = SubResource( 7 )
+
+[node name="PlayerPortrait" type="TextureRect" parent="VBoxContainer/PlayerContainer/Panel"]
+margin_top = 22.0
+margin_right = 96.0
+margin_bottom = 118.0
+rect_min_size = Vector2( 96, 96 )
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+
+[node name="Player" type="VBoxContainer" parent="VBoxContainer/PlayerContainer"]
+margin_left = 108.0
+margin_right = 254.0
+margin_bottom = 141.0
+rect_pivot_offset = Vector2( -845, 81 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PlayerContainer/Player"]
+margin_top = 32.0
+margin_right = 146.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+
+[node name="PlayerNameLabel" type="Label" parent="VBoxContainer/PlayerContainer/Player/HBoxContainer"]
+margin_right = 146.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 2 )
+text = "BBesiktas"
+valign = 2
+
+[node name="Control" type="HBoxContainer" parent="VBoxContainer/PlayerContainer/Player"]
+margin_top = 72.0
+margin_right = 146.0
+margin_bottom = 141.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerTimer" type="ProgressBar" parent="VBoxContainer/PlayerContainer/Player/Control"]
+margin_top = 18.0
+margin_right = 146.0
+margin_bottom = 51.0
+rect_min_size = Vector2( 0, 33 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+max_value = 15.0
+value = 15.0
+percent_visible = false
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PlayerContainer/Player/Control/PlayerTimer"]
+margin_left = -38.0
+margin_top = -36.0
+margin_right = 77.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 56, 56 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+
+[node name="OpponentTimerAnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/PlayerContainer/Player/Control"]
+anims/RESET = SubResource( 8 )
+anims/time_30_seconds = SubResource( 9 )
+
+[node name="CheckersRemainingContainer" type="VBoxContainer" parent="VBoxContainer/PlayerContainer"]
+margin_left = 266.0
+margin_right = 360.0
+margin_bottom = 141.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/PlayerContainer/CheckersRemainingContainer"]
+margin_top = 44.0
+margin_right = 94.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+custom_fonts/font = ExtResource( 10 )
+text = "Remaining"
+align = 1
+valign = 1
+
+[node name="OpponentPieceCountTexture" type="TextureRect" parent="VBoxContainer/PlayerContainer/CheckersRemainingContainer"]
+margin_top = 72.0
+margin_right = 94.0
+margin_bottom = 141.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="OpponentPieceCountLabel" type="Label" parent="VBoxContainer/PlayerContainer/CheckersRemainingContainer/OpponentPieceCountTexture"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 4.0
+margin_top = -19.0
+margin_right = 44.0
+margin_bottom = 19.0
+custom_fonts/font = SubResource( 1 )
+text = "12"
+align = 1
+valign = 1
+
+[node name="Container" type="VBoxContainer" parent="VBoxContainer/PlayerContainer"]
+margin_left = 372.0
+margin_right = 500.0
+margin_bottom = 141.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/PlayerContainer/Container"]
+margin_top = 50.0
+margin_right = 128.0
+margin_bottom = 91.0
+rect_min_size = Vector2( 128, 32 )
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_type_variation = "SalasButton"
+text = "Desistir"

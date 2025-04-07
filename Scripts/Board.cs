@@ -36,8 +36,6 @@ public partial class Board : Control
       return KingHasCaptureMove(checker);
     }
     return CheckerHasCaptureMove(checker);
-
-
   }
 
   private bool CheckerHasCaptureMove(Checker checker)
@@ -46,34 +44,28 @@ public partial class Board : Control
     return IsCaptureMove;
   }
 
-
   private bool KingHasCaptureMove(Checker checker)
   {
     CalculateKingMoves(checker);
     return IsCaptureMove;
   }
 
-  private bool IsAllyAt(Vector2 checkPosition, BoardColors color, Array<Checker> checkersInPlay)
+  public bool CanMove(Checker checker)
   {
-    foreach (var checker in checkersInPlay)
+    if (checker.isKing)
+      CalculateKingMoves(checker);
+    else
+      CalculateMoves(checker);
+    if (!IsCaptureMove)
     {
-      if (checker.BoardPosition == checkPosition && checker.Color == color)
-      {
-        return true;
-      }
-      else if (checker.BoardPosition == checkPosition && checker.Color != color)
-      {
-        return false;
-      }
+      return RegularMoves.Count > 0;
     }
     return false;
   }
-
-
   // Since we want to prioritize capture moves, we first check for them
   // then we if there aren't any, we check for regular moves
   // this way we can highlight and diferentiate a capture from a regular move
-  public void OnCheckerClicked(Checker checker, Array<Checker> checkersInPlay)
+  public void OnCheckerClicked(Checker checker)
   {
     if (checker.isKing)
     {
@@ -237,18 +229,41 @@ public partial class Board : Control
 
 
   // This function will unselect all the tiles that were highlighted
-  public void CleanUpFreeTiles(Checker checker)
+  public void CleanUpFreeTiles()
   {
-    foreach (Tile tile in checker.MovementSpaces)
+    foreach (Tile tile in BoardTiles)
     {
-      tile.Unselect();
+      tile.UnselectMovement();
+      tile.UnselectAsCanCapture();
+      tile.UnselectAsCanMove();
+    }
+  }
+  public void CleanUpMovementTiles()
+  {
+    foreach (Tile tile in BoardTiles)
+    {
+      tile.UnselectMovement();
+    }
+  }
+  public void CleanUpCaptureTiles()
+  {
+    foreach (Tile tile in BoardTiles)
+    {
+      tile.UnselectAsCanCapture();
+    }
+  }
+  public void CleanUpCanMoveTiles()
+  {
+    foreach (Tile tile in BoardTiles)
+    {
+      tile.UnselectAsCanMove();
     }
   }
   public void CleanUpPreviousMovement()
   {
     foreach (Tile tile in BoardTiles)
     {
-      tile.Unselect();
+      tile.UnselectPreviousMovement();
     }
   }
 

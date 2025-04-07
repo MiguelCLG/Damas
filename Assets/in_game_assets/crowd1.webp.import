@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/checker2.webp-18659d55208382070f3896bcc5c09382.stex"
+path="res://.import/crowd1.webp-bcaccddfedd0a972d2ade9a0f514a647.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/in_game_assets/checker2.webp"
-dest_files=[ "res://.import/checker2.webp-18659d55208382070f3896bcc5c09382.stex" ]
+source_file="res://Assets/in_game_assets/crowd1.webp"
+dest_files=[ "res://.import/crowd1.webp-bcaccddfedd0a972d2ade9a0f514a647.stex" ]
 
 [params]
 

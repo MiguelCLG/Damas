@@ -60,9 +60,11 @@ public partial class MainMenu : Control
 	private void OnGameStarting(object sender, object args)
 	{
 		if (args is GameStartMessage message)
-		{
+		{	
 			initialBoard = message.Board;
 			MaxTimer = message.max_timer;
+			game_id = message.game_id;
+			possibleWinnings = message.win_factor * (betValue * 2);
 			foreach (var gamePlayer in message.GamePlayers)
 			{
 				if (playerName == gamePlayer.name)
@@ -77,7 +79,6 @@ public partial class MainMenu : Control
 			}
 		}
 		LoadNextScene();
-
 	}
 
 	private void LoadNextScene()
@@ -113,13 +114,7 @@ public partial class MainMenu : Control
 	}
 	public void SetPlayerMoney(string newPlayerMoney)
 	{
-		var currencyInfo = GetCurrencySymbol(GameState.Currency);
-		if (currencyInfo.Position == SymbolPosition.Left)
-			newPlayerMoney = $"{currencyInfo.Symbol}{newPlayerMoney}";
-		else
-			newPlayerMoney = $"{newPlayerMoney}{currencyInfo.Symbol}";
-
-		PlayerMoney.Text = newPlayerMoney;
+		PlayerMoney.Text = FormatMoneyText(newPlayerMoney, GameState.Currency);
 	}
 
 	public void SetWaitingQueue(object sender, object args)

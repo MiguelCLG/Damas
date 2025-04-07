@@ -5,7 +5,7 @@
 [ext_resource path="res://Assets/ui_assets/balance.webp" type="Texture" id=3]
 [ext_resource path="res://Assets/FirstScreens Assets/Chips with Glow/10.webp" type="Texture" id=4]
 [ext_resource path="res://Assets/FirstScreens Assets/Batalha Damas Logo.webp" type="Texture" id=5]
-[ext_resource path="res://Assets/FirstScreens Assets/Background2.webp" type="Texture" id=6]
+[ext_resource path="res://Assets/in_game_assets/bg.webp" type="Texture" id=6]
 [ext_resource path="res://Assets/ui_assets/right.webp" type="Texture" id=7]
 [ext_resource path="res://Assets/ui_assets/left.webp" type="Texture" id=8]
 [ext_resource path="res://Assets/ui_assets/users-icon.png" type="Texture" id=9]
@@ -70,8 +70,6 @@ clickSound = ExtResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 6 )
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -82,36 +80,37 @@ margin_right = -32.0
 margin_bottom = -32.0
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 536.0
-margin_bottom = 736.0
+margin_right = 436.0
+margin_bottom = 824.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
-margin_right = 536.0
-margin_bottom = 736.0
+margin_right = 436.0
+margin_bottom = 824.0
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_right = 536.0
-margin_bottom = 228.0
+margin_right = 436.0
+margin_bottom = 272.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_right = 266.0
-margin_bottom = 228.0
+margin_right = 216.0
+margin_bottom = 272.0
 size_flags_horizontal = 3
 
 [node name="PlayerName" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 266.0
+margin_right = 216.0
 margin_bottom = 40.0
 theme_type_variation = "HemiLabel"
 text = "GuiGate"
 valign = 3
+clip_text = true
 
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer"]
 margin_top = 44.0
-margin_right = 266.0
+margin_right = 216.0
 margin_bottom = 44.0
 
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/PanelContainer/VBoxContainer/Control/VBoxContainer/Control"]
@@ -134,15 +133,15 @@ text = "R$993,82"
 valign = 3
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/Control"]
-margin_left = 270.0
-margin_right = 536.0
-margin_bottom = 228.0
+margin_left = 220.0
+margin_right = 436.0
+margin_bottom = 272.0
 size_flags_horizontal = 11
 alignment = 2
 
 [node name="TextureButton" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
-margin_left = 134.0
-margin_right = 198.0
+margin_left = 84.0
+margin_right = 148.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 mouse_default_cursor_shape = 2
@@ -151,8 +150,8 @@ size_flags_vertical = 0
 theme_type_variation = "RulesButton"
 
 [node name="TextureButton2" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/Control/Control"]
-margin_left = 202.0
-margin_right = 266.0
+margin_left = 152.0
+margin_right = 216.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 mouse_default_cursor_shape = 2
@@ -161,9 +160,9 @@ size_flags_vertical = 0
 theme_type_variation = "SettingsButton"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_top = 232.0
-margin_right = 536.0
-margin_bottom = 460.0
+margin_top = 276.0
+margin_right = 436.0
+margin_bottom = 548.0
 size_flags_horizontal = 7
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -171,10 +170,10 @@ expand = true
 stretch_mode = 6
 
 [node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
-margin_left = 119.0
-margin_top = 464.0
-margin_right = 416.0
-margin_bottom = 736.0
+margin_left = 69.0
+margin_top = 552.0
+margin_right = 366.0
+margin_bottom = 824.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_type_variation = "ButtonsContainer"

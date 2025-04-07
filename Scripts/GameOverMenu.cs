@@ -30,9 +30,9 @@ public class GameOverMenu : Control
             winnerNameLabel.Text = "_lose_";
         }
         if (name == BoardColors.Black)
-            winnerTextureRect.Texture = GD.Load<Texture>("res://Assets/In Game Assets/crowd1.webp");
+            winnerTextureRect.Texture = GD.Load<Texture>("res://Assets/in_game_assets/crowd1.webp");
         else
-            winnerTextureRect.Texture = GD.Load<Texture>("res://Assets/In Game Assets/crowd2.webp");
+            winnerTextureRect.Texture = GD.Load<Texture>("res://Assets/in_game_assets/crowd2.webp");
     }
 
     public void OnRestartTriggered()
