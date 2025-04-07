@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/tile.tscn" type="PackedScene" id=2]
@@ -227,6 +227,10 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.882353, 0.423529, 0.423529, 1 ), Color( 1, 1, 1, 1 ) ]
 }
+
+[sub_resource type="DynamicFont" id=35]
+size = 12
+font_data = ExtResource( 16 )
 
 [sub_resource type="StyleBoxFlat" id=14]
 bg_color = Color( 0, 0, 0, 0.392157 )
@@ -787,6 +791,17 @@ size_flags_vertical = 8
 theme_type_variation = "SalasButton"
 text = "_concede_button_"
 clip_text = true
+
+[node name="GameIdLabel" type="Label" parent="CanvasLayer/Control"]
+unique_name_in_owner = true
+margin_left = 6.0
+margin_top = 8.0
+margin_right = 106.0
+margin_bottom = 169.0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 35 )
+text = "GameId: "
+autowrap = true
 
 [node name="GameOverMenu" parent="CanvasLayer" instance=ExtResource( 5 )]
 visible = false
