@@ -121,26 +121,22 @@ margin_top = 3.0
 margin_right = 422.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 16, 16 )
 mouse_filter = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 custom_styles/panel = SubResource( 12 )
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel"]
+[node name="CloseButton" type="TextureButton" parent="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
-
-[node name="CloseButton" type="TextureButton" parent="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel/MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 24.0
-margin_bottom = 24.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
 rect_min_size = Vector2( 16, 16 )
 focus_mode = 0
 mouse_default_cursor_shape = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 enabled_focus_mode = 0
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 6 )
@@ -334,7 +330,7 @@ size_flags_vertical = 3
 theme = ExtResource( 3 )
 theme_type_variation = "FlatContainer"
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel/MarginContainer/CloseButton" to="." method="OnClose"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/RoomContainer/CloseButtonPanel/CloseButton" to="." method="OnClose"]
 [connection signal="value_changed" from="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer5/MasterVolumeSlider" to="." method="OnAudioSliderChanged" binds= [ "Master" ]]
 [connection signal="value_changed" from="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/SoundEffectsVolumeSlider" to="." method="OnAudioSliderChanged" binds= [ "Sound_Effects" ]]
 [connection signal="value_changed" from="HBoxContainer/VBoxContainer/RoomContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4/UIEffectsVolumeSlider" to="." method="OnAudioSliderChanged" binds= [ "UI_Effects" ]]

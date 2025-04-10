@@ -59,7 +59,7 @@ public partial class GameplaySystem : Node2D
 		OpponentDisconnectIcon = GetNode<TextureRect>("%OpponentDisconnectIcon");
 		ConnectionPopup = GetNode<Panel>("%ConnectionPopup");
 
-		GetNode<Label>("%GameIdLabel").Text = $"Game ID: {game_id}";
+		GetNode<Label>("%GameIdLabel").Text = $"Round ID: {game_id}";
 		PlayerTimerAnimationPlayer = GetNode<AnimationPlayer>("%PlayerTimerAnimationPlayer");
 		OpponentTimerAnimationPlayer = GetNode<AnimationPlayer>("%OpponentTimerAnimationPlayer");
 
