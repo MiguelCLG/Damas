@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class RuleBook : Panel
+public class RuleBook : PanelContainer
 {
     public void OnClose()
     {

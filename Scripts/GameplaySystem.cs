@@ -85,7 +85,7 @@ public partial class GameplaySystem : Node2D
 		WinnngsLabel = GetNode<Label>("%WinningsLabel2");
 		PlayerNameLabel.Text = player.name;
 		OpponentNameLabel.Text = opponentName;
-		WinnngsLabel.Text = FormatMoneyText(possibleWinnings.ToString(), GameState.Currency);
+		WinnngsLabel.Text = TranslationServer.Translate("_possible_gain_") + " " + FormatMoneyText(possibleWinnings.ToString(), GameState.Currency);
 
 		board = GetNode<Board>("%Board");
 		gameOverMenu = GetNode<GameOverMenu>("%GameOverMenu");

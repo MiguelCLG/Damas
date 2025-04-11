@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=50 format=2]
+[gd_resource type="Theme" load_steps=55 format=2]
 
 [ext_resource path="res://Assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=2]
@@ -17,6 +17,8 @@
 [ext_resource path="res://Assets/slider_toggle.webp" type="Texture" id=15]
 [ext_resource path="res://Assets/in_game_assets/slider_toggle_highlight.webp" type="Texture" id=16]
 [ext_resource path="res://Assets/FirstScreens Assets/rulebook_icon.webp" type="Texture" id=17]
+[ext_resource path="res://Assets/in_game_assets/AGAIN_PAINEL.webp" type="Texture" id=18]
+[ext_resource path="res://Assets/in_game_assets/AGAIN_BUTTON.webp" type="Texture" id=19]
 
 [sub_resource type="StyleBoxTexture" id=41]
 texture = ExtResource( 11 )
@@ -53,19 +55,36 @@ region_rect = Rect2( 0, 0, 541, 390 )
 texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 541, 390 )
 
+[sub_resource type="DynamicFont" id=43]
+size = 42
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxTexture" id=44]
+texture = ExtResource( 19 )
+region_rect = Rect2( 0, 24, 660, 128 )
+margin_left = 21.0
+margin_right = 19.0
+margin_top = 9.0
+margin_bottom = 13.0
+modulate_color = Color( 0.910156, 0.910156, 0.910156, 1 )
+
+[sub_resource type="StyleBoxTexture" id=45]
+texture = ExtResource( 19 )
+region_rect = Rect2( 0, 24, 660, 128 )
+margin_left = 21.0
+margin_right = 19.0
+margin_top = 9.0
+margin_bottom = 13.0
+
 [sub_resource type="StyleBoxEmpty" id=9]
 
-[sub_resource type="StyleBoxFlat" id=29]
-bg_color = Color( 0.137255, 0.0431373, 0.301961, 1 )
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+[sub_resource type="StyleBoxTexture" id=46]
+texture = ExtResource( 18 )
+region_rect = Rect2( 7, 6, 443, 600 )
+margin_left = 14.0
+margin_right = 16.0
+margin_top = 16.0
+margin_bottom = 15.0
 
 [sub_resource type="DynamicFont" id=3]
 size = 32
@@ -118,7 +137,7 @@ margin_bottom = 20.0
 modulate_color = Color( 1, 1, 1, 0.784314 )
 
 [sub_resource type="StyleBoxFlat" id=35]
-bg_color = Color( 0.181714, 0.0601044, 0.394531, 1 )
+bg_color = Color( 0.180392, 0.0588235, 0.396078, 0 )
 border_width_top = 2
 border_width_bottom = 2
 border_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
@@ -231,10 +250,17 @@ ChipsButton/styles/focus = SubResource( 26 )
 ChipsButton/styles/hover = SubResource( 27 )
 ChipsButton/styles/normal = SubResource( 26 )
 ChipsButton/styles/pressed = SubResource( 26 )
+FimDeJogoButton/base_type = "Button"
+FimDeJogoButton/colors/font_color = Color( 1, 1, 1, 1 )
+FimDeJogoButton/fonts/font = SubResource( 43 )
+FimDeJogoButton/styles/disabled = SubResource( 44 )
+FimDeJogoButton/styles/hover = SubResource( 44 )
+FimDeJogoButton/styles/normal = SubResource( 45 )
+FimDeJogoButton/styles/pressed = SubResource( 44 )
 FlatContainer/base_type = "PanelContainer"
 FlatContainer/styles/panel = SubResource( 9 )
 GameOverContainer/base_type = "PanelContainer"
-GameOverContainer/styles/panel = SubResource( 29 )
+GameOverContainer/styles/panel = SubResource( 46 )
 HSlider/icons/grabber = ExtResource( 15 )
 HSlider/icons/grabber_disabled = ExtResource( 15 )
 HSlider/icons/grabber_highlight = ExtResource( 16 )

@@ -127,10 +127,10 @@ public class MovePieceData
 public class GamePlayer
 {
   public string id;
-  public string token;
   public string name;
   public string color;
-  public string session_id;
+  public int num_pieces;
+  public int timer;
 }
 public class GameStartMessage
 {

@@ -16,6 +16,7 @@ public class RoomPopup : Panel
 	private Button OpponentReadyButton;
 	private TextureRect BidTextureRect;
 	private Label BidValue;
+	private Label WaitingLabel;
 	private PanelContainer RoomContainer;
 	private PanelContainer WaitingForDataContainer;
 
@@ -26,14 +27,15 @@ public class RoomPopup : Panel
 		PlayerName = GetNode<Label>("%PlayerNameLabel");
 		OponentName = GetNode<Label>("%OponentNameLabel");
 		BidTextureRect = GetNode<TextureRect>("%BidTexture");
-		BidValue = GetNode<Label>("%BidValue");
+		WaitingLabel = GetNode<Label>("%WaitingLabel");
+		BidValue = GetNode<Label>("%PlayerMoney");
 		PlayerTexture = GetNode<TextureRect>("%PlayerTexture");
 		OpponentTexture = GetNode<TextureRect>("%OpponentTexture");
 		ReadyButton = GetNode<Button>("%PlayerReadyButton");
 		OpponentReadyButton = GetNode<Button>("%OpponentReadyButton");
 		RoomContainer = GetNode<PanelContainer>("%RoomContainer");
 		WaitingForDataContainer = GetNode<PanelContainer>("%WaitingForDataContainer");
-
+		WaitingLabel.Text = "_player_ready_";
 		SubscribeToEvents();
 
 		WaitingForDataContainer.Visible = true;
@@ -51,6 +53,7 @@ public class RoomPopup : Panel
 	}
 	public void OnReadyButtonPressed(bool buttonPressed)
 	{
+		WaitingLabel.Text = buttonPressed ? "_player_ready_waiting_" : "_player_ready_";
 		ChangeReadyButton(buttonPressed);
 
 		EventRegistry.GetEventPublisher("OnReadyButtonPressed").RaiseEvent(buttonPressed);
@@ -90,7 +93,7 @@ public class RoomPopup : Panel
 
 	public void SetBidValue(string value)
 	{
-		BidValue.Text = value;
+		BidValue.Text = TranslationServer.Translate("_prize_") + " " + Utils.FormatMoneyText(value.ToString(), GameState.Currency);
 	}
 
 	public void OnPairedReceived(object sender, object args)

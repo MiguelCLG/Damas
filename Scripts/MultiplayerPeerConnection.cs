@@ -22,8 +22,6 @@ public partial class MultiplayerPeerConnection : Node
 		SubscribeToEvents();
 
 		player = new GamePlayer();
-		player.token = "token123";
-		player.session_id = "session1";
 
 		// Set up the reconnection timer
 		reconnectTimer = new Timer();
@@ -54,11 +52,11 @@ public partial class MultiplayerPeerConnection : Node
 		if (Enum.TryParse(parameters.Currency, out Utils.Currency currency))
 			Currency = currency;
 		var port = "";
-		var ip = "staging.retromindgames.pt";
-		//var ip = "localhost";
+		//var ip = "staging.retromindgames.pt";
+		var ip = "localhost";
 
 		//var err = client.ConnectToUrl($"wss://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
-		var err = client.ConnectToUrl($"{parameters.Prefix}://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
+		var err = client.ConnectToUrl($"ws://{ip}{port}/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
 		//var err = client.ConnectToUrl($"wss://localhost:80/ws?token={parameters.Token}&sessionid={parameters.SessionId}&currency={parameters.Currency}");
 		if (err != Error.Ok)
 		{

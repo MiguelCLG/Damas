@@ -1,17 +1,25 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Themes/UI.tres" type="Theme" id=1]
 [ext_resource path="res://Scripts/GameOverMenu.cs" type="Script" id=2]
-[ext_resource path="res://Assets/fonts/Hemi_dynamic_font.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Assets/in_game_assets/crowd2.webp" type="Texture" id=4]
-[ext_resource path="res://Assets/fonts/Hemi Head Bd It.otf" type="DynamicFontData" id=5]
+[ext_resource path="res://Assets/fonts/Nexa-Heavy.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/in_game_assets/LOSE_TITLE.webp" type="Texture" id=4]
+[ext_resource path="res://Assets/in_game_assets/WIN_TITLE.webp" type="Texture" id=5]
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0, 0, 0, 0.392157 )
+bg_color = Color( 0, 0, 0, 0.588235 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
-font_data = ExtResource( 5 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 64
+font_data = ExtResource( 3 )
 
 [node name="GameOverMenu" type="Panel"]
 pause_mode = 2
@@ -21,6 +29,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
 script = ExtResource( 2 )
+GameOverImage = [ ExtResource( 5 ), ExtResource( 4 ) ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
@@ -28,7 +37,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="FlatContainer" type="PanelContainer" parent="HBoxContainer"]
-margin_right = 38.0
+margin_right = 26.0
 margin_bottom = 888.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -37,16 +46,16 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 42.0
-margin_right = 458.0
+margin_left = 30.0
+margin_right = 469.0
 margin_bottom = 888.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
 [node name="FlatContainer2" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_right = 416.0
-margin_bottom = 239.0
+margin_right = 439.0
+margin_bottom = 167.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -54,9 +63,9 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="GameOverUI" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 243.0
-margin_right = 416.0
-margin_bottom = 644.0
+margin_top = 171.0
+margin_right = 439.0
+margin_bottom = 717.0
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -64,79 +73,103 @@ theme = ExtResource( 1 )
 theme_type_variation = "GameOverContainer"
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/GameOverUI"]
-margin_left = 3.0
-margin_top = 3.0
-margin_right = 413.0
-margin_bottom = 398.0
+margin_left = 14.0
+margin_top = 16.0
+margin_right = 423.0
+margin_bottom = 531.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-custom_constants/margin_right = 32
+custom_constants/margin_right = 16
 custom_constants/margin_top = 32
-custom_constants/margin_left = 32
+custom_constants/margin_left = 16
 custom_constants/margin_bottom = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer"]
-margin_left = 32.0
+margin_left = 16.0
 margin_top = 32.0
-margin_right = 378.0
-margin_bottom = 363.0
+margin_right = 393.0
+margin_bottom = 483.0
 mouse_filter = 2
-size_flags_vertical = 4
-custom_constants/separation = 20
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
-margin_right = 346.0
-margin_bottom = 179.0
-
-[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="GameOverImage" type="TextureRect" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 346.0
-margin_bottom = 40.0
+margin_right = 377.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 250, 250 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 7
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
+margin_top = 254.0
+margin_right = 377.0
+margin_bottom = 451.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer2"]
+margin_right = 377.0
+margin_bottom = 88.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 377.0
+margin_bottom = 42.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
-custom_colors/font_color = Color( 0.996078, 0.913725, 0.0705882, 1 )
+custom_colors/font_color = Color( 0.666667, 0.647059, 0.705882, 1 )
 custom_fonts/font = SubResource( 1 )
-text = "Voce Venceu!"
+text = "Que tal"
 align = 1
+uppercase = true
 
-[node name="WinnerChecker" type="TextureRect" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="WinnerName" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 44.0
-margin_right = 346.0
-margin_bottom = 179.0
-texture = ExtResource( 4 )
-stretch_mode = 6
-
-[node name="WinnerName" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-margin_top = 199.0
-margin_right = 346.0
-margin_bottom = 239.0
+margin_top = 46.0
+margin_right = 377.0
+margin_bottom = 88.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
-text = "White checkers wins!"
+custom_fonts/font = SubResource( 3 )
+text = "Tentar Novamente?"
 align = 1
+uppercase = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer"]
-margin_left = 22.0
-margin_top = 259.0
-margin_right = 324.0
-margin_bottom = 331.0
-mouse_filter = 2
-size_flags_horizontal = 6
-size_flags_vertical = 2
+[node name="Winnings" type="Label" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 92.0
+margin_right = 377.0
+margin_bottom = 176.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_colors/font_color = Color( 0.756863, 1, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "R$1.8"
+align = 1
+uppercase = true
 
-[node name="InicioButton" type="Button" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="InicioButton" type="Button" parent="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer2"]
 pause_mode = 2
-margin_right = 302.0
-margin_bottom = 72.0
-theme_type_variation = "JogarButton"
-text = "_restart_button_"
+unique_name_in_owner = true
+margin_top = 120.0
+margin_right = 377.0
+margin_bottom = 197.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = "FimDeJogoButton"
+text = "VAMOS LÁ"
 
 [node name="FlatContainer3" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 648.0
-margin_right = 416.0
+margin_top = 721.0
+margin_right = 439.0
 margin_bottom = 888.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -144,7 +177,7 @@ theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
 [node name="FlatContainer_2" type="PanelContainer" parent="HBoxContainer"]
-margin_left = 462.0
+margin_left = 473.0
 margin_right = 500.0
 margin_bottom = 888.0
 size_flags_horizontal = 3
@@ -152,4 +185,4 @@ size_flags_vertical = 3
 theme = ExtResource( 1 )
 theme_type_variation = "FlatContainer"
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/HBoxContainer/InicioButton" to="." method="OnRestartTriggered"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/GameOverUI/MarginContainer/VBoxContainer/VBoxContainer2/InicioButton" to="." method="OnRestartTriggered"]
